@@ -22,7 +22,7 @@ export const Button: React.FC<Props> = ({
     <button
       className={clsxm([
         "py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed",
-        buttonType === "primary" && "bg-blue-700 text-white",
+        buttonType === "primary" && "bg-blue-500 text-white",
         buttonType === "secondary" && "bg-white text-black",
       ])}
       onClick={onClick && !disabled ? onClick : undefined}

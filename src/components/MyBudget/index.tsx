@@ -1,11 +1,7 @@
 import React from "react";
-import { useStorage } from "@/hooks/useStorage";
-import { StoredData } from "@/types";
 import { BudgetProgress } from "../BudgetProgress";
 
 export const MyBudget = () => {
-  // const budget = getStorage()?.budget;
-
   return (
     <div className=" flex flex-col gap-2 items-center text-center p-4 rounded-xl bg-slate-300/50">
       <span className="font-semibold">My budget</span>

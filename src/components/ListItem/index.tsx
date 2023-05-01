@@ -1,12 +1,12 @@
 import React from "react";
+import { formatPrice } from "@/utils/numbers";
 import { ListItemWrapper } from "./ListItemWrapper";
 
 interface Props {
   href?: string;
   description?: string;
-  ammount?: number;
+  ammount: number;
   date?: Date;
-  onDelete?: () => void;
 }
 
 export const ListItem: React.FC<Props> = ({
@@ -14,25 +14,24 @@ export const ListItem: React.FC<Props> = ({
   ammount,
   date,
   description,
-  onDelete,
 }) => {
   return (
     <ListItemWrapper
       href={href}
-      className="w-full p-4 bg-white rounded-md flex gap-2 justify-between shadow-md items-center"
+      className="w-full p-4 bg-white rounded-md flex gap-2 justify-between shadow-md items-center text-gray-800"
     >
       <div className="grid">
         {description ? <span>{description}</span> : null}
-        {ammount ? <span>${ammount}</span> : null}
-        {date ? <span>{new Date(date).toDateString()}</span> : null}
+        {date ? (
+          <span className="text-xs text-gray-400">
+            {new Date(date).toDateString()}
+          </span>
+        ) : null}
       </div>
       <div className="flex gap-2">
-        <button
-          className="px-2 bg-red-500 text-white rounded-md h-8 w-8"
-          onClick={onDelete}
-        >
-          X
-        </button>
+        <span className="font-semibold">
+          ${formatPrice(ammount.toFixed(2))}
+        </span>
       </div>
     </ListItemWrapper>
   );

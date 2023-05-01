@@ -27,9 +27,11 @@ export const Field: React.FC<Props> = ({
 }) => {
   return (
     <fieldset className="flex flex-col gap-2">
-      {label ? <label>{label}</label> : null}
+      {label ? (
+        <label className="uppercase text-gray-600 text-sm">{label}</label>
+      ) : null}
       <input
-        className="border border-white bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed"
+        className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed"
         name={name}
         ref={ref}
         type={type}

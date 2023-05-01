@@ -5,6 +5,8 @@ import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ErrorLabel } from "@/components/ErrorLabel";
 import { ButtonLink } from "@/components/Button/ButtonLink";
+import { Header } from "@/components/Header";
+import { CheckIcon } from "@/components/svgs/CheckIcon";
 
 const SignUp: NextPage = () => {
   const [isSigned, setIsSigned] = useState(false);
@@ -75,17 +77,20 @@ const SignUp: NextPage = () => {
     <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
       {isSigned ? (
         <>
-          <p>
+          <div className="flex justify-center">
+            <CheckIcon />
+          </div>
+          <p className="text-center">
             Thank you for signing up with our service! We are excited to have
             you on board.
           </p>
-          <p>
+          <p className="text-center">
             To complete your registration, we have sent a confirmation link to
             the email address you provided during sign-up. Please check your
             inbox (and your spam folder, just in case) and click on the
             confirmation link to verify your account.
           </p>
-          <p className="mb-4">
+          <p className="text-center mb-4">
             If you did not receive the email, please contact our support team
             and we will be happy to assist you. Thank you for choosing our
             service.
@@ -94,7 +99,7 @@ const SignUp: NextPage = () => {
         </>
       ) : (
         <>
-          <h2 className="text-3xl font-semibold py-4">Sign Up</h2>
+          <Header title="Sign Up" alignText="center" />
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <Field
               type="text"

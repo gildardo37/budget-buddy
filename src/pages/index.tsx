@@ -8,6 +8,7 @@ import { ErrorLabel } from "@/components/ErrorLabel";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
+import { Header } from "@/components/Header";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const LoginPage: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
-      <h2 className="text-3xl font-semibold py-4">Log in</h2>
+      <Header title="Login" alignText="center" />
       <form className="flex flex-col gap-4" onSubmit={logIn}>
         <Field
           type="email"

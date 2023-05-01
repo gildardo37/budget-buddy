@@ -55,7 +55,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
       {loading && !session ? (
         <LoadingState />
       ) : (
-        <main className="w-full p-4 bg-slate-200 min-h-[100dvh]">
+        <main className="w-full p-4 bg-[rgb(241,245,249)] min-h-[100dvh]">
           <div className="max-w-md mx-auto">{children}</div>
         </main>
       )}

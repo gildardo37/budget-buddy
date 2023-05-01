@@ -83,11 +83,13 @@ export const useAddBudget = () => {
 export const useDeleteBudget = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async ({ description, ammount }: AddBudget) => {
+    async (id: number) => {
       const { data } = await supabase.auth.getSession();
       return await supabase
         .from("budgets")
-        .insert({ description, ammount, profile_id: data.session?.user.id });
+        .delete()
+        .eq("id", id)
+        .eq("profile_id", data.session?.user.id);
     },
     {
       onSuccess: () => {

@@ -8,6 +8,7 @@ import { ErrorLabel } from "@/components/ErrorLabel";
 import { Field } from "@/components/Field";
 import { ListItem } from "@/components/ListItem";
 import { Loading } from "@/components/Loading";
+import { Header } from "@/components/Header";
 
 interface FormData {
   description: string;
@@ -15,8 +16,8 @@ interface FormData {
 }
 
 const BudgetPage: NextPage = () => {
-  const { mutateAsync: addBudget } = useAddBudget();
   const { data: budgets, isLoading, error } = useBudget();
+  const { mutateAsync: addBudget } = useAddBudget();
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<FormData>({
     description: "",
@@ -50,10 +51,11 @@ const BudgetPage: NextPage = () => {
     console.log(!formData.ammount || !formData.description || isLoading);
     return !formData.ammount || !formData.description || isLoading;
   }, [formData, isLoading]);
+  console.log(budgets?.data);
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-2xl font-semibold py-4">Add budget</h2>
+      <Header title="Add budget" />
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <Field
           label="Description"
@@ -97,7 +99,7 @@ const BudgetPage: NextPage = () => {
           )}
         </ul>
       ) : (
-        <div>No budgets added yet</div>
+        <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}
     </section>
   );

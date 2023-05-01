@@ -24,7 +24,7 @@ export interface Login {
 }
 
 export interface Budget {
-  id: string;
+  id: number;
   created_at: Date;
   description: string;
   ammount: number;
