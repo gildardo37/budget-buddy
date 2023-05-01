@@ -35,3 +35,20 @@ export interface AddBudget {
   description: string;
   ammount: number;
 }
+
+export interface TransactionType {
+  id: number;
+  created_at: Date;
+  type: "expense" | "income";
+}
+
+export interface Transaction {
+  id: number;
+  created_at: Date;
+  description: string;
+  ammount: number;
+  budget_fk: number;
+  transaction_type_fk: number;
+  budgets: Budget;
+  transaction_type: TransactionType;
+}

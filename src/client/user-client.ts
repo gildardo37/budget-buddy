@@ -4,6 +4,7 @@ import { AddBudget, AddProfile, Login } from "@/types";
 import { Session } from "@supabase/supabase-js";
 
 const budgetsKey = "budgets";
+const transactionsKey = "transactions";
 
 export const wait = (ms: number) => new Promise((fn) => setTimeout(fn, ms));
 
@@ -53,12 +54,23 @@ export const useSetUserSession = () => {
   });
 };
 
-export const useBudget = () => {
+export const useMyBudgets = () => {
   return useQuery([budgetsKey], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
       .from("budgets")
       .select()
+      .eq("profile_id", data.session?.user.id);
+  });
+};
+
+export const useBudget = (id: string) => {
+  return useQuery([budgetsKey], async () => {
+    const { data } = await supabase.auth.getSession();
+    return await supabase
+      .from("budgets")
+      .select()
+      .eq("id", id)
       .eq("profile_id", data.session?.user.id);
   });
 };
@@ -97,4 +109,15 @@ export const useDeleteBudget = () => {
       },
     }
   );
+};
+
+export const useTransaction = (id: string) => {
+  return useQuery([transactionsKey + id], async () => {
+    const { data } = await supabase.auth.getSession();
+    return await supabase
+      .from("transactions")
+      .select("*, budgets(*), transaction_type(*)")
+      .eq("budget_fk", id)
+      .eq("budgets.profile_id", data.session?.user.id);
+  });
 };

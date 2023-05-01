@@ -29,9 +29,7 @@ export const ListItem: React.FC<Props> = ({
         ) : null}
       </div>
       <div className="flex gap-2">
-        <span className="font-semibold">
-          ${formatPrice(ammount.toFixed(2))}
-        </span>
+        <span className="font-semibold">{formatPrice(ammount)}</span>
       </div>
     </ListItemWrapper>
   );

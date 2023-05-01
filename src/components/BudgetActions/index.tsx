@@ -12,7 +12,7 @@ export const BudgetActions: React.FC<Props> = ({ editAction, addAction }) => {
   return (
     <div className="grid grid-cols-2 gap-2 w-full">
       <Button onClick={editAction} icon={<EditIcon color="white" />}>
-        Adjust budget
+        Edit budget
       </Button>
       <Button onClick={addAction} icon={<AddIcon color="white" />}>
         Add spending

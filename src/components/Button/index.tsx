@@ -30,7 +30,7 @@ export const Button: React.FC<Props> = ({
       disabled={disabled}
     >
       {icon ? icon : null}
-      <span className="text-white">{children}</span>
+      <span className="text-white text-sm">{children}</span>
     </button>
   );
 };

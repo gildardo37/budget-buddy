@@ -17,7 +17,9 @@ export const cleanPriceString = (priceString: string) => {
 };
 
 export const formatPrice = (num: string | number) => {
-  const parts = num.toString().split(".");
+  const parsedNum = typeof num === "string" ? parseFloat(num) : num;
+  const formattedNum = parsedNum.toFixed(2);
+  const parts = formattedNum.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.join(".");
+  return `$ ${parts.join(".")}`;
 };

@@ -9,6 +9,7 @@ import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 import { Header } from "@/components/Header";
+import Image from "next/image";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -59,7 +60,14 @@ const LoginPage: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
-      <Header title="Login" alignText="center" />
+      <div className="flex justify-center">
+        <Image
+          src="/img/logo.svg"
+          width="300"
+          height="100"
+          alt="Budget Buddy logo"
+        />
+      </div>
       <form className="flex flex-col gap-4" onSubmit={logIn}>
         <Field
           type="email"
@@ -79,9 +87,13 @@ const LoginPage: NextPage = () => {
           <ErrorLabel>{errorMessage || "Something failed"}</ErrorLabel>
         ) : null}
         <Button type="submit" disabled={isLoginLoading || isSessionLoading}>
-          Submit
+          sign in
         </Button>
-        <span className="text-center">Don&apos;t have an account?</span>
+        <div className="flex justify-center items-center gap-4 px-2">
+          <span className="h-[1px] bg-gray-300 flex-grow w-full" />
+          <span className="flex-shrink-0 text-center text-gray-500">Or</span>
+          <span className="h-[1px] bg-gray-300 flex-grow w-full" />
+        </div>
         <ButtonLink href="/sign-up">Sign up</ButtonLink>
       </form>
       <div className="flex flex-col items-center py-4"></div>

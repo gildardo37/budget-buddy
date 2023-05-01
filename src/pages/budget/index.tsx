@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { NextPage } from "next";
-import { useAddBudget, useBudget } from "@/client/user-client";
+import { useAddBudget, useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
 import { cleanPriceString } from "@/utils/numbers";
 import { Button } from "@/components/Button";
@@ -16,7 +16,7 @@ interface FormData {
 }
 
 const BudgetPage: NextPage = () => {
-  const { data: budgets, isLoading, error } = useBudget();
+  const { data: budgets, isLoading, error } = useMyBudgets();
   const { mutateAsync: addBudget } = useAddBudget();
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<FormData>({
@@ -48,10 +48,8 @@ const BudgetPage: NextPage = () => {
   };
 
   const isDisabled = useMemo<boolean>(() => {
-    console.log(!formData.ammount || !formData.description || isLoading);
     return !formData.ammount || !formData.description || isLoading;
   }, [formData, isLoading]);
-  console.log(budgets?.data);
 
   return (
     <section className="flex flex-col gap-4">

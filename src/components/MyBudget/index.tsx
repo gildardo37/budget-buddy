@@ -1,17 +1,39 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { BudgetProgress } from "../BudgetProgress";
+import { Budget, Transaction } from "@/types";
+import { useBudget } from "@/client/user-client";
+import { formatPrice } from "@/utils/numbers";
 
-export const MyBudget = () => {
+interface Props {
+  transactions?: Transaction[];
+  id: string;
+}
+
+export const MyBudget: React.FC<Props> = ({ transactions, id }) => {
+  const { data: myBudget } = useBudget(id);
+
+  const sumAmmounts = useMemo(() => {
+    return transactions?.reduce((acc, transaction) => {
+      return acc + transaction.ammount;
+    }, 0);
+  }, [transactions]);
+
+  const budgetAmmount = useMemo(() => {
+    if (myBudget?.data && myBudget?.data.length) {
+      return (myBudget?.data[0] as Budget).ammount;
+    }
+    return 0;
+  }, [myBudget]);
+
   return (
     <div className=" flex flex-col gap-2 items-center text-center p-4 rounded-xl bg-slate-300/50">
       <span className="font-semibold">My budget</span>
       <div className="flex items-center gap-1">
-        <span>$</span>
         <span className="text-2xl font-bold">
-          {/* {budget?.toFixed(2) || "0.00"} */}
+          {formatPrice(budgetAmmount) || "0.00"}
         </span>
       </div>
-      <BudgetProgress />
+      <BudgetProgress budget={budgetAmmount} totalSpent={sumAmmounts} />
     </div>
   );
 };
