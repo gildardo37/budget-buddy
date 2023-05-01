@@ -1,27 +1,28 @@
 import React from "react";
+import { ListItemWrapper } from "./ListItemWrapper";
 
 interface Props {
-  id: string;
-  label?: string;
+  href?: string;
+  description?: string;
   ammount?: number;
   date?: Date;
   onDelete?: () => void;
 }
 
 export const ListItem: React.FC<Props> = ({
+  href,
   ammount,
   date,
-  id,
-  label,
+  description,
   onDelete,
 }) => {
   return (
-    <li
-      key={id}
+    <ListItemWrapper
+      href={href}
       className="w-full p-4 bg-white rounded-md flex gap-2 justify-between shadow-md items-center"
     >
       <div className="grid">
-        {label ? <span>{label}</span> : null}
+        {description ? <span>{description}</span> : null}
         {ammount ? <span>${ammount}</span> : null}
         {date ? <span>{new Date(date).toDateString()}</span> : null}
       </div>
@@ -33,6 +34,6 @@ export const ListItem: React.FC<Props> = ({
           X
         </button>
       </div>
-    </li>
+    </ListItemWrapper>
   );
 };

@@ -1,20 +1,28 @@
-import { Field } from "@/components/Field";
-import { setUserSession, signIn } from "@/client/client-api";
-import { Button } from "@/components/Button";
+import { FormEvent, useState, ChangeEvent } from "react";
 import { NextPage } from "next";
-import { ChangeEvent } from "react";
-import { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { sessionAtom } from "@/atoms/session";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import { useLogin, useSetUserSession } from "@/client/user-client";
 import { ErrorLabel } from "@/components/ErrorLabel";
+import { Field } from "@/components/Field";
+import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/Button/ButtonLink";
 
-const Overview: NextPage = () => {
+const LoginPage: NextPage = () => {
   const router = useRouter();
   const [, setSession] = useAtom(sessionAtom);
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    mutateAsync: signIn,
+    isLoading: isLoginLoading,
+    error: loginError,
+  } = useLogin();
+  const {
+    mutateAsync: setUserSession,
+    isLoading: isSessionLoading,
+    error: sessionError,
+  } = useSetUserSession();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,11 +34,10 @@ const Overview: NextPage = () => {
   };
 
   async function logIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setLoading(true);
     try {
+      event.preventDefault();
       const { email, password } = formData;
-      const { data, error } = await signIn(email, password);
+      const { data, error } = await signIn({ email, password });
 
       if (error) {
         setErrorMessage(error.message);
@@ -39,15 +46,13 @@ const Overview: NextPage = () => {
         if (!response.error) {
           setSession(data.session);
           setErrorMessage("");
-          router.replace("/overview");
+          router.replace("/budget");
         }
       } else {
-        console.log("Something error ocurred...");
+        setErrorMessage("Something failed");
       }
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -69,21 +74,18 @@ const Overview: NextPage = () => {
           onInput={handleInputChange}
           required
         />
-        {errorMessage ? <ErrorLabel>{errorMessage}</ErrorLabel> : null}
-        <Button type="submit" disabled={loading}>
+        {errorMessage || loginError || sessionError ? (
+          <ErrorLabel>{errorMessage || "Something failed"}</ErrorLabel>
+        ) : null}
+        <Button type="submit" disabled={isLoginLoading || isSessionLoading}>
           Submit
         </Button>
         <span className="text-center">Don&apos;t have an account?</span>
-        <Link
-          href="/sign-up"
-          className="w-full py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] border border-blue-700 uppercase"
-        >
-          Sign up
-        </Link>
+        <ButtonLink href="/sign-up">Sign up</ButtonLink>
       </form>
       <div className="flex flex-col items-center py-4"></div>
     </section>
   );
 };
 
-export default Overview;
+export default LoginPage;

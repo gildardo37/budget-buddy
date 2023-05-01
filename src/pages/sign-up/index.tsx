@@ -1,56 +1,81 @@
-import { FormEvent, useState, ChangeEvent } from "react";
+import { FormEvent, useState, ChangeEvent, useMemo } from "react";
 import { NextPage } from "next";
-import Link from "next/link";
-import { signUp } from "@/client/client-api";
+import { useAddProfile, useSignUp } from "@/client/user-client";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ErrorLabel } from "@/components/ErrorLabel";
+import { ButtonLink } from "@/components/Button/ButtonLink";
 
 const SignUp: NextPage = () => {
-  const [hasSigned, setHasSigned] = useState(false);
+  const [isSigned, setIsSigned] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     firstName: "",
     lastName: "",
+    confirmPassword: "",
   });
+  const {
+    mutateAsync: signUp,
+    isLoading: signUpLoading,
+    error: signUpError,
+  } = useSignUp();
+  const {
+    mutateAsync: addProfile,
+    isLoading: profileLoading,
+    error: profileError,
+  } = useAddProfile();
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const {
+        email,
+        password,
+        confirmPassword,
+        firstName: first_name,
+        lastName: last_name,
+      } = formData;
+
+      if (password !== confirmPassword) {
+        return setError("Passwords must match!");
+      }
+
+      const { data, error } = await signUp({ email, password });
+
+      if (error) {
+        return setError(error.message);
+      } else if (data.user) {
+        const { id } = data.user;
+        const response = await addProfile({ id, email, first_name, last_name });
+        if (response.error) {
+          return setError(response.error.message);
+        }
+        setError("");
+        setIsSigned(true);
+        return;
+      }
+      setError("Something failed");
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  async function logIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(formData);
-    setLoading(true);
-    try {
-      const { email, password } = formData;
-      const { data, error } = await signUp(email, password);
-      console.log({ data, error });
-
-      if (error) {
-        setError(error.message);
-      } else if (data.user) {
-        setError("");
-        setHasSigned(true);
-      } else {
-        console.log("Something error ocurred...");
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const isLoading = useMemo(() => {
+    return signUpLoading || profileLoading;
+  }, [signUpLoading, profileLoading]);
 
   return (
     <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
-      {hasSigned ? (
+      {isSigned ? (
         <>
-          <p className="">
+          <p>
             Thank you for signing up with our service! We are excited to have
             you on board.
           </p>
@@ -65,23 +90,19 @@ const SignUp: NextPage = () => {
             and we will be happy to assist you. Thank you for choosing our
             service.
           </p>
-          <Link
-            href="/"
-            className="w-full py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] border border-blue-700 uppercase"
-          >
-            Go back to login page
-          </Link>
+          <ButtonLink href="/">Go back to login</ButtonLink>
         </>
       ) : (
         <>
           <h2 className="text-3xl font-semibold py-4">Sign Up</h2>
-          <form className="flex flex-col gap-4" onSubmit={logIn}>
+          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <Field
               type="text"
               name="firstName"
               label="First Name"
               onInput={handleInputChange}
               required
+              disabled={isLoading}
             />
             <Field
               type="text"
@@ -89,6 +110,7 @@ const SignUp: NextPage = () => {
               label="Last Name"
               onInput={handleInputChange}
               required
+              disabled={isLoading}
             />
             <Field
               type="email"
@@ -96,6 +118,7 @@ const SignUp: NextPage = () => {
               label="Email"
               onInput={handleInputChange}
               required
+              disabled={isLoading}
             />
             <Field
               type="password"
@@ -103,18 +126,24 @@ const SignUp: NextPage = () => {
               label="Password"
               onInput={handleInputChange}
               required
+              disabled={isLoading}
             />
-            {error ? <ErrorLabel>{error}</ErrorLabel> : null}
-            <Button type="submit" disabled={loading}>
+            <Field
+              type="password"
+              name="confirmPassword"
+              label="Confirm Password"
+              onInput={handleInputChange}
+              required
+              disabled={isLoading}
+            />
+            {error || signUpError || profileError ? (
+              <ErrorLabel>{error || "Something failed"}</ErrorLabel>
+            ) : null}
+            <Button type="submit" disabled={isLoading}>
               Submit
             </Button>
-            <Link
-              href="/"
-              className="py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] border border-blue-700 uppercase"
-            >
-              Go back to login
-            </Link>
           </form>
+          <ButtonLink href="/">Go back to login</ButtonLink>
         </>
       )}
     </section>

@@ -11,6 +11,7 @@ export const InfoIcon: React.FC<Props> = ({ color = "black" }) => {
       height="24"
       viewBox="0 96 960 960"
       width="24"
+      className="shrink-0"
     >
       <path
         fill={color}

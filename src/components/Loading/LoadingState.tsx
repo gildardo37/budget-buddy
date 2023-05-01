@@ -1,5 +1,4 @@
 import React from "react";
-import { Loading } from "./";
 import Image from "next/image";
 
 export const LoadingState: React.FC = () => {

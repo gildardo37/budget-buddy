@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-input {
-  border: 1px solid white;
-  background-color: white;
-  padding: 8px;
-  outline: none;
-  border-radius: 6px;
-}
-
-input:focus {
-  border: 1px solid blue;
-}
-
 fieldset label:has(+input:required)::after {
   content: "*";
   padding-left: 4px;

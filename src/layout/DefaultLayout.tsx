@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { sessionAtom, sessionLoadingAtom } from "@/atoms/session";
-import { validateSession } from "@/client/client-api";
-import { useAtom } from "jotai";
-import { LoadingState } from "@/components/Loading/LoadingState";
 import Head from "next/head";
+import { useAtom } from "jotai";
+import { sessionAtom, sessionLoadingAtom } from "@/atoms/session";
+import { validateSession } from "@/client/user-client";
+import { LoadingState } from "@/components/Loading/LoadingState";
 
 interface Props {
   children: React.ReactNode;
@@ -14,7 +14,8 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = useAtom(sessionLoadingAtom);
   const [session, setSession] = useAtom(sessionAtom);
   const router = useRouter();
-  const redirectPage = "/overview";
+  const redirectPage = "/budget";
+  const sessionPages = ["/", "/sign-up"];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,13 +26,13 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
           throw error;
         } else if (data.session) {
           setSession(data.session);
-          console.log("Router...", router);
-          if (router.asPath !== redirectPage) {
+          if (sessionPages.includes(router.asPath)) {
             router.replace(redirectPage);
           }
         } else {
-          console.log("Something error ocurred...");
-          router.replace("/");
+          if (!sessionPages.includes(router.asPath)) {
+            router.replace("/");
+          }
         }
       } catch (error) {
         console.error(error);
@@ -40,6 +41,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
       }
     };
     fetchData();
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -53,7 +55,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
       {loading && !session ? (
         <LoadingState />
       ) : (
-        <main className="w-full p-4 bg-slate-100 min-h-[100dvh]">
+        <main className="w-full p-4 bg-slate-200 min-h-[100dvh]">
           <div className="max-w-md mx-auto">{children}</div>
         </main>
       )}
