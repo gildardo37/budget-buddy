@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./database";
-import { AddBudget, AddProfile, Login } from "@/types";
+import { AddBudget, AddProfile, AddTransaction, Login } from "@/types";
 import { Session } from "@supabase/supabase-js";
 
 const budgetsKey = "budgets";
@@ -118,6 +118,25 @@ export const useTransaction = (id: string) => {
       .from("transactions")
       .select("*, budgets(*), transaction_type(*)")
       .eq("budget_fk", id)
-      .eq("budgets.profile_id", data.session?.user.id);
+      .eq("budgets.profile_id", data.session?.user.id)
+      .order("id", { ascending: false });
   });
+};
+export const useAddTransacction = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async ({ description, ammount, budgetId, type }: AddTransaction) => {
+      return await supabase.from("transactions").insert({
+        description,
+        ammount,
+        budget_fk: budgetId,
+        transaction_type_fk: type,
+      });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([transactionsKey]);
+      },
+    }
+  );
 };

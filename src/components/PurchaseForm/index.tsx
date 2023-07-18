@@ -1,65 +1,105 @@
-import React, { useState } from "react";
-import { PurchaseItem, StoredData } from "@/types";
-import { v4 as UUID } from "uuid";
+import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { Field } from "@/components/Field";
-import { useStorage } from "@/hooks/useStorage";
 import { Button } from "../Button";
+import { cleanPriceString } from "@/utils/numbers";
+import { useAddTransacction } from "@/client/user-client";
 
-export const PurchaseForm: React.FC = () => {
-  const { getStorage, setStorage } = useStorage<StoredData>("My-budgets");
-  const [label, setLabel] = useState("");
-  const [ammount, setAmmount] = useState(0);
-  const [purchases, setPurchases] = useState<PurchaseItem[]>([]);
+interface FormData {
+  description: string;
+  ammount: string;
+  type: string;
+}
 
-  const handleLabelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLabel(event.target.value);
+interface Props {
+  budgetId: string;
+  onSuccess?: () => void;
+}
+
+export const PurchaseForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
+  const initialData: FormData = {
+    description: "",
+    ammount: "",
+    type: "2",
+  };
+  const { mutateAsync: addTransaction, isLoading } = useAddTransacction();
+  const [formData, setFormData] = useState(initialData);
+
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    const newValue = name === "ammount" ? cleanPriceString(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: newValue }));
   };
 
-  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmmount(parseFloat(event.target.value));
-  };
+  const isDisabled = useMemo(() => {
+    const isFormFilled = !Object.values(formData).every((i) => i);
+    return !isFormFilled || isLoading;
+  }, [formData, isLoading]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (label && ammount !== 0) {
-      const newPurchase: PurchaseItem = {
-        label,
-        ammount,
-        date: new Date(),
-        id: UUID(),
-      };
-      setPurchases((prev) => [...prev, newPurchase]);
-      setLabel("");
-      setAmmount(0);
 
-      const storedData = getStorage();
-      const newStoredData: StoredData = {
-        ...storedData,
-        purchases: [...(storedData?.purchases ?? []), newPurchase],
-      };
-      setStorage(newStoredData);
+    try {
+      const { ammount, description, type } = formData;
+      const { error } = await addTransaction({
+        ammount: parseFloat(ammount),
+        description,
+        type: parseFloat(type),
+        budgetId: parseFloat(budgetId),
+      });
+
+      if (error) throw new Error(error.message);
+      if (onSuccess) onSuccess();
+      setFormData(initialData);
+    } catch (error) {
+      console.error(error);
+      // setErrorMessage(error.message);
     }
   };
 
+  const selectOptions = [
+    {
+      value: "2",
+      name: "Expense",
+    },
+    {
+      value: "1",
+      name: "Income",
+    },
+  ];
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <Field
         label="Description"
+        name="description"
         type="text"
-        id="label-input"
-        value={label}
-        onInput={handleLabelChange}
+        value={formData.description}
+        onInput={handleInputChange}
         required
       />
       <Field
         label="Ammount"
+        name="ammount"
         type="text"
-        id="label-input"
-        value={ammount}
-        onInput={handleValueChange}
+        value={formData.ammount}
+        onInput={handleInputChange}
         required
+        inputMode="decimal"
       />
-      <Button type="submit">Add</Button>
+      <Field
+        label="Transaction Type"
+        name="type"
+        type="dropdown"
+        options={selectOptions}
+        required
+        value={formData.type}
+        onChange={handleInputChange}
+      />
+      <Button type="submit" disabled={isDisabled}>
+        Add
+      </Button>
     </form>
   );
 };
