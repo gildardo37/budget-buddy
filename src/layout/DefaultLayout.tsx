@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { sessionAtom, sessionLoadingAtom } from "@/atoms/session";
 import { validateSession } from "@/client/user-client";
 import { LoadingState } from "@/components/Loading/LoadingState";
+import { AlertBar } from "@/components/AlertBar";
 
 interface Props {
   children: React.ReactNode;
@@ -56,6 +57,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
         <LoadingState />
       ) : (
         <main className="w-full p-4 bg-[rgb(241,245,249)] min-h-[100dvh]">
+          <AlertBar />
           <div className="max-w-md mx-auto">{children}</div>
         </main>
       )}

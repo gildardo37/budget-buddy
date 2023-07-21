@@ -1,14 +1,20 @@
-import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { NextPage } from "next";
 import { useAddBudget, useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
 import { cleanPriceString } from "@/utils/numbers";
 import { Button } from "@/components/Button";
-import { ErrorLabel } from "@/components/ErrorLabel";
 import { Field } from "@/components/Field";
 import { ListItem } from "@/components/ListItem";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
+import { useAlert } from "@/hooks/useAlert";
 
 interface FormData {
   description: string;
@@ -16,9 +22,9 @@ interface FormData {
 }
 
 const BudgetPage: NextPage = () => {
+  const { displayAlert } = useAlert();
   const { data: budgets, isLoading, error } = useMyBudgets();
   const { mutateAsync: addBudget } = useAddBudget();
-  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<FormData>({
     description: "",
     ammount: "",
@@ -32,12 +38,13 @@ const BudgetPage: NextPage = () => {
         ammount: parseFloat(ammount),
         description,
       });
-      if (error) {
-        return setErrorMessage(error.message);
-      }
+      if (error) throw error;
+      displayAlert({ message: "Budget added succesfully!", type: "success" });
       setFormData({ description: "", ammount: "" });
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
+      const { message } = e as Error;
+      displayAlert({ message, type: "error" });
     }
   };
 
@@ -50,6 +57,14 @@ const BudgetPage: NextPage = () => {
   const isDisabled = useMemo<boolean>(() => {
     return !formData.ammount || !formData.description || isLoading;
   }, [formData, isLoading]);
+
+  useEffect(() => {
+    if (error) {
+      const { message } = error as Error;
+      displayAlert({ message, type: "error" });
+    }
+    //eslint-disable-next-line
+  }, [error]);
 
   return (
     <section className="flex flex-col gap-4">
@@ -72,9 +87,6 @@ const BudgetPage: NextPage = () => {
           required
           inputMode="decimal"
         />
-        {errorMessage || error ? (
-          <ErrorLabel>{errorMessage || "Something failed"}</ErrorLabel>
-        ) : null}
         <Button type="submit" disabled={isDisabled}>
           Submit
         </Button>

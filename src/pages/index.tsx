@@ -4,27 +4,19 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { sessionAtom } from "@/atoms/session";
 import { useLogin, useSetUserSession } from "@/client/user-client";
-import { ErrorLabel } from "@/components/ErrorLabel";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
-import { Header } from "@/components/Header";
 import Image from "next/image";
+import { useAlert } from "@/hooks/useAlert";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
   const [, setSession] = useAtom(sessionAtom);
-  const [errorMessage, setErrorMessage] = useState("");
-  const {
-    mutateAsync: signIn,
-    isLoading: isLoginLoading,
-    error: loginError,
-  } = useLogin();
-  const {
-    mutateAsync: setUserSession,
-    isLoading: isSessionLoading,
-    error: sessionError,
-  } = useSetUserSession();
+  const { displayAlert } = useAlert();
+  const { mutateAsync: signIn, isLoading: isLoginLoading } = useLogin();
+  const { mutateAsync: setUserSession, isLoading: isSessionLoading } =
+    useSetUserSession();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -41,20 +33,20 @@ const LoginPage: NextPage = () => {
       const { email, password } = formData;
       const { data, error } = await signIn({ email, password });
 
-      if (error) {
-        setErrorMessage(error.message);
-      } else if (data.session) {
-        const response = await setUserSession(data.session);
-        if (!response.error) {
-          setSession(data.session);
-          setErrorMessage("");
-          router.replace("/budget");
-        }
+      if (error) throw error;
+
+      if (data.session) {
+        const { error: sessionError } = await setUserSession(data.session);
+        if (sessionError) throw sessionError;
+        setSession(data.session);
+        router.replace("/budget");
       } else {
-        setErrorMessage("Something failed");
+        throw new Error("Something failed");
       }
     } catch (e) {
       console.error(e);
+      const { message } = e as Error;
+      displayAlert({ message, type: "error" });
     }
   }
 
@@ -83,9 +75,6 @@ const LoginPage: NextPage = () => {
           onInput={handleInputChange}
           required
         />
-        {errorMessage || loginError || sessionError ? (
-          <ErrorLabel>{errorMessage || "Something failed"}</ErrorLabel>
-        ) : null}
         <Button type="submit" disabled={isLoginLoading || isSessionLoading}>
           sign in
         </Button>

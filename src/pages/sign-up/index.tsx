@@ -3,14 +3,14 @@ import { NextPage } from "next";
 import { useAddProfile, useSignUp } from "@/client/user-client";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
-import { ErrorLabel } from "@/components/ErrorLabel";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 import { Header } from "@/components/Header";
 import { CheckIcon } from "@/components/svgs/CheckIcon";
+import { useAlert } from "@/hooks/useAlert";
 
 const SignUp: NextPage = () => {
+  const { displayAlert } = useAlert();
   const [isSigned, setIsSigned] = useState(false);
-  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,16 +18,9 @@ const SignUp: NextPage = () => {
     lastName: "",
     confirmPassword: "",
   });
-  const {
-    mutateAsync: signUp,
-    isLoading: signUpLoading,
-    error: signUpError,
-  } = useSignUp();
-  const {
-    mutateAsync: addProfile,
-    isLoading: profileLoading,
-    error: profileError,
-  } = useAddProfile();
+  const { mutateAsync: signUp, isLoading: signUpLoading } = useSignUp();
+  const { mutateAsync: addProfile, isLoading: profileLoading } =
+    useAddProfile();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,26 +34,29 @@ const SignUp: NextPage = () => {
       } = formData;
 
       if (password !== confirmPassword) {
-        return setError("Passwords must match!");
+        throw new Error("Passwords must match!");
       }
 
       const { data, error } = await signUp({ email, password });
 
-      if (error) {
-        return setError(error.message);
-      } else if (data.user) {
+      if (error) throw error;
+
+      if (data.user) {
         const { id } = data.user;
-        const response = await addProfile({ id, email, first_name, last_name });
-        if (response.error) {
-          return setError(response.error.message);
-        }
-        setError("");
+        const { error: profileError } = await addProfile({
+          id,
+          email,
+          first_name,
+          last_name,
+        });
+        if (profileError) throw profileError;
         setIsSigned(true);
-        return;
       }
-      setError("Something failed");
+      throw new Error("Something failed");
     } catch (e) {
       console.error(e);
+      const { message } = e as Error;
+      displayAlert({ message, type: "error" });
     }
   };
 
@@ -141,9 +137,6 @@ const SignUp: NextPage = () => {
               required
               disabled={isLoading}
             />
-            {error || signUpError || profileError ? (
-              <ErrorLabel>{error || "Something failed"}</ErrorLabel>
-            ) : null}
             <Button type="submit" disabled={isLoading}>
               Submit
             </Button>
