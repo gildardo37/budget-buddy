@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
-import { Field } from "@/components/Field";
-import { Button } from "../Button";
 import { cleanPriceString } from "@/utils/numbers";
 import { useAddTransacction } from "@/client/user-client";
+import { useAlert } from "@/hooks/useAlert";
+import { Field } from "@/components/Field";
+import { Button } from "@/components/Button";
 
 interface FormData {
   description: string;
@@ -15,12 +16,13 @@ interface Props {
   onSuccess?: () => void;
 }
 
-export const PurchaseForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
+export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   const initialData: FormData = {
     description: "",
     ammount: "",
     type: "2",
   };
+  const { displayAlert } = useAlert();
   const { mutateAsync: addTransaction, isLoading } = useAddTransacction();
   const [formData, setFormData] = useState(initialData);
 
@@ -52,9 +54,10 @@ export const PurchaseForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
       if (error) throw new Error(error.message);
       if (onSuccess) onSuccess();
       setFormData(initialData);
-    } catch (error) {
-      console.error(error);
-      // setErrorMessage(error.message);
+    } catch (e) {
+      console.error(e);
+      const { message } = e as Error;
+      displayAlert({ message, type: "error" });
     }
   };
 

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export * from "./ApiResponse";
 
 export interface PurchaseItem {
@@ -17,6 +19,7 @@ export type AlertOptionType = "error" | "success" | "warning";
 export interface AlertOptions {
   message: string;
   type?: AlertOptionType;
+  triggerClose?: boolean;
 }
 
 export interface DisplayAlertProps {
@@ -30,5 +33,6 @@ export type AlertColors = Record<
   {
     backgroundColor: string;
     textColor: string;
+    icon: ReactNode;
   }
 >;

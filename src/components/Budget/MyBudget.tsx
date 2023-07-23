@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { BudgetProgress } from "../BudgetProgress";
+import { BudgetProgress } from "./BudgetProgress";
 import { Budget, Transaction } from "@/types";
 import { useBudget } from "@/client/user-client";
 import { formatPrice } from "@/utils/numbers";
@@ -13,16 +13,16 @@ export const MyBudget: React.FC<Props> = ({ transactions, id }) => {
   const { data: myBudget } = useBudget(id);
 
   const sumAmmounts = useMemo(() => {
-    return transactions?.reduce((acc, transaction) => {
-      return acc + transaction.ammount;
-    }, 0);
+    return transactions?.reduce(
+      (acc, transaction) => acc + transaction.ammount,
+      0
+    );
   }, [transactions]);
 
   const budgetAmmount = useMemo(() => {
-    if (myBudget?.data && myBudget?.data.length) {
-      return (myBudget?.data[0] as Budget).ammount;
-    }
-    return 0;
+    return myBudget?.data && myBudget?.data.length
+      ? (myBudget?.data[0] as Budget).ammount
+      : 0;
   }, [myBudget]);
 
   return (

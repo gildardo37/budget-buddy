@@ -3,13 +3,13 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
 import { useTransaction } from "@/client/user-client";
-import { BudgetActions } from "@/components/BudgetActions";
+import { BudgetActions } from "@/components/Budget/BudgetActions";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
-import { MyBudget } from "@/components/MyBudget";
-import { PurchaseForm } from "@/components/PurchaseForm";
+import { MyBudget } from "@/components/Budget/MyBudget";
+import { TransactionForm } from "@/components/Transactions/TransactionForm";
 import { Loading } from "@/components/Loading";
-import { TransactionsList } from "@/components/TransactionsList";
+import { TransactionsList } from "@/components/Transactions/TransactionList";
 
 const Overview: NextPage = () => {
   const router = useRouter();
@@ -30,16 +30,19 @@ const Overview: NextPage = () => {
       <MyBudget transactions={allTransactions()} id={id} />
       <BudgetActions editAction={openModal} addAction={openModal} />
       <Modal
-        title="Add a spending"
+        title="Add a transaction"
         modalOpen={isModalOpen}
         onClose={closeModal}
       >
-        <PurchaseForm budgetId={id} onSuccess={closeModal} />
+        <TransactionForm budgetId={id} onSuccess={closeModal} />
       </Modal>
       {isLoading ? (
         <Loading />
       ) : transactions?.data?.length ? (
-        <TransactionsList data={allTransactions()} budgetId={id} />
+        <>
+          <h2 className="text-lg font-medium">Transactions</h2>
+          <TransactionsList data={allTransactions()} budgetId={id} />
+        </>
       ) : (
         <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}

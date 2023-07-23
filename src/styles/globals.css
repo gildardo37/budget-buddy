@@ -6,3 +6,7 @@ fieldset label:has(+input:required)::after {
   content: "*";
   padding-left: 4px;
 }
+
+:root {
+  --animate-duration: 0.5s;
+}
