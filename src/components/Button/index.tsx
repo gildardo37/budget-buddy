@@ -1,4 +1,5 @@
 import { clsxm } from "@/utils/clsxm";
+import { ClassValue } from "clsx";
 import React from "react";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
   type?: "button" | "submit";
   disabled?: boolean;
   buttonType?: "primary" | "secondary";
+  className?: string;
 }
 
 export const Button: React.FC<Props> = ({
@@ -17,6 +19,7 @@ export const Button: React.FC<Props> = ({
   type = "button",
   disabled,
   buttonType = "primary",
+  className,
 }) => {
   return (
     <button
@@ -24,6 +27,7 @@ export const Button: React.FC<Props> = ({
         "py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed",
         buttonType === "primary" && "bg-blue-500 text-white",
         buttonType === "secondary" && "bg-white text-black",
+        className && className,
       ])}
       onClick={onClick && !disabled ? onClick : undefined}
       type={type}

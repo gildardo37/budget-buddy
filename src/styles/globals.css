@@ -10,3 +10,7 @@ fieldset label:has(+input:required)::after {
 :root {
   --animate-duration: 0.5s;
 }
+
+span, p {
+  word-break: break-word;
+}

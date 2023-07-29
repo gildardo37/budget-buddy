@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Props {
-  color?: "black" | "white";
+  color?: string;
 }
 
 export const EditIcon: React.FC<Props> = ({ color = "black" }) => {

@@ -3,13 +3,14 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
 import { useTransaction } from "@/client/user-client";
-import { BudgetActions } from "@/components/Budget/BudgetActions";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
 import { MyBudget } from "@/components/Budget/MyBudget";
 import { TransactionForm } from "@/components/Transactions/TransactionForm";
 import { Loading } from "@/components/Loading";
 import { TransactionsList } from "@/components/Transactions/TransactionList";
+import { Button } from "@/components/Button";
+import { AddIcon } from "@/components/svgs/AddIcon";
 
 const Overview: NextPage = () => {
   const router = useRouter();
@@ -28,7 +29,9 @@ const Overview: NextPage = () => {
     <section className="flex flex-col gap-4">
       <Header title="Overview" showBack />
       <MyBudget transactions={allTransactions()} id={id} />
-      <BudgetActions editAction={openModal} addAction={openModal} />
+      <Button onClick={openModal} icon={<AddIcon color="white" />}>
+        Add transaction
+      </Button>
       <Modal
         title="Add a transaction"
         modalOpen={isModalOpen}

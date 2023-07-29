@@ -1,62 +1,22 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { useAddBudget, useMyBudgets } from "@/client/user-client";
+import { useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
-import { cleanPriceString } from "@/utils/numbers";
-import { Button } from "@/components/Button";
-import { Field } from "@/components/Field";
 import { ListItem } from "@/components/ListItem";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { useAlert } from "@/hooks/useAlert";
-
-interface FormData {
-  description: string;
-  ammount: string;
-}
+import { BudgetForm } from "@/components/Budget/BudgetForm";
+import { Modal } from "@/components/Modal";
+import { Button } from "@/components/Button";
+import { AddIcon } from "@/components/svgs/AddIcon";
 
 const BudgetPage: NextPage = () => {
   const { displayAlert } = useAlert();
   const { data: budgets, isLoading, error } = useMyBudgets();
-  const { mutateAsync: addBudget } = useAddBudget();
-  const [formData, setFormData] = useState<FormData>({
-    description: "",
-    ammount: "",
-  });
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    try {
-      event.preventDefault();
-      const { ammount, description } = formData;
-      const { error } = await addBudget({
-        ammount: parseFloat(ammount),
-        description,
-      });
-      if (error) throw error;
-      displayAlert({ message: "Budget added succesfully!", type: "success" });
-      setFormData({ description: "", ammount: "" });
-    } catch (e) {
-      console.error(e);
-      const { message } = e as Error;
-      displayAlert({ message, type: "error" });
-    }
-  };
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    const newValue = name === "ammount" ? cleanPriceString(value) : value;
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
-  };
-
-  const isDisabled = useMemo<boolean>(() => {
-    return !formData.ammount || !formData.description || isLoading;
-  }, [formData, isLoading]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     if (error) {
@@ -67,31 +27,8 @@ const BudgetPage: NextPage = () => {
   }, [error]);
 
   return (
-    <section className="flex flex-col gap-4">
-      <Header title="Add budget" />
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <Field
-          label="Description"
-          name="description"
-          type="text"
-          value={formData.description}
-          onInput={handleInputChange}
-          required
-        />
-        <Field
-          label="Ammount"
-          name="ammount"
-          type="text"
-          value={formData.ammount}
-          onInput={handleInputChange}
-          required
-          inputMode="decimal"
-        />
-        <Button type="submit" disabled={isDisabled}>
-          Submit
-        </Button>
-      </form>
-      <h2 className="text-2xl font-semibold pt-8">My budgets</h2>
+    <section className="flex flex-col gap-4 pb-16">
+      <Header title="My budgets" />
       {isLoading ? (
         <Loading />
       ) : budgets?.data?.length ? (
@@ -111,6 +48,18 @@ const BudgetPage: NextPage = () => {
       ) : (
         <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}
+      <div className="max-w-md mx-auto fixed bottom-0 left-0 right-0 p-4 flex flex-col">
+        <Button
+          onClick={openModal}
+          icon={<AddIcon color="white" />}
+          className="shadow-md"
+        >
+          Add a budget
+        </Button>
+      </div>
+      <Modal title="Add a Budget" modalOpen={isModalOpen} onClose={closeModal}>
+        <BudgetForm />
+      </Modal>
     </section>
   );
 };

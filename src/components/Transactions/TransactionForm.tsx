@@ -35,7 +35,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   };
 
   const isDisabled = useMemo(() => {
-    const isFormFilled = !Object.values(formData).every((i) => i);
+    const isFormFilled = Object.values(formData).every((i) => i);
     return !isFormFilled || isLoading;
   }, [formData, isLoading]);
 
@@ -51,7 +51,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         budgetId: parseFloat(budgetId),
       });
 
-      if (error) throw new Error(error.message);
+      if (error) throw error;
       if (onSuccess) onSuccess();
       setFormData(initialData);
     } catch (e) {

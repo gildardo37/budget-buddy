@@ -12,16 +12,20 @@ export const useAlert = () => {
     duration = 10000,
     type = "success",
   }: DisplayAlertProps) => {
-    setAlertOptions({ message, type });
+    if (alertOptions.triggerOpen) return;
+
+    setAlertOptions({ message, type, triggerOpen: true });
     setIsAlertDisplayed(true);
     setTimeout(() => closeAlert(), duration);
   };
 
   const closeAlert = () => {
+    if (alertOptions.triggerClose) return;
+
     setAlertOptions((prev) => ({ ...prev, triggerClose: true }));
     setTimeout(() => {
       setIsAlertDisplayed(false);
-      setAlertOptions({ message: "" });
+      setAlertOptions({ message: "", triggerClose: false, triggerOpen: false });
     }, animationDelay);
   };
 

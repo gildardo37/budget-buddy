@@ -8,7 +8,7 @@ interface Props {
 
 export const BudgetProgress: React.FC<Props> = ({ budget, totalSpent = 0 }) => {
   const available = budget - totalSpent;
-  const percentage = formatPrice((totalSpent / budget) * 100);
+  const percentage = (totalSpent / budget) * 100;
 
   return (
     <div className="flex flex-col gap-2 p-2 w-full">

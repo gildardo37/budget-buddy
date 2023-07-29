@@ -20,7 +20,7 @@ export const ListItem: React.FC<Props> = ({
       href={href}
       className="w-full p-4 bg-white rounded-md flex gap-2 justify-between shadow-md items-center text-gray-800"
     >
-      <div className="grid">
+      <div className="grid flex-1">
         {description ? <span>{description}</span> : null}
         {date ? (
           <span className="text-xs text-gray-400">
@@ -28,7 +28,7 @@ export const ListItem: React.FC<Props> = ({
           </span>
         ) : null}
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-shrink-0">
         <span className="font-semibold">{formatPrice(ammount)}</span>
       </div>
     </ListItemWrapper>
