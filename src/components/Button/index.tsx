@@ -1,5 +1,4 @@
 import { clsxm } from "@/utils/clsxm";
-import { ClassValue } from "clsx";
 import React from "react";
 
 interface Props {
