@@ -58,7 +58,7 @@ const BudgetPage: NextPage = () => {
         </Button>
       </div>
       <Modal title="Add a Budget" modalOpen={isModalOpen} onClose={closeModal}>
-        <BudgetForm />
+        <BudgetForm onSuccess={closeModal}/>
       </Modal>
     </section>
   );

@@ -1,9 +1,11 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import { cleanPriceString } from "@/utils/numbers";
-import { useAddTransacction } from "@/client/user-client";
+import { useAddTransaction, useTransactionType } from "@/client/user-client";
 import { useAlert } from "@/hooks/useAlert";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
+import { capitalizeText } from "@/utils/strings";
+import { DropdownOptions } from "@/types";
 
 interface FormData {
   description: string;
@@ -23,7 +25,10 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
     type: "2",
   };
   const { displayAlert } = useAlert();
-  const { mutateAsync: addTransaction, isLoading } = useAddTransacction();
+  const { data: TransactionTypes, isLoading: isTypeLoading } =
+    useTransactionType();
+  const { mutateAsync: addTransaction, isLoading } =
+    useAddTransaction(budgetId);
   const [formData, setFormData] = useState(initialData);
 
   const handleInputChange = (
@@ -53,6 +58,10 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
 
       if (error) throw error;
       if (onSuccess) onSuccess();
+      displayAlert({
+        message: "Transaction added succesfully!",
+        type: "success",
+      });
       setFormData(initialData);
     } catch (e) {
       console.error(e);
@@ -61,16 +70,14 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
     }
   };
 
-  const selectOptions = [
-    {
-      value: "2",
-      name: "Expense",
-    },
-    {
-      value: "1",
-      name: "Income",
-    },
-  ];
+  const selectOptions = (): DropdownOptions[] => {
+    return (
+      TransactionTypes?.data?.map(({ id, type }) => ({
+        name: capitalizeText(type),
+        value: String(id),
+      })) || []
+    );
+  };
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
@@ -95,7 +102,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         label="Transaction Type"
         name="type"
         type="dropdown"
-        options={selectOptions}
+        options={selectOptions()}
         required
         value={formData.type}
         onChange={handleInputChange}

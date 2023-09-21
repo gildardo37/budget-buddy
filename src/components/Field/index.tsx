@@ -1,3 +1,4 @@
+import { DropdownOptions } from "@/types";
 import React from "react";
 
 interface Props {
@@ -12,10 +13,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   ref?: React.LegacyRef<HTMLInputElement>;
   inputMode?: "decimal" | "tel" | "numeric";
-  options?: {
-    value: string;
-    name: string;
-  }[];
+  options?: DropdownOptions[];
 }
 
 export const Field: React.FC<Props> = ({

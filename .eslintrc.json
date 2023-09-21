@@ -8,5 +8,13 @@
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  "root": true
+  "root": true,
+  // "rules": {
+  //   "prettier/prettier": [
+  //     "error",
+  //     {
+  //       "endOfLine": "lf"
+  //     }
+  //   ]
+  // }
 }

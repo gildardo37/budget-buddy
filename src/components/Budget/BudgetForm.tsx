@@ -23,7 +23,6 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess }) => {
   });
 
   const isDisabled = useMemo<boolean>(() => {
-    // return !formData.ammount || !formData.description;
     return !Object.values(formData).every((i) => i);
   }, [formData]);
 

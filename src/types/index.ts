@@ -37,3 +37,8 @@ export type AlertColors = Record<
     icon: ReactNode;
   }
 >;
+
+export interface DropdownOptions {
+  value: string;
+  name: string;
+}

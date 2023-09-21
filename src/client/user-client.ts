@@ -5,6 +5,7 @@ import { Session } from "@supabase/supabase-js";
 
 const budgetsKey = "budgets";
 const transactionsKey = "transactions";
+const transactionTypesKey = "transactionTypes";
 
 export const wait = (ms: number) => new Promise((fn) => setTimeout(fn, ms));
 
@@ -111,18 +112,19 @@ export const useDeleteBudget = () => {
   );
 };
 
-export const useTransaction = (id: string) => {
-  return useQuery([transactionsKey + id], async () => {
+export const useTransaction = (budgetId: string) => {
+  return useQuery([transactionsKey + budgetId], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
       .from("transactions")
       .select("*, budgets(*), transaction_type(*)")
-      .eq("budget_fk", id)
+      .eq("budget_fk", budgetId)
       .eq("budgets.profile_id", data.session?.user.id)
       .order("id", { ascending: false });
   });
 };
-export const useAddTransacction = () => {
+
+export const useAddTransaction = (budgetId: string) => {
   const queryClient = useQueryClient();
   return useMutation(
     async ({ description, ammount, budgetId, type }: AddTransaction) => {
@@ -135,8 +137,17 @@ export const useAddTransacction = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([transactionsKey]);
+        queryClient.invalidateQueries([transactionsKey + budgetId]);
       },
     }
   );
+};
+
+export const useTransactionType = () => {
+  return useQuery([transactionTypesKey], async () => {
+    return await supabase
+      .from("transaction_type")
+      .select("id, type")
+      .order("id", { ascending: false });
+  });
 };
