@@ -1,12 +1,13 @@
 import React from "react";
-import { formatPrice } from "@/utils/numbers";
-import { ListItemWrapper } from "./ListItemWrapper";
+import { clsxm } from "@/utils/clsxm";
+import { ListItemWrapper } from "@/components/ListItem/ListItemWrapper";
 
 interface Props {
   href?: string;
   description?: string;
-  ammount: number;
+  ammount: string;
   date?: Date;
+  textColor?: string;
 }
 
 export const ListItem: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const ListItem: React.FC<Props> = ({
   ammount,
   date,
   description,
+  textColor = "",
 }) => {
   return (
     <ListItemWrapper
@@ -29,7 +31,7 @@ export const ListItem: React.FC<Props> = ({
         ) : null}
       </div>
       <div className="flex gap-2 flex-shrink-0">
-        <span className="font-semibold">{formatPrice(ammount)}</span>
+        <span className={clsxm("font-semibold", textColor)}>{ammount}</span>
       </div>
     </ListItemWrapper>
   );

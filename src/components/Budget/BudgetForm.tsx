@@ -1,9 +1,9 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent } from "react";
 import { useAddBudget } from "@/client/user-client";
 import { useAlert } from "@/hooks/useAlert";
+import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
-import { useForm } from "@/hooks/useForm";
 
 interface Props {
   onSuccess?: () => void;
@@ -12,15 +12,14 @@ interface Props {
 export const BudgetForm: React.FC<Props> = ({ onSuccess }) => {
   const { displayAlert } = useAlert();
   const { mutateAsync: addBudget } = useAddBudget();
-  const { formData, isDisabled, handleInputChange, resetForm } =
-    useForm({
-      description: {
-        value: "",
-      },
-      ammount: {
-        value: "",
-      },
-    });
+  const { formData, isDisabled, handleInputChange, resetForm } = useForm({
+    description: {
+      value: "",
+    },
+    ammount: {
+      value: "",
+    },
+  });
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     try {
@@ -40,7 +39,6 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess }) => {
       displayAlert({ message, type: "error" });
     }
   };
-  console.log(formData);
 
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>

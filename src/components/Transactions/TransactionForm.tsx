@@ -1,17 +1,12 @@
-import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
-import { cleanPriceString } from "@/utils/numbers";
+import React, { FormEvent } from "react";
 import { useAddTransaction, useTransactionType } from "@/client/user-client";
-import { useAlert } from "@/hooks/useAlert";
-import { Field } from "@/components/Field";
-import { Button } from "@/components/Button";
 import { capitalizeText } from "@/utils/strings";
 import { DropdownOptions } from "@/types";
-
-interface FormData {
-  description: string;
-  ammount: string;
-  type: string;
-}
+import { useAlert } from "@/hooks/useAlert";
+import { useForm } from "@/hooks/useForm";
+import { Field } from "@/components/Field";
+import { Button } from "@/components/Button";
+import { Dropdown } from "@/components/Dropdown";
 
 interface Props {
   budgetId: string;
@@ -19,30 +14,16 @@ interface Props {
 }
 
 export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
-  const initialData: FormData = {
-    description: "",
-    ammount: "",
-    type: "2",
-  };
   const { displayAlert } = useAlert();
   const { data: TransactionTypes, isLoading: isTypeLoading } =
     useTransactionType();
   const { mutateAsync: addTransaction, isLoading } =
     useAddTransaction(budgetId);
-  const [formData, setFormData] = useState(initialData);
-
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-    const newValue = name === "ammount" ? cleanPriceString(value) : value;
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
-  };
-
-  const isDisabled = useMemo(() => {
-    const isFormFilled = Object.values(formData).every((i) => i);
-    return !isFormFilled || isLoading;
-  }, [formData, isLoading]);
+  const { formData, resetForm, isDisabled, handleInputChange } = useForm({
+    description: { value: "" },
+    ammount: { value: "" },
+    type: { value: "2" },
+  });
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,9 +31,9 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
     try {
       const { ammount, description, type } = formData;
       const { error } = await addTransaction({
-        ammount: parseFloat(ammount),
-        description,
-        type: parseFloat(type),
+        ammount: parseFloat(ammount.value),
+        description: description.value,
+        type: parseFloat(type.value),
         budgetId: parseFloat(budgetId),
       });
 
@@ -62,7 +43,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         message: "Transaction added succesfully!",
         type: "success",
       });
-      setFormData(initialData);
+      resetForm();
     } catch (e) {
       console.error(e);
       const { message } = e as Error;
@@ -85,29 +66,28 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         label="Description"
         name="description"
         type="text"
-        value={formData.description}
+        value={formData.description.value}
         onInput={handleInputChange}
-        required
+        required={formData.description.required}
       />
       <Field
         label="Ammount"
         name="ammount"
         type="text"
-        value={formData.ammount}
+        value={formData.ammount.value}
         onInput={handleInputChange}
-        required
+        required={formData.ammount.required}
         inputMode="decimal"
       />
-      <Field
+      <Dropdown
         label="Transaction Type"
         name="type"
-        type="dropdown"
         options={selectOptions()}
-        required
-        value={formData.type}
+        required={formData.type.required}
+        value={formData.type.value}
         onChange={handleInputChange}
       />
-      <Button type="submit" disabled={isDisabled}>
+      <Button type="submit" disabled={isDisabled || isLoading || isTypeLoading}>
         Add
       </Button>
     </form>

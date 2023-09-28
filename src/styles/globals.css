@@ -14,3 +14,7 @@ fieldset label:has(+input:required)::after {
 span, p {
   word-break: break-word;
 }
+
+.progress-bar {
+  transition: width 1s ease; /* Add smooth transition */
+}

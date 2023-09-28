@@ -1,5 +1,5 @@
-import { cleanPriceString } from "@/utils/numbers";
 import { ChangeEvent, useMemo, useState } from "react";
+import { cleanPriceString } from "@/utils/numbers";
 
 interface FormData {
   [key: string]: FormDataItems;
@@ -7,34 +7,46 @@ interface FormData {
 interface FormDataItems {
   required?: boolean;
   value: string;
+  isNumber?: boolean;
+}
+interface FormItems {
+  required: boolean;
+  value: string;
+  isNumber: boolean;
 }
 
-export const useForm = <T extends FormData>(
-  data: T,
-  numberValues?: string[]
-) => {
+export const useForm = <T extends FormData>(data: T) => {
   const transformValues = () => {
-    const newFormData = { ...data };
+    const newFormData: { [K in keyof T]: FormItems } = {} as any;
+
     for (const key in data) {
-      if (data[key].required === undefined || data[key].required === null)
-        data[key].required = true;
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const { required, isNumber, value } = data[key];
+        newFormData[key] = {
+          required: required ?? true,
+          isNumber: isNumber ?? false,
+          value,
+        };
+      }
     }
-    return newFormData as {
-      [K in keyof T]: FormDataItems
-    };
+    return newFormData;
   };
-  const excludeString = numberValues || ["ammount"];
   const [formData, setFormData] = useState(transformValues());
+  const excludedNumberNames = ["ammount"];
+
+  const valueIsNumber = (name: string) => {
+    return formData[name].isNumber || excludedNumberNames.includes(name);
+  };
 
   const isDisabled = useMemo<boolean>(() => {
-    return !Object.values(formData).every((i) => i);
+    return !Object.values(formData).every((i) => i.value);
   }, [formData]);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
-    const newValue = excludeString.includes(value)
-      ? cleanPriceString(value)
-      : value;
+    const newValue = valueIsNumber(name) ? cleanPriceString(value) : value;
     setFormData((prev) => ({
       ...prev,
       [name]: {
@@ -45,7 +57,7 @@ export const useForm = <T extends FormData>(
   };
 
   const resetForm = () => {
-    setFormData(data);
+    setFormData(transformValues());
   };
 
   return { formData, setFormData, isDisabled, handleInputChange, resetForm };

@@ -10,6 +10,7 @@ import { BudgetForm } from "@/components/Budget/BudgetForm";
 import { Modal } from "@/components/Modal";
 import { Button } from "@/components/Button";
 import { AddIcon } from "@/components/svgs/AddIcon";
+import { formatPrice } from "@/utils/numbers";
 
 const BudgetPage: NextPage = () => {
   const { displayAlert } = useAlert();
@@ -38,7 +39,7 @@ const BudgetPage: NextPage = () => {
               <ListItem
                 key={id}
                 href={`/budget/${id}`}
-                ammount={ammount}
+                ammount={formatPrice(ammount)}
                 date={created_at}
                 description={description}
               />

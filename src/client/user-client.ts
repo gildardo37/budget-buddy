@@ -124,6 +124,19 @@ export const useTransaction = (budgetId: string) => {
   });
 };
 
+export const useTransactionById = (id: string, budgetId: string) => {
+  return useQuery([`${transactionsKey}${budgetId}_${id}`], async () => {
+    const { data } = await supabase.auth.getSession();
+    return await supabase
+      .from("transactions")
+      .select("*, budgets(*), transaction_type(*)")
+      .eq("id", id)
+      .eq("budget_fk", budgetId)
+      .eq("budgets.profile_id", data.session?.user.id)
+      .order("id", { ascending: false });
+  });
+};
+
 export const useAddTransaction = (budgetId: string) => {
   const queryClient = useQueryClient();
   return useMutation(
@@ -138,6 +151,24 @@ export const useAddTransaction = (budgetId: string) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries([transactionsKey + budgetId]);
+      },
+    }
+  );
+};
+
+export const useDeleteTransaction = (id: string, budgetId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async () => {
+      return await supabase
+        .from("transactions")
+        .delete()
+        .eq("id", id)
+        .eq("budget_fk", budgetId);
+    },
+    {
+      onSuccess: () => {
+        // queryClient.invalidateQueries([transactionsKey + budgetId]);
       },
     }
   );
