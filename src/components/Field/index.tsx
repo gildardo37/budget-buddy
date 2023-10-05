@@ -1,19 +1,20 @@
-import { DropdownOptions } from "@/types";
-import React from "react";
+import React, { useState } from "react";
+import { NotVisibleIcon } from "../svgs/NotVisibleIcon";
+import { VisibleIcon } from "../svgs/VisibleIcon";
+import { clsxm } from "@/utils/clsxm";
 
 interface Props {
   id?: string;
   value?: string | number;
   name?: string;
   label?: string;
-  type?: "text" | "number" | "password" | "email" | "dropdown";
+  type?: "text" | "number" | "password" | "email";
   required?: boolean;
   disabled?: boolean;
   onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.LegacyRef<HTMLInputElement>;
   inputMode?: "decimal" | "tel" | "numeric";
-  options?: DropdownOptions[];
 }
 
 export const Field: React.FC<Props> = ({
@@ -28,45 +29,51 @@ export const Field: React.FC<Props> = ({
   name,
   disabled = false,
   inputMode,
-  options = [],
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === "password";
+
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
-    <fieldset className="flex flex-col gap-2">
+    <fieldset className="flex flex-col gap-2 relative">
       {label ? (
         <label className="uppercase text-gray-600 text-sm">{label}</label>
       ) : null}
-
-      {type === "dropdown" ? (
-        <select
-          className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed"
-          name={name}
-          id={id}
-          value={value}
-          onChange={onChange}
-          required={required}
-          disabled={disabled}
+      <input
+        className={clsxm(
+          "border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed",
+          {
+            "pr-12": isPassword,
+          }
+        )}
+        name={name}
+        ref={ref}
+        type={isPassword && showPassword ? "text" : type}
+        id={id}
+        value={value}
+        onInput={onInput}
+        onChange={onChange}
+        required={required}
+        disabled={disabled}
+        inputMode={inputMode}
+        step={type === "number" ? ".01" : undefined}
+      />
+      {isPassword ? (
+        <button
+          type="button"
+          className="rounded-sm absolute bottom-2 right-3"
+          onClick={handleShowPassword}
         >
-          {options.map(({ name, value }, index) => (
-            <option key={index} value={value}>
-              {name}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed"
-          name={name}
-          ref={ref}
-          type={type}
-          id={id}
-          value={value}
-          onInput={onInput}
-          required={required}
-          disabled={disabled}
-          inputMode={inputMode}
-          step={type === "number" ? ".01" : undefined}
-        />
-      )}
+          {showPassword ? (
+            <VisibleIcon color="rgb(107 114 128)" />
+          ) : (
+            <NotVisibleIcon color="rgb(107 114 128)" />
+          )}
+        </button>
+      ) : null}
     </fieldset>
   );
 };

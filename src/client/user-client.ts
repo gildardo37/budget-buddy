@@ -93,23 +93,15 @@ export const useAddBudget = () => {
   );
 };
 
-export const useDeleteBudget = () => {
-  const queryClient = useQueryClient();
-  return useMutation(
-    async (id: number) => {
-      const { data } = await supabase.auth.getSession();
-      return await supabase
-        .from("budgets")
-        .delete()
-        .eq("id", id)
-        .eq("profile_id", data.session?.user.id);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([budgetsKey]);
-      },
-    }
-  );
+export const useDeleteBudget = (budgetId: string) => {
+  return useMutation(async () => {
+    const { data } = await supabase.auth.getSession();
+    return await supabase
+      .from("budgets")
+      .delete()
+      .eq("id", budgetId)
+      .eq("profile_id", data.session?.user.id);
+  });
 };
 
 export const useTransaction = (budgetId: string) => {
@@ -157,21 +149,13 @@ export const useAddTransaction = (budgetId: string) => {
 };
 
 export const useDeleteTransaction = (id: string, budgetId: string) => {
-  const queryClient = useQueryClient();
-  return useMutation(
-    async () => {
-      return await supabase
-        .from("transactions")
-        .delete()
-        .eq("id", id)
-        .eq("budget_fk", budgetId);
-    },
-    {
-      onSuccess: () => {
-        // queryClient.invalidateQueries([transactionsKey + budgetId]);
-      },
-    }
-  );
+  return useMutation(async () => {
+    return await supabase
+      .from("transactions")
+      .delete()
+      .eq("id", id)
+      .eq("budget_fk", budgetId);
+  });
 };
 
 export const useTransactionType = () => {

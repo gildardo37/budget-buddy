@@ -1,5 +1,5 @@
-import { clsxm } from "@/utils/clsxm";
 import React from "react";
+import { clsxm } from "@/utils/clsxm";
 
 interface Props {
   children: React.ReactNode;
@@ -18,15 +18,17 @@ export const Button: React.FC<Props> = ({
   type = "button",
   disabled,
   buttonType = "primary",
-  className,
+  className = "",
 }) => {
   return (
     <button
       className={clsxm([
         "py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed",
-        buttonType === "primary" && "bg-blue-500 text-white",
-        buttonType === "secondary" && "text-black border border-blue-500",
-        className && className,
+        {
+          "bg-blue-500 text-white": buttonType === "primary",
+          "text-black border border-blue-500": buttonType === "secondary",
+          className,
+        },
       ])}
       onClick={onClick && !disabled ? onClick : undefined}
       type={type}

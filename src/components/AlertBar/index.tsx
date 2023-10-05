@@ -1,9 +1,9 @@
 import React from "react";
-import { InfoIcon } from "../svgs/InfoIcon";
-import { useAlert } from "@/hooks/useAlert";
 import { AlertColors } from "@/types";
 import { clsxm } from "@/utils/clsxm";
-import { CheckIcon } from "../svgs/CheckIcon";
+import { useAlert } from "@/hooks/useAlert";
+import { InfoIcon } from "@/components/svgs/InfoIcon";
+import { CheckIcon } from "@/components/svgs/CheckIcon";
 
 export const AlertBar: React.FC = () => {
   const { isAlertDisplayed, alertOptions, closeAlert } = useAlert();
@@ -31,11 +31,11 @@ export const AlertBar: React.FC = () => {
 
   return isAlertDisplayed ? (
     <button
-      className={clsxm([
-        `fixed z-30 top-4 border-t left-4 right-4 flex items-center gap-2 rounded-xl px-4 py-3 shadow-sm animate__animated animate__bounceInDown`,
+      className={clsxm(
+        "fixed z-30 top-4 border-t left-4 right-4 flex items-center gap-2 rounded-xl px-4 py-3 shadow-sm animate__animated animate__bounceInDown",
         backgroundColor,
-        alertOptions.triggerClose && "animate__bounceOutUp",
-      ])}
+        { animate__bounceOutUp: alertOptions.triggerClose }
+      )}
       onClick={closeAlert}
     >
       <p

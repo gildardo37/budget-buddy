@@ -1,25 +1,18 @@
-import {
-  useDeleteTransaction,
-  useTransaction,
-  useTransactionById,
-} from "@/client/user-client";
+import { useMemo } from "react";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { Transaction } from "@/types";
+import { useDeleteTransaction, useTransactionById } from "@/client/user-client";
 import { Button } from "@/components/Button";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
-import { Transaction } from "@/types";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
 
 const TransactionPage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const budgetId = router.query.budgetId as string;
   const { data, isLoading } = useTransactionById(id, budgetId);
-  const { mutateAsync: deleteTransaction, isError } = useDeleteTransaction(
-    id,
-    budgetId
-  );
+  const { mutateAsync: deleteTransaction } = useDeleteTransaction(id, budgetId);
 
   const transaction = useMemo(
     () => (data?.data?.length ? (data?.data[0] as Transaction) : undefined),

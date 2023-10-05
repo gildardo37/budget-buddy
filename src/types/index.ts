@@ -27,6 +27,7 @@ export interface DisplayAlertProps {
   message: string;
   duration?: number;
   type?: AlertOptionType;
+  onClose?: () => void;
 }
 
 export type AlertColors = Record<
@@ -40,5 +41,10 @@ export type AlertColors = Record<
 
 export interface DropdownOptions {
   value: string;
+  name: string;
+}
+
+export interface CustomDropdownOptions {
+  action: () => void;
   name: string;
 }

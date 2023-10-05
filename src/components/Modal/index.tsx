@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CloseIcon } from "../svgs/Close";
+import { CloseIcon } from "@/components/svgs/Close";
 import { clsxm } from "@/utils/clsxm";
 
 interface Props {
@@ -29,7 +29,7 @@ export const Modal: React.FC<Props> = ({
     <div
       className={clsxm(
         "bg-slate-200 fixed z-20 inset-0 w-full min-h-[100dvh] p-4 animate__animated animate__zoomIn animate__faster",
-        triggerClose && "animate__zoomOut"
+        { animate__zoomOut: triggerClose }
       )}
     >
       <section className=" flex flex-col h-full justify-center gap-4 mx-auto max-w-md">
