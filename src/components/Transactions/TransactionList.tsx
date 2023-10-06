@@ -1,6 +1,6 @@
 import { Transaction } from "@/types";
 import React from "react";
-import { ListItem } from "../ListItem";
+import { ListCard } from "../List/ListCard";
 import { formatPrice } from "@/utils/numbers";
 
 interface Props {
@@ -19,7 +19,7 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
           created_at,
           transaction_type: { type },
         }) => (
-          <ListItem
+          <ListCard
             key={id}
             href={`/budget/${budgetId}/transaction/${id}`}
             ammount={formatPrice(`${type === "expense" ? "-" : ""}${ammount}`)}

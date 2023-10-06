@@ -43,7 +43,7 @@ export const Dialog: React.FC<Props> = ({
       >
         <section
           className={clsxm(
-            "bg-slate-100 flex flex-col rounded-md p-4 justify-center gap-4 w-full max-w-md animate__animated animate__zoomIn animate__faster",
+            "bg-white flex flex-col rounded-md p-4 justify-center gap-4 w-full max-w-md animate__animated animate__zoomIn animate__faster",
             { animate__zoomOut: triggerClose }
           )}
         >

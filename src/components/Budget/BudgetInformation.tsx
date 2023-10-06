@@ -93,11 +93,7 @@ const BudgetInformation: React.FC<Props> = ({
       <div className="w-full flex items-center justify-between">
         <span className="font-semibold">My budget</span>
         <CustomDropdown
-          labelContent={
-            <div>
-              <BulletIcon color="rgb(75 85 99)" />
-            </div>
-          }
+          labelContent={<BulletIcon color="rgb(75 85 99)" />}
           options={options}
           position="bottom-right"
         />
@@ -114,7 +110,7 @@ const BudgetInformation: React.FC<Props> = ({
         onClose={closeDialog}
         onConfirmation={confirmAction}
       >
-        Are you sure you want to permantly delete {myBudget.description}?
+        <p>Are you sure you want to permantly delete {myBudget.description}?</p>
       </Dialog>
     </>
   );

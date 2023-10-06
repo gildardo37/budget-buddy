@@ -1,16 +1,16 @@
 import React from "react";
 import { clsxm } from "@/utils/clsxm";
-import { ListItemWrapper } from "@/components/ListItem/ListItemWrapper";
+import { ListItemWrapper } from "@/components/List/ListItemWrapper";
 
 interface Props {
   href?: string;
   description?: string;
   ammount: string;
-  date?: Date;
+  date?: string;
   textColor?: string;
 }
 
-export const ListItem: React.FC<Props> = ({
+export const ListCard: React.FC<Props> = ({
   href,
   ammount,
   date,

@@ -43,15 +43,17 @@ export interface AddTransaction {
   type: number;
 }
 
+export type TransactionTypeOptions = "expense" | "income";
+
 export interface TransactionType {
   id: number;
   created_at: Date;
-  type: "expense" | "income";
+  type: TransactionTypeOptions;
 }
 
 export interface Transaction {
   id: number;
-  created_at: Date;
+  created_at: string;
   description: string;
   ammount: number;
   budget_fk: number;

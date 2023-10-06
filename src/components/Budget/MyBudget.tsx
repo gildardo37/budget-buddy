@@ -28,7 +28,7 @@ export const MyBudget: React.FC<Props> = ({
   const myBudget = budget?.data?.[0] as Budget;
 
   return (
-    <div className="relative flex flex-col gap-2 items-center p-4 rounded-xl bg-slate-300/50 ">
+    <div className="relative flex flex-col gap-2 items-center p-4 rounded-xl bg-slate-300/50">
       {isLoading ? (
         <div className="grid place-items-center h-[152px]">
           <Loading />

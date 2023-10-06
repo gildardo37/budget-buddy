@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
-import { ListItem } from "@/components/ListItem";
+import { ListItem } from "@/components/List/ListCard";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { useAlert } from "@/hooks/useAlert";
