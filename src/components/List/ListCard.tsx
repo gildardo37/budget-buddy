@@ -24,11 +24,7 @@ export const ListCard: React.FC<Props> = ({
     >
       <div className="grid flex-1">
         {description ? <span>{description}</span> : null}
-        {date ? (
-          <span className="text-xs text-gray-400">
-            {new Date(date).toDateString()}
-          </span>
-        ) : null}
+        {date ? <span className="text-xs text-gray-400">{date}</span> : null}
       </div>
       <div className="flex gap-2 flex-shrink-0">
         <span className={clsxm("font-semibold", textColor)}>{ammount}</span>

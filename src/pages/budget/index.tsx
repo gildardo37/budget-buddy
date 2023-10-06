@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
-import { ListItem } from "@/components/List/ListCard";
+import { ListCard } from "@/components/List/ListCard";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { useAlert } from "@/hooks/useAlert";
@@ -36,11 +36,11 @@ const BudgetPage: NextPage = () => {
         <ul className="flex flex-col gap-4">
           {([...budgets.data].reverse() as Budget[]).map(
             ({ id, ammount, description, created_at }) => (
-              <ListItem
+              <ListCard
                 key={id}
                 href={`/budget/${id}`}
                 ammount={formatPrice(ammount)}
-                date={created_at}
+                date={new Date(created_at).toDateString()}
                 description={description}
               />
             )
