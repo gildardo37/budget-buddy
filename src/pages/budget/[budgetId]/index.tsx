@@ -26,7 +26,7 @@ const Overview: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <Header title="Overview" showBack />
+      <Header title="Overview" showBack showSidebar />
       {validBudget ? (
         <>
           <MyBudget

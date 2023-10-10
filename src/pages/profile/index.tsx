@@ -11,7 +11,7 @@ const Profile: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <Header title="My Profile" showBack />
+      <Header title="My Profile" showBack showSidebar />
       {isLoading ? (
         <Loading />
       ) : data?.data?.length ? (

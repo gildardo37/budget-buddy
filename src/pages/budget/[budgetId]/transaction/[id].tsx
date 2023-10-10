@@ -20,7 +20,7 @@ const TransactionPage: NextPage = () => {
 
   return (
     <section>
-      <Header title="Transaction details" showBack />
+      <Header title="Transaction details" showBack showSidebar />
       {isLoading ? (
         <Loading />
       ) : transaction ? (

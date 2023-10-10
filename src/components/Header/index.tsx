@@ -6,12 +6,14 @@ import { Sidebar } from "@/components/Sidebar";
 interface Props {
   title: string;
   showBack?: boolean;
+  showSidebar?: boolean;
   alignText?: "left" | "center" | "right";
 }
 
 export const Header: React.FC<Props> = ({
   title,
   showBack,
+  showSidebar,
   alignText = "left",
 }) => {
   const router = useRouter();
@@ -37,7 +39,7 @@ export const Header: React.FC<Props> = ({
       >
         {title}
       </h1>
-      <Sidebar />
+      {showSidebar ? <Sidebar /> : null}
     </header>
   );
 };

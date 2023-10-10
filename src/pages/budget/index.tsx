@@ -28,7 +28,7 @@ const BudgetPage: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4 pb-16">
-      <Header title="My budgets" />
+      <Header title="My budgets" showSidebar />
       {isLoading ? (
         <Loading />
       ) : budgets?.data?.length ? (
