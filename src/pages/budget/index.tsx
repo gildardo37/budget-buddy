@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NextPage } from "next";
-import { useMyBudgets } from "@/client/user-client";
 import { Budget } from "@/types";
+import { useMyBudgets } from "@/client/user-client";
+import { formatPrice } from "@/utils/numbers";
+import { useModal } from "@/hooks/useModal";
+import { useAlert } from "@/hooks/useAlert";
 import { ListCard } from "@/components/List/ListCard";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
-import { useAlert } from "@/hooks/useAlert";
 import { BudgetForm } from "@/components/Budget/BudgetForm";
 import { Modal } from "@/components/Modal";
 import { Button } from "@/components/Button";
 import { AddIcon } from "@/components/svgs/AddIcon";
-import { formatPrice } from "@/utils/numbers";
 
 const BudgetPage: NextPage = () => {
   const { displayAlert } = useAlert();
   const { data: budgets, isLoading, error } = useMyBudgets();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const { isOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     if (error) {
@@ -58,7 +57,7 @@ const BudgetPage: NextPage = () => {
           Add a budget
         </Button>
       </div>
-      <Modal title="Add a Budget" modalOpen={isModalOpen} onClose={closeModal}>
+      <Modal title="Add a Budget" modalOpen={isOpen} onClose={closeModal}>
         <BudgetForm onSuccess={closeModal} />
       </Modal>
     </section>

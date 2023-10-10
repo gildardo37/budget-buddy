@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
 import { useTransaction } from "@/client/user-client";
+import { useModal } from "@/hooks/useModal";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
 import { MyBudget } from "@/components/Budget/MyBudget";
@@ -16,15 +17,12 @@ const Overview: NextPage = () => {
   const router = useRouter();
   const id = router.query.budgetId as string;
   const { data: transactions, isLoading } = useTransaction(id);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, openModal, closeModal } = useModal();
   const [validBudget, setValidBudget] = useState(true);
 
   const allTransactions = () => {
     return [...(transactions?.data || [])] as Transaction[];
   };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <section className="flex flex-col gap-4">
@@ -41,7 +39,7 @@ const Overview: NextPage = () => {
           </Button>
           <Modal
             title="Add a transaction"
-            modalOpen={isModalOpen}
+            modalOpen={isOpen}
             onClose={closeModal}
           >
             <TransactionForm budgetId={id} onSuccess={closeModal} />

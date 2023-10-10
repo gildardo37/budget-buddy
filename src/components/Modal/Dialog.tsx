@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { CloseIcon } from "@/components/svgs/CloseIcon";
 import { clsxm } from "@/utils/clsxm";
-import { Button } from "../Button";
+import { Button } from "@/components/Button";
 
 interface Props {
   dialogOpen: boolean;
   title?: string;
   children?: React.ReactNode;
   onClose: () => void;
-  onConfirmation: (value: boolean) => void;
+  onConfirmation?: () => void;
+  onCanceled?: () => void;
 }
 
 export const Dialog: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const Dialog: React.FC<Props> = ({
   onClose,
   title = "Confirmation",
   onConfirmation,
+  onCanceled,
 }: Props) => {
   const [triggerClose, setTriggerClose] = useState(false);
 
@@ -29,7 +31,11 @@ export const Dialog: React.FC<Props> = ({
   };
 
   const handleConfirmation = (value: boolean) => {
-    onConfirmation(value);
+    if (value && onConfirmation) {
+      onConfirmation();
+    } else if (onCanceled) {
+      onCanceled();
+    }
     closeModal();
   };
 

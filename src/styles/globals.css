@@ -18,3 +18,9 @@ span, p {
 .progress-bar {
   transition: width 1s ease; /* Add smooth transition */
 }
+
+input.field:disabled,
+input.field:read-only {
+  pointer-events: none;
+  opacity: 0.4;
+}

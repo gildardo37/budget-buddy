@@ -1,13 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { useRouter } from "next/router";
 import { Budget, CustomDropdownOptions, Transaction } from "@/types";
-import { useAlert } from "@/hooks/useAlert";
+import { useDeleteBudget } from "@/client/user-client";
 import { formatPrice } from "@/utils/numbers";
+import { useAlert } from "@/hooks/useAlert";
+import { useModal } from "@/hooks/useModal";
 import { BudgetProgress } from "@/components/Budget/BudgetProgress";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
-import { useDeleteBudget } from "@/client/user-client";
-import { useRouter } from "next/router";
-import { Dialog } from "../Modal/Dialog";
+import { Dialog } from "@/components/Modal/Dialog";
 
 interface Props {
   transactions: Transaction[];
@@ -22,7 +23,7 @@ const BudgetInformation: React.FC<Props> = ({
 }) => {
   const { displayAlert } = useAlert();
   const { mutateAsync: deleteBudget, error } = useDeleteBudget(budgetId);
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, openModal, closeModal } = useModal();
   const router = useRouter();
 
   const { totalSpent, availableBudget, totalBudget } = useMemo(() => {
@@ -45,21 +46,12 @@ const BudgetInformation: React.FC<Props> = ({
     };
   }, [transactions, myBudget]);
 
-  const openDialog = () => setIsOpen(true);
-  const closeDialog = () => setIsOpen(false);
-
   const notAvailable = () => {
     displayAlert({
       message: "This functionality is not implemented yet.",
       type: "warning",
       duration: 6000,
     });
-  };
-
-  const confirmAction = (value: boolean) => {
-    if (value) {
-      handleDelete();
-    }
   };
 
   const handleDelete = async () => {
@@ -85,7 +77,7 @@ const BudgetInformation: React.FC<Props> = ({
 
   const options: CustomDropdownOptions[] = [
     { action: notAvailable, name: "Edit" },
-    { action: openDialog, name: "Delete" },
+    { action: openModal, name: "Delete" },
   ];
 
   return (
@@ -107,8 +99,8 @@ const BudgetInformation: React.FC<Props> = ({
       <BudgetProgress total={totalBudget} spent={totalSpent} />
       <Dialog
         dialogOpen={isOpen}
-        onClose={closeDialog}
-        onConfirmation={confirmAction}
+        onClose={closeModal}
+        onConfirmation={handleDelete}
       >
         <p>Are you sure you want to permantly delete {myBudget.description}?</p>
       </Dialog>

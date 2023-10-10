@@ -18,18 +18,18 @@ export const Logo: React.FC<Props> = ({
     >
       <g
         fill={color}
-        fill-rule="nonzero"
+        fillRule="nonzero"
         stroke="none"
-        stroke-width="1"
-        stroke-linecap="butt"
-        stroke-linejoin="miter"
-        stroke-miterlimit="10"
-        stroke-dasharray=""
-        stroke-dashoffset="0"
-        font-family="none"
-        font-weight="none"
-        font-size="none"
-        text-anchor="none"
+        strokeWidth="1"
+        strokeLinecap="butt"
+        strokeLinejoin="miter"
+        strokeMiterlimit="10"
+        strokeDasharray=""
+        strokeDashoffset="0"
+        fontFamily="none"
+        fontWeight="none"
+        fontSize="none"
+        textAnchor="none"
         style={{ mixBlendMode: "normal" }}
       >
         <g data-paper-data='{"isGlobalGroup":true,"bounds":{"x":73.88731219923679,"y":115,"width":402.22537560152637,"height":240}}'>
@@ -104,7 +104,7 @@ export const Logo: React.FC<Props> = ({
       </g>
       <rect
         data-element-id="element-id-96374"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box grouping-element"
         x="74"
@@ -115,7 +115,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-8338"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box grouping-element"
         x="197"
@@ -126,7 +126,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-8578"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="197"
@@ -136,7 +136,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-43577"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="186"
@@ -146,7 +146,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-2494"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="74"
@@ -156,7 +156,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-51474"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="299"
@@ -166,7 +166,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-16403"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="148"
@@ -176,7 +176,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-21886"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="373"
@@ -186,7 +186,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-389"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="411"
@@ -196,7 +196,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-61378"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="448"
@@ -206,7 +206,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-37276"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="219"
@@ -216,7 +216,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-25969"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="255"
@@ -226,7 +226,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-97385"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="114"
@@ -236,7 +236,7 @@ export const Logo: React.FC<Props> = ({
       ></rect>
       <rect
         data-element-id="element-id-26760"
-        stroke-width="2"
+        strokeWidth="2"
         fill="transparent"
         className="invisible-element-box individual-element"
         x="339"

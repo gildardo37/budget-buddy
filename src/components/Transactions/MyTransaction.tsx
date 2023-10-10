@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { CustomDropdownOptions, Transaction } from "@/types";
 import { formatPrice, formattedAmount } from "@/utils/numbers";
@@ -7,6 +7,7 @@ import { useAlert } from "@/hooks/useAlert";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { Dialog } from "@/components/Modal/Dialog";
+import { useModal } from "@/hooks/useModal";
 
 interface Props {
   transaction: Transaction;
@@ -25,11 +26,11 @@ export const MyTransaction: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   const { displayAlert } = useAlert();
+  const { isOpen, openModal, closeModal } = useModal();
   const { mutateAsync: deleteTransaction } = useDeleteTransaction(
     id.toString(),
     budgetId
   );
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -49,18 +50,9 @@ export const MyTransaction: React.FC<Props> = ({
     });
   };
 
-  const openDialog = () => setIsOpen(true);
-  const closeDialog = () => setIsOpen(false);
-
-  const confirmAction = (value: boolean) => {
-    if (value) {
-      handleDelete();
-    }
-  };
-
   const options: CustomDropdownOptions[] = [
     { action: notAvailable, name: "Edit" },
-    { action: openDialog, name: "Delete" },
+    { action: openModal, name: "Delete" },
   ];
 
   return (
@@ -74,8 +66,8 @@ export const MyTransaction: React.FC<Props> = ({
         />
         <Dialog
           dialogOpen={isOpen}
-          onClose={closeDialog}
-          onConfirmation={confirmAction}
+          onClose={closeModal}
+          onConfirmation={handleDelete}
         >
           <p>
             Are you sure you want to permantly delete {description} transaction?

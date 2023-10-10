@@ -11,7 +11,7 @@ const transactionTypesKey = "transactionTypes";
 export const wait = (ms: number) => new Promise((fn) => setTimeout(fn, ms));
 
 export const validateSession = async () => {
-  await wait(2000);
+  await wait(1000);
   return await supabase.auth.getSession();
 };
 
@@ -22,6 +22,10 @@ export const useLogin = () => {
       password,
     });
   });
+};
+
+export const useLogout = () => {
+  return useMutation(async () => await supabase.auth.signOut());
 };
 
 export const useSignUp = () => {
