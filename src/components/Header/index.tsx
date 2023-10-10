@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { clsxm } from "@/utils/clsxm";
+import { Sidebar } from "@/components/Sidebar";
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ export const Header: React.FC<Props> = ({
       >
         {title}
       </h1>
+      <Sidebar />
     </header>
   );
 };

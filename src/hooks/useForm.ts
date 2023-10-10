@@ -16,12 +16,13 @@ interface FormItems {
 }
 
 export const useForm = <T extends FormData>(data: T) => {
-  const transformValues = () => {
+  const transformValues = (form?: typeof data) => {
     const newFormData: { [K in keyof T]: FormItems } = {} as any;
+    const items = form ?? data;
 
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const { required, isNumber, value } = data[key];
+    for (const key in items) {
+      if (Object.prototype.hasOwnProperty.call(items, key)) {
+        const { required, isNumber, value } = items[key];
         newFormData[key] = {
           required: required ?? true,
           isNumber: isNumber ?? false,
@@ -33,6 +34,10 @@ export const useForm = <T extends FormData>(data: T) => {
   };
   const [formData, setFormData] = useState(transformValues());
   const excludedNumberNames = ["ammount"];
+
+  const setForm = (form: typeof data) => {
+    setFormData(transformValues(form));
+  };
 
   const valueIsNumber = (name: string) => {
     return formData[name].isNumber || excludedNumberNames.includes(name);
@@ -60,5 +65,5 @@ export const useForm = <T extends FormData>(data: T) => {
     setFormData(transformValues());
   };
 
-  return { formData, setFormData, isDisabled, handleInputChange, resetForm };
+  return { formData, setForm, isDisabled, handleInputChange, resetForm };
 };

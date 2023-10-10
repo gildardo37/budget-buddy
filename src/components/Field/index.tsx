@@ -15,6 +15,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.LegacyRef<HTMLInputElement>;
   inputMode?: "decimal" | "tel" | "numeric";
+  readonly?: boolean;
 }
 
 export const Field: React.FC<Props> = ({
@@ -29,6 +30,7 @@ export const Field: React.FC<Props> = ({
   name,
   disabled = false,
   inputMode,
+  readonly,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -59,6 +61,7 @@ export const Field: React.FC<Props> = ({
         required={required}
         disabled={disabled}
         inputMode={inputMode}
+        readOnly={readonly}
         step={type === "number" ? ".01" : undefined}
       />
       {isPassword ? (

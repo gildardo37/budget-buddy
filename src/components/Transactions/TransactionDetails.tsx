@@ -23,7 +23,7 @@ export const TransactionDetails: React.FC<Props> = ({
       <ListItem title="Amount" content={formattedAmount(ammount, type)} />
       <ListItem title="Description" content={description} />
       <ListItem title="Transaction type" content={capitalizeText(type)} />
-      <ListItem title="Date" content={new Date(created_at).toDateString()} />
+      <ListItem title="Date" content={new Date(created_at).toLocaleString()} />
     </ul>
   );
 };

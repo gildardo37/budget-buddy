@@ -24,7 +24,7 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
             href={`/budget/${budgetId}/transaction/${id}`}
             ammount={formatPrice(`${type === "expense" ? "-" : ""}${ammount}`)}
             textColor={type === "income" ? "text-green-600" : ""}
-            date={created_at}
+            date={new Date(created_at).toDateString()}
             description={description}
           />
         )

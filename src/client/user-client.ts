@@ -3,6 +3,7 @@ import { supabase } from "./database";
 import { AddBudget, AddProfile, AddTransaction, Login } from "@/types";
 import { Session } from "@supabase/supabase-js";
 
+const profileKey = "profile";
 const budgetsKey = "budgets";
 const transactionsKey = "transactions";
 const transactionTypesKey = "transactionTypes";
@@ -43,6 +44,16 @@ export const useAddProfile = () => {
       });
     }
   );
+};
+
+export const useGetProfile = () => {
+  return useQuery([profileKey], async () => {
+    const { data } = await supabase.auth.getSession();
+    return await supabase
+      .from("profile")
+      .select()
+      .eq("id", data.session?.user.id);
+  });
 };
 
 export const useSetUserSession = () => {
