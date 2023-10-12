@@ -42,6 +42,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
       displayAlert({
         message: "Transaction added succesfully!",
         type: "success",
+        duration: 2000,
       });
       resetForm();
     } catch (e) {

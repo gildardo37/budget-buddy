@@ -31,12 +31,9 @@ export interface Budget {
   profile_id: string;
 }
 
-export interface AddBudget {
+export interface AddBudgetProps {
   description: string;
   ammount: number;
-}
-export interface UpdateBudget extends AddBudget {
-  id: number;
 }
 
 export interface AddTransaction {

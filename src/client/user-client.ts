@@ -1,12 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./database";
-import {
-  AddBudget,
-  AddProfile,
-  AddTransaction,
-  Login,
-  UpdateBudget,
-} from "@/types";
+import { AddBudgetProps, AddProfile, AddTransaction, Login } from "@/types";
 import { Session } from "@supabase/supabase-js";
 
 type ID = string | number;
@@ -106,7 +100,7 @@ export const useGetBudgetById = (id: string) => {
 export const useAddBudget = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async ({ description, ammount }: AddBudget) => {
+    async ({ description, ammount }: AddBudgetProps) => {
       const { data } = await supabase.auth.getSession();
       return await supabase
         .from("budgets")
@@ -120,19 +114,21 @@ export const useAddBudget = () => {
   );
 };
 
-export const useUpdateBudget = () => {
+export const useUpdateBudget = (id: string) => {
+  if (!id) throw new Error("Missing ID propertry.");
   const queryClient = useQueryClient();
   return useMutation(
-    async ({ description, ammount, id }: UpdateBudget) => {
+    async ({ description, ammount }: AddBudgetProps) => {
       const { data } = await supabase.auth.getSession();
       return await supabase
         .from("budgets")
-        .update({ description, ammount, profile_id: data.session?.user.id })
+        .update({ description, ammount })
         .eq("id", id)
         .eq("profile_id", data.session?.user.id);
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries([budgetIdKey(id)]);
         queryClient.invalidateQueries([budgetsKey]);
       },
     }

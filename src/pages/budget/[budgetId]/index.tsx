@@ -52,8 +52,8 @@ const Overview: NextPage = () => {
               <TransactionsList data={allTransactions()} budgetId={id} />
             </>
           ) : (
-            <p className="text-gray-500">
-              No budgets added yet, start adding one.
+            <p className="text-gray-500 py-4">
+              No transactions added yet, start adding one.
             </p>
           )}
         </>
