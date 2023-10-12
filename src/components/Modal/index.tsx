@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CloseIcon } from "@/components/svgs/CloseIcon";
 import { clsxm } from "@/utils/clsxm";
 
@@ -25,14 +25,19 @@ export const Modal: React.FC<Props> = ({
     }, 200);
   };
 
+  useEffect(() => {
+    const html = document.querySelector("html") as HTMLHtmlElement;
+    html.style.overflow = modalOpen ? "hidden" : "auto";
+  }, [modalOpen]);
+
   return modalOpen ? (
     <div
       className={clsxm(
-        "bg-slate-200 fixed z-20 inset-0 w-full min-h-[100dvh] p-4 animate__animated animate__zoomIn animate__faster",
-        { animate__zoomOut: triggerClose }
+        "bg-slate-200 fixed z-20 inset-0 w-full min-h-[100dvh] p-4 animate__animated animate__fadeIn",
+        { animate__fadeOut: triggerClose }
       )}
     >
-      <section className=" flex flex-col h-full justify-center gap-4 mx-auto max-w-md">
+      <section className=" flex flex-col h-full justify-center gap-4 mx-auto max-w-md animate__animated animate__zoomIn animate__faster">
         <header className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">{title}</h2>
           <button onClick={closeModal}>

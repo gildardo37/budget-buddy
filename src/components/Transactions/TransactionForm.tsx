@@ -15,7 +15,7 @@ interface Props {
 
 export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   const { displayAlert } = useAlert();
-  const { data: TransactionTypes, isLoading: isTypeLoading } =
+  const { data: transactionTypes, isLoading: isTypeLoading } =
     useGetTransactionType();
   const { mutateAsync: addTransaction, isLoading } =
     useAddTransaction(budgetId);
@@ -53,7 +53,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
 
   const selectOptions = (): DropdownOptions[] => {
     return (
-      TransactionTypes?.data?.map(({ id, type }) => ({
+      transactionTypes?.data?.map(({ id, type }) => ({
         name: capitalizeText(type),
         value: String(id),
       })) || []

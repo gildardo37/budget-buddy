@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CloseIcon } from "@/components/svgs/CloseIcon";
 import { clsxm } from "@/utils/clsxm";
 import { Button } from "@/components/Button";
@@ -38,6 +38,11 @@ export const Dialog: React.FC<Props> = ({
     }
     closeModal();
   };
+
+  useEffect(() => {
+    const html = document.querySelector("html") as HTMLHtmlElement;
+    html.style.overflow = dialogOpen ? "hidden" : "auto";
+  }, [dialogOpen]);
 
   return dialogOpen ? (
     <>
