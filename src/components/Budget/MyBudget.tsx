@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Budget, Transaction } from "@/types";
-import { useBudget } from "@/client/user-client";
+import { useGetBudgetById } from "@/client/user-client";
 import { Loading } from "@/components/Loading";
 import BudgetInformation from "@/components/Budget/BudgetInformation";
 
@@ -15,7 +15,7 @@ export const MyBudget: React.FC<Props> = ({
   id,
   budgetExists,
 }) => {
-  const { data: budget, isLoading, error } = useBudget(id);
+  const { data: budget, isLoading, error } = useGetBudgetById(id);
 
   useEffect(() => {
     if (isLoading || (budget?.data?.length && !error)) {

@@ -74,7 +74,7 @@ export const Sidebar: React.FC = () => {
           />
           <aside
             className={clsxm(
-              "fixed inset-0 left-1/4 z-10 h-full bg-blue-500 py-4 flex flex-col gap-4 animate__animated animate__slideInRight animate__faster",
+              "fixed inset-0 left-1/4 z-10 h-full bg-blue-500 py-4 flex flex-col gap-4 animate__animated animate__slideInRight animate__faster lg:left-2/3",
               { animate__slideOutRight: triggerClose }
             )}
           >

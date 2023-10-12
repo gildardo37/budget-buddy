@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
-import { useTransaction } from "@/client/user-client";
+import { useGetTransactions } from "@/client/user-client";
 import { useModal } from "@/hooks/useModal";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
@@ -16,7 +16,7 @@ import { AddIcon } from "@/components/svgs/AddIcon";
 const Overview: NextPage = () => {
   const router = useRouter();
   const id = router.query.budgetId as string;
-  const { data: transactions, isLoading } = useTransaction(id);
+  const { data: transactions, isLoading } = useGetTransactions(id);
   const { isOpen, openModal, closeModal } = useModal();
   const [validBudget, setValidBudget] = useState(true);
 

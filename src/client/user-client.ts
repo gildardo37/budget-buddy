@@ -1,11 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./database";
-import { AddBudget, AddProfile, AddTransaction, Login } from "@/types";
+import {
+  AddBudget,
+  AddProfile,
+  AddTransaction,
+  Login,
+  UpdateBudget,
+} from "@/types";
 import { Session } from "@supabase/supabase-js";
+
+type ID = string | number;
 
 const profileKey = "profile";
 const budgetsKey = "budgets";
-const transactionsKey = "transactions";
+const budgetIdKey = (id: ID) => `${budgetsKey}-${id}`;
+const transactionKey = `transactions`;
+const transactionsKey = (budgetId: ID) => `${transactionKey}-${budgetId}`;
+const transactionIdKey = (budgetId: ID, transactionId: ID) =>
+  `${transactionsKey(budgetId)}_id-${transactionId}`;
 const transactionTypesKey = "transactionTypes";
 
 export const wait = (ms: number) => new Promise((fn) => setTimeout(fn, ms));
@@ -70,7 +82,7 @@ export const useSetUserSession = () => {
   });
 };
 
-export const useMyBudgets = () => {
+export const useGetBudgets = () => {
   return useQuery([budgetsKey], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
@@ -80,8 +92,8 @@ export const useMyBudgets = () => {
   });
 };
 
-export const useBudget = (id: string) => {
-  return useQuery([budgetsKey], async () => {
+export const useGetBudgetById = (id: string) => {
+  return useQuery([budgetIdKey(id)], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
       .from("budgets")
@@ -108,19 +120,46 @@ export const useAddBudget = () => {
   );
 };
 
-export const useDeleteBudget = (budgetId: string) => {
-  return useMutation(async () => {
-    const { data } = await supabase.auth.getSession();
-    return await supabase
-      .from("budgets")
-      .delete()
-      .eq("id", budgetId)
-      .eq("profile_id", data.session?.user.id);
-  });
+export const useUpdateBudget = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async ({ description, ammount, id }: UpdateBudget) => {
+      const { data } = await supabase.auth.getSession();
+      return await supabase
+        .from("budgets")
+        .update({ description, ammount, profile_id: data.session?.user.id })
+        .eq("id", id)
+        .eq("profile_id", data.session?.user.id);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([budgetsKey]);
+      },
+    }
+  );
 };
 
-export const useTransaction = (budgetId: string) => {
-  return useQuery([transactionsKey + budgetId], async () => {
+export const useDeleteBudget = (budgetId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async () => {
+      const { data } = await supabase.auth.getSession();
+      return await supabase
+        .from("budgets")
+        .delete()
+        .eq("id", budgetId)
+        .eq("profile_id", data.session?.user.id);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([budgetsKey]);
+      },
+    }
+  );
+};
+
+export const useGetTransactions = (budgetId: string) => {
+  return useQuery([transactionsKey(budgetId)], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
       .from("transactions")
@@ -131,8 +170,8 @@ export const useTransaction = (budgetId: string) => {
   });
 };
 
-export const useTransactionById = (id: string, budgetId: string) => {
-  return useQuery([`${transactionsKey}${budgetId}_${id}`], async () => {
+export const useGetTransactionById = (id: string, budgetId: string) => {
+  return useQuery([transactionIdKey(budgetId, id)], async () => {
     const { data } = await supabase.auth.getSession();
     return await supabase
       .from("transactions")
@@ -157,23 +196,31 @@ export const useAddTransaction = (budgetId: string) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([transactionsKey + budgetId]);
+        queryClient.invalidateQueries([transactionsKey(budgetId)]);
       },
     }
   );
 };
 
 export const useDeleteTransaction = (id: string, budgetId: string) => {
-  return useMutation(async () => {
-    return await supabase
-      .from("transactions")
-      .delete()
-      .eq("id", id)
-      .eq("budget_fk", budgetId);
-  });
+  const queryClient = useQueryClient();
+  return useMutation(
+    async () => {
+      return await supabase
+        .from("transactions")
+        .delete()
+        .eq("id", id)
+        .eq("budget_fk", budgetId);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([transactionsKey(budgetId)]);
+      },
+    }
+  );
 };
 
-export const useTransactionType = () => {
+export const useGetTransactionType = () => {
   return useQuery([transactionTypesKey], async () => {
     return await supabase
       .from("transaction_type")

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-fieldset label:has(+input:required)::after {
+fieldset label:has(+ input:required)::after {
   content: "*";
   padding-left: 4px;
 }
@@ -11,7 +11,8 @@ fieldset label:has(+input:required)::after {
   --animate-duration: 0.5s;
 }
 
-span, p {
+span,
+p {
   word-break: break-word;
 }
 

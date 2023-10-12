@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import { useAddTransaction, useTransactionType } from "@/client/user-client";
+import { useAddTransaction, useGetTransactionType } from "@/client/user-client";
 import { capitalizeText } from "@/utils/strings";
 import { DropdownOptions } from "@/types";
 import { useAlert } from "@/hooks/useAlert";
@@ -16,7 +16,7 @@ interface Props {
 export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   const { displayAlert } = useAlert();
   const { data: TransactionTypes, isLoading: isTypeLoading } =
-    useTransactionType();
+    useGetTransactionType();
   const { mutateAsync: addTransaction, isLoading } =
     useAddTransaction(budgetId);
   const { formData, resetForm, isDisabled, handleInputChange } = useForm({

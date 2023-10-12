@@ -9,6 +9,8 @@ import { BudgetProgress } from "@/components/Budget/BudgetProgress";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { Dialog } from "@/components/Modal/Dialog";
+import { Modal } from "../Modal";
+import { BudgetForm } from "./BudgetForm";
 
 interface Props {
   transactions: Transaction[];
@@ -24,6 +26,11 @@ const BudgetInformation: React.FC<Props> = ({
   const { displayAlert } = useAlert();
   const { mutateAsync: deleteBudget, error } = useDeleteBudget(budgetId);
   const { isOpen, openModal, closeModal } = useModal();
+  const {
+    isOpen: isDialogOpen,
+    openModal: openDialog,
+    closeModal: closeDialog,
+  } = useModal();
   const router = useRouter();
 
   const { totalSpent, availableBudget, totalBudget } = useMemo(() => {
@@ -46,14 +53,6 @@ const BudgetInformation: React.FC<Props> = ({
     };
   }, [transactions, myBudget]);
 
-  const notAvailable = () => {
-    displayAlert({
-      message: "This functionality is not implemented yet.",
-      type: "warning",
-      duration: 6000,
-    });
-  };
-
   const handleDelete = async () => {
     try {
       await deleteBudget();
@@ -63,7 +62,7 @@ const BudgetInformation: React.FC<Props> = ({
       displayAlert({
         message: "Budget deleted successfully!",
         type: "success",
-        duration: 6000,
+        duration: 3000,
         onClose: () => router.replace("/budget"),
       });
     } catch (error) {
@@ -76,8 +75,8 @@ const BudgetInformation: React.FC<Props> = ({
   };
 
   const options: CustomDropdownOptions[] = [
-    { action: notAvailable, name: "Edit" },
-    { action: openModal, name: "Delete" },
+    { action: openModal, name: "Edit" },
+    { action: openDialog, name: "Delete" },
   ];
 
   return (
@@ -98,12 +97,15 @@ const BudgetInformation: React.FC<Props> = ({
       </div>
       <BudgetProgress total={totalBudget} spent={totalSpent} />
       <Dialog
-        dialogOpen={isOpen}
-        onClose={closeModal}
+        dialogOpen={isDialogOpen}
+        onClose={closeDialog}
         onConfirmation={handleDelete}
       >
         <p>Are you sure you want to permantly delete {myBudget.description}?</p>
       </Dialog>
+      <Modal title="Update budget" modalOpen={isOpen} onClose={closeModal}>
+        <BudgetForm myBudget={myBudget} onSuccess={closeModal} />
+      </Modal>
     </>
   );
 };

@@ -35,6 +35,9 @@ export interface AddBudget {
   description: string;
   ammount: number;
 }
+export interface UpdateBudget extends AddBudget {
+  id: number;
+}
 
 export interface AddTransaction {
   budgetId: number;

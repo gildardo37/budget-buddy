@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
-import { useTransactionById } from "@/client/user-client";
+import { useGetTransactionById } from "@/client/user-client";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
 import { TransactionDetails } from "@/components/Transactions/TransactionDetails";
@@ -12,7 +12,7 @@ const TransactionPage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const budgetId = router.query.budgetId as string;
-  const { data, isLoading } = useTransactionById(id, budgetId);
+  const { data, isLoading } = useGetTransactionById(id, budgetId);
   const transaction = useMemo(
     () => (data?.data?.length ? (data?.data[0] as Transaction) : undefined),
     [data]

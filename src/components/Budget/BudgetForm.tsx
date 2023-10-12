@@ -1,37 +1,42 @@
 import React, { FormEvent } from "react";
-import { useAddBudget } from "@/client/user-client";
+import { useAddBudget, useUpdateBudget } from "@/client/user-client";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
+import { Budget } from "@/types";
 
 interface Props {
   onSuccess?: () => void;
+  myBudget?: Budget;
 }
 
-export const BudgetForm: React.FC<Props> = ({ onSuccess }) => {
+export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
   const { displayAlert } = useAlert();
   const { mutateAsync: addBudget } = useAddBudget();
+  const { mutateAsync: updateBudget } = useUpdateBudget();
   const { formData, isDisabled, handleInputChange, resetForm } = useForm({
     description: {
-      value: "",
+      value: myBudget?.description ?? "",
     },
     ammount: {
-      value: "",
+      value: myBudget?.ammount.toString() ?? "",
     },
   });
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
-      const { ammount, description } = formData;
-      const { error } = await addBudget({
-        ammount: parseFloat(ammount.value),
-        description: description.value,
-      });
+      const { error } = !myBudget
+        ? await handleUpdateBudget()
+        : await handleAddBudget();
       if (error) throw error;
       if (onSuccess) onSuccess();
-      displayAlert({ message: "Budget added succesfully!", type: "success" });
+      displayAlert({
+        message: "Budget added succesfully!",
+        type: "success",
+        duration: 3000,
+      });
       resetForm();
     } catch (e) {
       console.error(e);
@@ -40,8 +45,27 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess }) => {
     }
   };
 
+  const handleAddBudget = async () => {
+    const { ammount, description } = formData;
+    return await addBudget({
+      ammount: parseFloat(ammount.value),
+      description: description.value,
+    });
+  };
+
+  const handleUpdateBudget = async () => {
+    if (!myBudget?.id) throw new Error("ID property is missing to update.");
+
+    const { ammount, description } = formData;
+    return await updateBudget({
+      ammount: parseFloat(ammount.value),
+      description: description.value,
+      id: myBudget?.id,
+    });
+  };
+
   return (
-    <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <Field
         label="Description"
         name="description"

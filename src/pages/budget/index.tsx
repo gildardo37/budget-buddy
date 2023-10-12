@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { NextPage } from "next";
 import { Budget } from "@/types";
-import { useMyBudgets } from "@/client/user-client";
+import { useGetBudgets } from "@/client/user-client";
 import { formatPrice } from "@/utils/numbers";
 import { useModal } from "@/hooks/useModal";
 import { useAlert } from "@/hooks/useAlert";
@@ -15,7 +15,7 @@ import { AddIcon } from "@/components/svgs/AddIcon";
 
 const BudgetPage: NextPage = () => {
   const { displayAlert } = useAlert();
-  const { data: budgets, isLoading, error } = useMyBudgets();
+  const { data: budgets, isLoading, error } = useGetBudgets();
   const { isOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
