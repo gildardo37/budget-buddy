@@ -10,7 +10,7 @@ interface Props {
 
 export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {data.map(
         ({
           id,

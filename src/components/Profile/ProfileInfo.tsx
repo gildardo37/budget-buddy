@@ -17,27 +17,29 @@ const ProfileInfo: React.FC<Props> = ({ data }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
   return (
-    <>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <Field label="Email" name="email" value={data.email} readonly copy />
-        <Field
-          label="First name"
-          name="firstName"
-          value={formData.firstName.value}
-          required={formData.firstName.required}
-          onInput={handleInputChange}
-        />
-        <Field
-          label="Last name"
-          name="lastName"
-          value={formData.lastName.value}
-          required={formData.lastName.required}
-          onInput={handleInputChange}
-        />
-        <Button type="submit">Update</Button>
-      </form>
-    </>
+    <form
+      className="flex flex-col gap-4 w-full max-w-lg mx-auto"
+      onSubmit={handleSubmit}
+    >
+      <Field label="Email" name="email" value={data.email} readonly copy />
+      <Field
+        label="First name"
+        name="firstName"
+        value={formData.firstName.value}
+        required={formData.firstName.required}
+        onInput={handleInputChange}
+      />
+      <Field
+        label="Last name"
+        name="lastName"
+        value={formData.lastName.value}
+        required={formData.lastName.required}
+        onInput={handleInputChange}
+      />
+      <Button type="submit">Update</Button>
+    </form>
   );
 };
 

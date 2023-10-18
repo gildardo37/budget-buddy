@@ -19,13 +19,13 @@ const TransactionPage: NextPage = () => {
   );
 
   return (
-    <section>
+    <section className="flex flex-col gap-4">
       <Header title="Transaction details" showBack showSidebar />
       {isLoading ? (
         <Loading />
       ) : transaction ? (
         <>
-          <div className="grid gap-4">
+          <div className="flex flex-col gap-4 items-center">
             <MyTransaction budgetId={budgetId} transaction={transaction} />
             <TransactionDetails transaction={transaction} />
           </div>

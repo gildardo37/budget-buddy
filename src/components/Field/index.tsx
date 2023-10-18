@@ -63,7 +63,7 @@ export const Field: React.FC<Props> = ({
   };
 
   return (
-    <fieldset className="flex flex-col gap-2 relative">
+    <fieldset className="flex flex-col gap-2 relative w-full">
       {label ? (
         <label className="uppercase text-gray-600 text-sm">{label}</label>
       ) : null}

@@ -8,7 +8,7 @@ interface Props {
 export const ListItem: React.FC<Props> = ({ title, content }) => {
   return (
     <li>
-      <p className="font-semibold text-gray-500">{title}</p>
+      <p className="font-semibold">{title}</p>
       <p>{content}</p>
     </li>
   );

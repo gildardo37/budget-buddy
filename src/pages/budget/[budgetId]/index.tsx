@@ -29,21 +29,27 @@ const Overview: NextPage = () => {
       <Header title="Overview" showBack showSidebar />
       {validBudget ? (
         <>
-          <MyBudget
-            transactions={allTransactions()}
-            id={id}
-            budgetExists={(value) => setValidBudget(value)}
-          />
-          <Button onClick={openModal} icon={<AddIcon color="white" />}>
-            Add transaction
-          </Button>
-          <Modal
-            title="Add a transaction"
-            modalOpen={isOpen}
-            onClose={closeModal}
-          >
-            <TransactionForm budgetId={id} onSuccess={closeModal} />
-          </Modal>
+          <div className="flex flex-col gap-4 items-center">
+            <MyBudget
+              transactions={allTransactions()}
+              id={id}
+              budgetExists={(value) => setValidBudget(value)}
+            />
+            <Button
+              className="md:max-w-lg"
+              onClick={openModal}
+              icon={<AddIcon color="white" />}
+            >
+              Add transaction
+            </Button>
+            <Modal
+              title="Add a transaction"
+              modalOpen={isOpen}
+              onClose={closeModal}
+            >
+              <TransactionForm budgetId={id} onSuccess={closeModal} />
+            </Modal>
+          </div>
           {isLoading ? (
             <Loading />
           ) : transactions?.data?.length ? (

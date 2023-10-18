@@ -56,7 +56,7 @@ export const MyTransaction: React.FC<Props> = ({
   ];
 
   return (
-    <div className="flex flex-col gap-2 relative items-center p-4 rounded-xl bg-slate-300/50">
+    <div className="flex flex-col gap-2 relative items-center p-4 rounded-xl bg-slate-300/50 w-full max-w-lg">
       <div className="flex w-full">
         <h2 className="flex-grow text-lg font-semibold">{description}</h2>
         <CustomDropdown
