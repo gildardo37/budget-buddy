@@ -9,6 +9,7 @@ import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 import Image from "next/image";
 import { useAlert } from "@/hooks/useAlert";
+import { handleErrors } from "@/utils/errors";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -44,9 +45,7 @@ const LoginPage: NextPage = () => {
         throw new Error("Something failed");
       }
     } catch (e) {
-      console.error(e);
-      const { message } = e as Error;
-      displayAlert({ message, type: "error" });
+      handleErrors(e, displayAlert);
     }
   }
 

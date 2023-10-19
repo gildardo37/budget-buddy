@@ -17,6 +17,7 @@ interface FormItems {
 
 export const useForm = <T extends FormData>(data: T) => {
   const transformValues = (form?: typeof data) => {
+    //eslint-disable-next-line
     const newFormData: { [K in keyof T]: FormItems } = {} as any;
     const items = form ?? data;
 

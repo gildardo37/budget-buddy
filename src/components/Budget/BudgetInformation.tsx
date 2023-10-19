@@ -11,6 +11,7 @@ import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { Dialog } from "@/components/Modal/Dialog";
 import { Modal } from "../Modal";
 import { BudgetForm } from "./BudgetForm";
+import { handleErrors } from "@/utils/errors";
 
 interface Props {
   transactions: Transaction[];
@@ -66,11 +67,7 @@ const BudgetInformation: React.FC<Props> = ({
         onClose: () => router.replace("/budget"),
       });
     } catch (error) {
-      displayAlert({
-        message: "Something failed while making this request.",
-        type: "error",
-        duration: 6000,
-      });
+      handleErrors(error, displayAlert);
     }
   };
 

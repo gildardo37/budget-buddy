@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./database";
-import { AddBudgetProps, AddProfile, AddTransaction, Login } from "@/types";
+import {
+  AddBudgetProps,
+  AddProfile,
+  AddTransaction,
+  Login,
+  UpdateProfile,
+} from "@/types";
 import { Session } from "@supabase/supabase-js";
 
 type ID = string | number;
@@ -52,6 +58,29 @@ export const useAddProfile = () => {
         first_name,
         last_name,
       });
+    }
+  );
+};
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async ({ first_name, last_name }: UpdateProfile) => {
+      const { data } = await supabase.auth.getSession();
+      return await supabase
+        .from("profile")
+        .update({
+          first_name,
+          last_name,
+        })
+        .eq("id", data.session?.user.id)
+        .eq("email", data.session?.user.email)
+        .select();
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([profileKey]);
+      },
     }
   );
 };

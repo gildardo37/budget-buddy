@@ -7,6 +7,7 @@ import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { Dropdown } from "@/components/Dropdown";
+import { handleErrors } from "@/utils/errors";
 
 interface Props {
   budgetId: string;
@@ -46,9 +47,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
       });
       resetForm();
     } catch (e) {
-      console.error(e);
-      const { message } = e as Error;
-      displayAlert({ message, type: "error" });
+      handleErrors(e, displayAlert);
     }
   };
 

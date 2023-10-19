@@ -8,6 +8,7 @@ import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { Dialog } from "@/components/Modal/Dialog";
 import { useModal } from "@/hooks/useModal";
+import { handleErrors } from "@/utils/errors";
 
 interface Props {
   transaction: Transaction;
@@ -38,7 +39,7 @@ export const MyTransaction: React.FC<Props> = ({
       if (response.error) throw response.error;
       router.replace(`/budget/${budgetId}`);
     } catch (error) {
-      console.error(error);
+      handleErrors(error, displayAlert);
     }
   };
 

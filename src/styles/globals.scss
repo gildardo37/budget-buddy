@@ -25,3 +25,7 @@ input.field:read-only {
   pointer-events: none;
   opacity: 0.4;
 }
+
+.button:hover:not(:disabled) {
+  transform: scale(0.95);
+}

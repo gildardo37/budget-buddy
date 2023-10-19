@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/Button/ButtonLink";
 import { Header } from "@/components/Header";
 import { CheckIcon } from "@/components/svgs/CheckIcon";
 import { useAlert } from "@/hooks/useAlert";
+import { handleErrors } from "@/utils/errors";
 
 const SignUp: NextPage = () => {
   const { displayAlert } = useAlert();
@@ -54,9 +55,7 @@ const SignUp: NextPage = () => {
       }
       throw new Error("Something failed");
     } catch (e) {
-      console.error(e);
-      const { message } = e as Error;
-      displayAlert({ message, type: "error" });
+      handleErrors(e, displayAlert);
     }
   };
 

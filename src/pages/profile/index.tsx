@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { Profile } from "@/types";
 import { useGetProfile } from "@/client/user-client";
 import { Header } from "@/components/Header";
-import ProfileInfo from "@/components/Profile/ProfileInfo";
+import { ProfileInfo } from "@/components/Profile/ProfileInfo";
 import { Loading } from "@/components/Loading";
 
 const Profile: NextPage = () => {

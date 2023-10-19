@@ -1,21 +1,54 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useMemo } from "react";
 import { Profile } from "@/types";
 import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
+import { useUpdateProfile } from "@/client/user-client";
+import { useAlert } from "@/hooks/useAlert";
+import { handleErrors } from "@/utils/errors";
 
 interface Props {
   data: Profile;
 }
 
-const ProfileInfo: React.FC<Props> = ({ data }) => {
+export const ProfileInfo: React.FC<Props> = ({ data }) => {
+  const { displayAlert } = useAlert();
+  const { mutateAsync: updateProfile, isLoading } = useUpdateProfile();
   const { formData, handleInputChange } = useForm({
     firstName: { value: data.first_name },
     lastName: { value: data.last_name },
   });
+  const isFormModified = useMemo(() => {
+    const { firstName, lastName } = formData;
+    const { first_name, last_name } = data;
+    return first_name !== firstName.value || last_name !== lastName.value;
+  }, [formData, data]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      if (!isFormModified) {
+        return displayAlert({
+          type: "warning",
+          message: "The profile information is the same! Modify it to update.",
+        });
+      }
+      const { firstName, lastName } = formData;
+      const { error } = await updateProfile({
+        first_name: firstName.value,
+        last_name: lastName.value,
+      });
+
+      if (error) throw error;
+
+      displayAlert({
+        type: "success",
+        message: "Profile information updated successfully!",
+        duration: 4000,
+      });
+    } catch (e) {
+      handleErrors(e, displayAlert);
+    }
   };
 
   return (
@@ -38,9 +71,9 @@ const ProfileInfo: React.FC<Props> = ({ data }) => {
         required={formData.lastName.required}
         onInput={handleInputChange}
       />
-      <Button type="submit">Update</Button>
+      <Button type="submit" disabled={!isFormModified || isLoading}>
+        Update
+      </Button>
     </form>
   );
 };
-
-export default ProfileInfo;

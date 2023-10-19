@@ -23,7 +23,7 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       className={clsxm([
-        "w-full py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed transition-all focus:scale-95",
+        "w-full py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed transition-all button",
         className,
         {
           "bg-blue-500 text-white": buttonType === "primary",
