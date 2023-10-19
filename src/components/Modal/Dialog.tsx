@@ -48,7 +48,7 @@ export const Dialog: React.FC<Props> = ({
     <>
       <div
         className={clsxm(
-          "flex items-center justify-center bg-black/50 fixed z-20 inset-0 w-full min-h-[100dvh] p-4 animate__animated animate__fadeIn",
+          "flex items-center justify-center bg-black/50 fixed z-20 inset-0 w-full min-h-screen p-4 animate__animated animate__fadeIn",
           { animate__fadeOut: triggerClose }
         )}
       >

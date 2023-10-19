@@ -61,8 +61,9 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+    <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
       <Field
+        className="md:col-span-2"
         label="Description"
         name="description"
         type="text"
@@ -87,7 +88,11 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         value={formData.type.value}
         onChange={handleInputChange}
       />
-      <Button type="submit" disabled={isDisabled || isLoading || isTypeLoading}>
+      <Button
+        className="md:max-w-[150px] md:col-start-2 md:place-self-end"
+        type="submit"
+        disabled={isDisabled || isLoading || isTypeLoading}
+      >
         Add
       </Button>
     </form>

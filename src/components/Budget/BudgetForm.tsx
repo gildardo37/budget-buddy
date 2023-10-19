@@ -52,7 +52,7 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
       <Field
         label="Description"
         name="description"
@@ -70,7 +70,11 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
         required={formData.ammount.required}
         inputMode="decimal"
       />
-      <Button type="submit" disabled={isDisabled}>
+      <Button
+        className="md:col-start-2 md:place-self-end md:max-w-[150px]"
+        type="submit"
+        disabled={isDisabled}
+      >
         Submit
       </Button>
     </form>

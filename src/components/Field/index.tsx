@@ -5,6 +5,7 @@ import { clsxm } from "@/utils/clsxm";
 import { CopyIcon } from "@/components/svgs/CopyIcon";
 import { v4 as UUID } from "uuid";
 import { useAlert } from "@/hooks/useAlert";
+import { ClassValue } from "clsx";
 
 interface Props {
   id?: string;
@@ -20,6 +21,7 @@ interface Props {
   inputMode?: "decimal" | "tel" | "numeric";
   readonly?: boolean;
   copy?: boolean;
+  className?: ClassValue;
 }
 
 export const Field: React.FC<Props> = ({
@@ -35,6 +37,7 @@ export const Field: React.FC<Props> = ({
   inputMode,
   readonly,
   copy,
+  className = "",
 }) => {
   const { displayAlert } = useAlert();
   const input = useRef<HTMLInputElement>(null);
@@ -63,7 +66,9 @@ export const Field: React.FC<Props> = ({
   };
 
   return (
-    <fieldset className="flex flex-col gap-2 relative w-full">
+    <fieldset
+      className={clsxm("flex flex-col gap-2 relative w-full", className)}
+    >
       {label ? (
         <label className="uppercase text-gray-600 text-sm">{label}</label>
       ) : null}

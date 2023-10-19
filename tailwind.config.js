@@ -15,6 +15,12 @@ module.exports = {
         xl: "1200px",
         "2xl": "1440px",
       },
+      height: {
+        screen: "100dvh",
+      },
+      maxHeight: {
+        screen: "100dvh",
+      },
       animation: {
         "bounce-quick": "bounce 0.8s infinite",
       },

@@ -20,10 +20,14 @@ export const ListCard: React.FC<Props> = ({
   return (
     <ListItemWrapper
       href={href}
-      className="w-full p-4 bg-white rounded-md flex gap-2 justify-between shadow-md items-center text-gray-800 hover:bg-blue-50"
+      className="w-full p-4 bg-white rounded-md flex gap-4 justify-between shadow-md items-center text-gray-800 hover:bg-blue-50"
     >
       <div className="grid flex-1">
-        {description ? <span>{description}</span> : null}
+        {description ? (
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+            {description}
+          </span>
+        ) : null}
         {date ? <span className="text-xs text-gray-400">{date}</span> : null}
       </div>
       <div className="flex gap-2 flex-shrink-0">
