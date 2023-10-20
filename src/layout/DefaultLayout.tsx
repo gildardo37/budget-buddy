@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useAtom } from "jotai";
 import { sessionAtom, sessionLoadingAtom } from "@/atoms/session";
+import { handleErrors } from "@/utils/errors";
 import { validateSession } from "@/services/api";
+import { useAlert } from "@/hooks/useAlert";
 import { LoadingState } from "@/components/Loading/LoadingState";
 import { AlertBar } from "@/components/AlertBar";
 
@@ -12,6 +14,7 @@ interface Props {
 }
 
 export const DefaultLayout: React.FC<Props> = ({ children }) => {
+  const { displayAlert } = useAlert();
   const [loading, setLoading] = useAtom(sessionLoadingAtom);
   const [session, setSession] = useAtom(sessionAtom);
   const router = useRouter();
@@ -36,7 +39,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error(error);
+        handleErrors(error, displayAlert);
       } finally {
         setLoading(false);
       }

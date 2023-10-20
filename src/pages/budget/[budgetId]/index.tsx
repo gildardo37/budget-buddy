@@ -14,7 +14,6 @@ const Overview: NextPage = () => {
     isLoading: isBudgetLoading,
     error: budgetError,
   } = useGetBudgetById(id);
-  console.log(budget);
 
   const validBudget = () => {
     return budget?.data?.[0] && !budget?.error && !budgetError;
