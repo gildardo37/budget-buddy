@@ -1,6 +1,5 @@
 import React from "react";
 import { NextPage } from "next";
-import { Budget } from "@/types";
 import { useGetBudgets } from "@/services/useApi";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
@@ -16,7 +15,7 @@ const BudgetPage: NextPage = () => {
       {isLoading ? (
         <Loading />
       ) : budgets?.data?.length ? (
-        <BudgetList budgets={[...budgets.data].reverse() as Budget[]} />
+        <BudgetList budgets={[...budgets.data].reverse()} />
       ) : (
         <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}

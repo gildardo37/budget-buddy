@@ -1,6 +1,5 @@
 import React from "react";
 import { NextPage } from "next";
-import { Profile } from "@/types";
 import { useGetProfile } from "@/services/useApi";
 import { Header } from "@/components/Header";
 import { ProfileInfo } from "@/components/Profile/ProfileInfo";
@@ -15,7 +14,7 @@ const Profile: NextPage = () => {
       {isLoading ? (
         <Loading />
       ) : data?.data?.length ? (
-        <ProfileInfo data={data.data[0] as Profile} />
+        <ProfileInfo data={data.data[0]} />
       ) : (
         <p>
           {data?.error?.message ??

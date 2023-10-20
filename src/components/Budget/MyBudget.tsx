@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Budget, Transaction } from "@/types";
+import { Transaction } from "@/types";
 import { useGetBudgetById } from "@/services/useApi";
 import { Loading } from "@/components/Loading";
 import BudgetInformation from "@/components/Budget/BudgetInformation";
@@ -25,7 +25,7 @@ export const MyBudget: React.FC<Props> = ({
     }
   }, [budget, error, budgetExists, isLoading]);
 
-  const myBudget = budget?.data?.[0] as Budget;
+  const myBudget = budget?.data?.[0];
 
   return (
     <div className="relative flex flex-col gap-2 items-center p-4 rounded-xl bg-slate-300/50 max-w-lg w-full">
