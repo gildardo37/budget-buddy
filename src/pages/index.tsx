@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { sessionAtom } from "@/atoms/session";
-import { useLogin, useSetUserSession } from "@/client/user-client";
+import { useLogin, useSetUserSession } from "@/services/useClient";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";

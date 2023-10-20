@@ -1,6 +1,6 @@
 import { FormEvent, useState, ChangeEvent, useMemo } from "react";
 import { NextPage } from "next";
-import { useAddProfile, useSignUp } from "@/client/user-client";
+import { useAddProfile, useSignUp } from "@/services/useClient";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";

@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import { useAddBudget, useUpdateBudget } from "@/client/user-client";
+import { useAddBudget, useUpdateBudget } from "@/services/useClient";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
@@ -34,7 +34,7 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
         description: formData.description.value,
       };
       const { error } = myBudget
-        ? await updateBudget(data)
+        ? await updateBudget({ ...data, id: myBudget?.id })
         : await addBudget(data);
       if (error) throw error;
       if (onSuccess) onSuccess();

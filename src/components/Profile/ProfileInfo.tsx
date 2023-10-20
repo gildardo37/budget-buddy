@@ -3,7 +3,7 @@ import { Profile } from "@/types";
 import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
-import { useUpdateProfile } from "@/client/user-client";
+import { useUpdateProfile } from "@/services/useClient";
 import { useAlert } from "@/hooks/useAlert";
 import { handleErrors } from "@/utils/errors";
 

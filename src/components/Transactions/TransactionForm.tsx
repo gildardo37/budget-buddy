@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import { useAddTransaction, useGetTransactionType } from "@/client/user-client";
+import { useAddTransaction, useGetTransactionType } from "@/services/useClient";
 import { capitalizeText } from "@/utils/strings";
 import { DropdownOptions } from "@/types";
 import { useAlert } from "@/hooks/useAlert";

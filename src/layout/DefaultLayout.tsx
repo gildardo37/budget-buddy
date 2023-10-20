@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useAtom } from "jotai";
 import { sessionAtom, sessionLoadingAtom } from "@/atoms/session";
-import { validateSession } from "@/client/user-client";
+import { validateSession } from "@/services/api";
 import { LoadingState } from "@/components/Loading/LoadingState";
 import { AlertBar } from "@/components/AlertBar";
 

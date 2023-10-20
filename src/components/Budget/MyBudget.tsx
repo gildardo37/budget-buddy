@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Budget, Transaction } from "@/types";
-import { useGetBudgetById } from "@/client/user-client";
+import { useGetBudgetById } from "@/services/useClient";
 import { Loading } from "@/components/Loading";
 import BudgetInformation from "@/components/Budget/BudgetInformation";
 

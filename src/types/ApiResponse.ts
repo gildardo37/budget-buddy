@@ -25,6 +25,8 @@ export interface Budget {
 
 export type AddBudgetProps = Pick<Budget, "description" | "ammount">;
 
+export type UpdateBudgetProps = Pick<Budget, "id" | "description" | "ammount">;
+
 export interface AddTransaction {
   budgetId: number;
   description: string;
