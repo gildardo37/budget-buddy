@@ -5,6 +5,7 @@ import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { BudgetList } from "@/components/Budget/BudgetList";
 import { AddBudget } from "@/components/Budget/AddBudget";
+import { RequestError } from "@/components/Errors/RequestError";
 
 const BudgetPage: NextPage = () => {
   const { data: budgets, isLoading, error } = useGetBudgets();
@@ -19,12 +20,8 @@ const BudgetPage: NextPage = () => {
       ) : (
         <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}
-      {error ? (
-        <p className="text-gray-500">
-          {budgets?.error?.message ??
-            (error as Error)?.message ??
-            "Something failed, please try again in another moment."}
-        </p>
+      {budgets?.error || error ? (
+        <RequestError requestError={budgets?.error} error={error} />
       ) : (
         <AddBudget />
       )}

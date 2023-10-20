@@ -1,38 +1,44 @@
 import React, { useMemo } from "react";
 import { useRouter } from "next/router";
-import { Budget, CustomDropdownOptions, Transaction } from "@/types";
-import { useDeleteBudget } from "@/services/useApi";
+import { Budget, CustomDropdownOptions } from "@/types";
+import {
+  useDeleteBudget,
+  useGetBudgetById,
+  useGetTransactions,
+} from "@/services/useApi";
 import { formatPrice } from "@/utils/numbers";
+import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";
 import { useModal } from "@/hooks/useModal";
 import { BudgetProgress } from "@/components/Budget/BudgetProgress";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { Dialog } from "@/components/Modal/Dialog";
-import { Modal } from "../Modal";
-import { BudgetForm } from "./BudgetForm";
-import { handleErrors } from "@/utils/errors";
+import { Modal } from "@/components/Modal";
+import { BudgetForm } from "@/components/Budget/BudgetForm";
 
 interface Props {
-  transactions: Transaction[];
-  myBudget: Budget;
   budgetId: string;
 }
 
-const BudgetInformation: React.FC<Props> = ({
-  myBudget,
-  transactions,
-  budgetId,
-}) => {
-  const { displayAlert } = useAlert();
+export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
+  const { data: budget } = useGetBudgetById(budgetId);
+  const { data: myTransactions } = useGetTransactions(budgetId);
   const { mutateAsync: deleteBudget, error } = useDeleteBudget(budgetId);
+  const router = useRouter();
+  const { displayAlert } = useAlert();
   const { isOpen, openModal, closeModal } = useModal();
   const {
     isOpen: isDialogOpen,
     openModal: openDialog,
     closeModal: closeDialog,
   } = useModal();
-  const router = useRouter();
+
+  const myBudget = useMemo(() => budget?.data?.[0] as Budget, [budget]);
+  const transactions = useMemo(
+    () => myTransactions?.data ?? [],
+    [myTransactions]
+  );
 
   const { totalSpent, availableBudget, totalBudget } = useMemo(() => {
     let totalSpent = 0;
@@ -106,5 +112,3 @@ const BudgetInformation: React.FC<Props> = ({
     </>
   );
 };
-
-export default BudgetInformation;

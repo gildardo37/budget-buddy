@@ -1,8 +1,8 @@
 import React from "react";
-import { ListItem } from "../List/ListItem";
 import { Transaction } from "@/types";
 import { capitalizeText } from "@/utils/strings";
 import { formattedAmount } from "@/utils/numbers";
+import { ListItem } from "@/components/List/ListItem";
 
 interface Props {
   transaction: Transaction;

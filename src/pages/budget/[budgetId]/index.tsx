@@ -1,70 +1,38 @@
-import { useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Transaction } from "@/types";
-import { useGetTransactions } from "@/services/useApi";
-import { useModal } from "@/hooks/useModal";
+import { useGetBudgetById } from "@/services/useApi";
 import { Header } from "@/components/Header";
-import { Modal } from "@/components/Modal";
-import { MyBudget } from "@/components/Budget/MyBudget";
-import { TransactionForm } from "@/components/Transactions/TransactionForm";
 import { Loading } from "@/components/Loading";
-import { TransactionsList } from "@/components/Transactions/TransactionList";
-import { Button } from "@/components/Button";
-import { AddIcon } from "@/components/svgs/AddIcon";
+import { RequestError } from "@/components/Errors/RequestError";
+import { BudgetOverview } from "@/components/Budget/BudgetOverview";
 
 const Overview: NextPage = () => {
   const router = useRouter();
   const id = router.query.budgetId as string;
-  const { data: transactions, isLoading } = useGetTransactions(id);
-  const { isOpen, openModal, closeModal } = useModal();
-  const [validBudget, setValidBudget] = useState(true);
+  const {
+    data: budget,
+    isLoading: isBudgetLoading,
+    error: budgetError,
+  } = useGetBudgetById(id);
+  console.log(budget);
 
-  const allTransactions = () => {
-    return [...(transactions?.data || [])] as Transaction[];
+  const validBudget = () => {
+    return budget?.data?.[0] && !budget?.error && !budgetError;
   };
 
   return (
     <section className="flex flex-col gap-4">
       <Header title="Overview" showBack showSidebar />
-      {validBudget ? (
-        <>
-          <div className="flex flex-col gap-4 items-center">
-            <MyBudget
-              transactions={allTransactions()}
-              id={id}
-              budgetExists={(value) => setValidBudget(value)}
-            />
-            <Button
-              className="md:max-w-lg"
-              onClick={openModal}
-              icon={<AddIcon color="white" />}
-            >
-              Add transaction
-            </Button>
-            <Modal
-              title="Add a transaction"
-              modalOpen={isOpen}
-              onClose={closeModal}
-            >
-              <TransactionForm budgetId={id} onSuccess={closeModal} />
-            </Modal>
-          </div>
-          {isLoading ? (
-            <Loading />
-          ) : transactions?.data?.length ? (
-            <>
-              <h2 className="text-lg font-medium">Transactions</h2>
-              <TransactionsList data={allTransactions()} budgetId={id} />
-            </>
-          ) : (
-            <p className="text-gray-500 py-4">
-              No transactions added yet, start adding one.
-            </p>
-          )}
-        </>
+      {isBudgetLoading ? (
+        <Loading />
+      ) : validBudget() ? (
+        <BudgetOverview id={id} />
       ) : (
-        <p>This is not a valid Budget ID, please go back to home.</p>
+        <RequestError
+          requestError={budget?.error}
+          error={budgetError}
+          fallbackMessage="This is not a valid Budget ID, please go back to home."
+        />
       )}
     </section>
   );

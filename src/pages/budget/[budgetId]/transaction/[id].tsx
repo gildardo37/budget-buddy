@@ -1,37 +1,36 @@
-import { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Transaction } from "@/types";
 import { useGetTransactionById } from "@/services/useApi";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
 import { TransactionDetails } from "@/components/Transactions/TransactionDetails";
 import { MyTransaction } from "@/components/Transactions/MyTransaction";
+import { RequestError } from "@/components/Errors/RequestError";
 
 const TransactionPage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const budgetId = router.query.budgetId as string;
-  const { data, isLoading } = useGetTransactionById(id, budgetId);
-  const transaction = useMemo(
-    () => (data?.data?.length ? (data?.data[0] as Transaction) : undefined),
-    [data]
-  );
+  const { data, isLoading, error } = useGetTransactionById(id, budgetId);
 
   return (
     <section className="flex flex-col gap-4">
       <Header title="Transaction details" showBack showSidebar />
       {isLoading ? (
         <Loading />
-      ) : transaction ? (
+      ) : data?.data?.[0] && !data?.error && !error ? (
         <>
           <div className="flex flex-col gap-4 items-center">
-            <MyTransaction budgetId={budgetId} transaction={transaction} />
-            <TransactionDetails transaction={transaction} />
+            <MyTransaction budgetId={budgetId} transaction={data.data[0]} />
+            <TransactionDetails transaction={data.data[0]} />
           </div>
         </>
       ) : (
-        <p>This transaction doesn&apos;t exists!</p>
+        <RequestError
+          requestError={data?.error}
+          error={error}
+          fallbackMessage="This transaction doesn't exist!"
+        />
       )}
     </section>
   );

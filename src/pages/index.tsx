@@ -1,15 +1,15 @@
 import { FormEvent, useState, ChangeEvent } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { useAtom } from "jotai";
 import { sessionAtom } from "@/atoms/session";
 import { useLogin, useSetUserSession } from "@/services/useApi";
+import { useAlert } from "@/hooks/useAlert";
+import { handleErrors } from "@/utils/errors";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
-import Image from "next/image";
-import { useAlert } from "@/hooks/useAlert";
-import { handleErrors } from "@/utils/errors";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();

@@ -1,30 +1,14 @@
-import React, { useEffect } from "react";
-import { Transaction } from "@/types";
+import React from "react";
 import { useGetBudgetById } from "@/services/useApi";
 import { Loading } from "@/components/Loading";
-import BudgetInformation from "@/components/Budget/BudgetInformation";
+import { BudgetInformation } from "@/components/Budget/BudgetInformation";
 
 interface Props {
-  transactions: Transaction[];
   id: string;
-  budgetExists: (value: boolean) => void;
 }
 
-export const MyBudget: React.FC<Props> = ({
-  transactions,
-  id,
-  budgetExists,
-}) => {
-  const { data: budget, isLoading, error } = useGetBudgetById(id);
-
-  useEffect(() => {
-    if (isLoading || (budget?.data?.length && !error)) {
-      budgetExists(true);
-    } else {
-      budgetExists(false);
-    }
-  }, [budget, error, budgetExists, isLoading]);
-
+export const MyBudget: React.FC<Props> = ({ id }) => {
+  const { data: budget, isLoading } = useGetBudgetById(id);
   const myBudget = budget?.data?.[0];
 
   return (
@@ -34,11 +18,7 @@ export const MyBudget: React.FC<Props> = ({
           <Loading />
         </div>
       ) : myBudget ? (
-        <BudgetInformation
-          transactions={transactions}
-          myBudget={myBudget}
-          budgetId={id}
-        />
+        <BudgetInformation budgetId={id} />
       ) : (
         "Something has failed."
       )}

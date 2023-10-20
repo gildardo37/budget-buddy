@@ -4,6 +4,7 @@ import { useGetProfile } from "@/services/useApi";
 import { Header } from "@/components/Header";
 import { ProfileInfo } from "@/components/Profile/ProfileInfo";
 import { Loading } from "@/components/Loading";
+import { RequestError } from "@/components/Errors/RequestError";
 
 const Profile: NextPage = () => {
   const { data, isLoading, error } = useGetProfile();
@@ -16,11 +17,7 @@ const Profile: NextPage = () => {
       ) : data?.data?.length ? (
         <ProfileInfo data={data.data[0]} />
       ) : (
-        <p>
-          {data?.error?.message ??
-            (error as Error)?.message ??
-            "Something failed, please try again in another moment."}
-        </p>
+        <RequestError requestError={data?.error} error={error} />
       )}
     </section>
   );

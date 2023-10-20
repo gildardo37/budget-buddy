@@ -5,6 +5,7 @@ import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";
 import { Field } from "@/components/Field";
 import { AddBudgetProps, Budget } from "@/types";
+import { handleErrors } from "@/utils/errors";
 
 interface Props {
   onSuccess?: () => void;
@@ -45,9 +46,7 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
       });
       resetForm();
     } catch (e) {
-      console.error(e);
-      const { message } = e as Error;
-      displayAlert({ message, type: "error" });
+      handleErrors(e, displayAlert);
     }
   };
 
