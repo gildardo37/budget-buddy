@@ -21,7 +21,11 @@ const Overview: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <Header title="Overview" showBack showSidebar />
+      <Header
+        title={budget?.data?.[0].description ?? "Overview"}
+        showBack
+        showSidebar
+      />
       {isBudgetLoading ? (
         <Loading />
       ) : validBudget() ? (
