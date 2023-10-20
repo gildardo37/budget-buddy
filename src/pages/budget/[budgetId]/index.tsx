@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
-import { useGetTransactions } from "@/services/useClient";
+import { useGetTransactions } from "@/services/useApi";
 import { useModal } from "@/hooks/useModal";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";

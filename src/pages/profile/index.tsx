@@ -1,7 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import { Profile } from "@/types";
-import { useGetProfile } from "@/services/useClient";
+import { useGetProfile } from "@/services/useApi";
 import { Header } from "@/components/Header";
 import { ProfileInfo } from "@/components/Profile/ProfileInfo";
 import { Loading } from "@/components/Loading";

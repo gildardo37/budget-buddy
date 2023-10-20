@@ -1,7 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import { Budget } from "@/types";
-import { useGetBudgets } from "@/services/useClient";
+import { useGetBudgets } from "@/services/useApi";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { BudgetList } from "@/components/Budget/BudgetList";

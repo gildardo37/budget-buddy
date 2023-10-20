@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useRouter } from "next/router";
 import { Budget, CustomDropdownOptions, Transaction } from "@/types";
-import { useDeleteBudget } from "@/services/useClient";
+import { useDeleteBudget } from "@/services/useApi";
 import { formatPrice } from "@/utils/numbers";
 import { useAlert } from "@/hooks/useAlert";
 import { useModal } from "@/hooks/useModal";

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Transaction } from "@/types";
-import { useGetTransactionById } from "@/services/useClient";
+import { useGetTransactionById } from "@/services/useApi";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
 import { TransactionDetails } from "@/components/Transactions/TransactionDetails";

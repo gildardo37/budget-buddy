@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import { useAddBudget, useUpdateBudget } from "@/services/useClient";
+import { useAddBudget, useUpdateBudget } from "@/services/useApi";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Button } from "@/components/Button";

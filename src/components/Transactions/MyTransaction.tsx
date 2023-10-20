@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { CustomDropdownOptions, Transaction } from "@/types";
 import { formatPrice, formattedAmount } from "@/utils/numbers";
-import { useDeleteTransaction } from "@/services/useClient";
+import { useDeleteTransaction } from "@/services/useApi";
 import { useAlert } from "@/hooks/useAlert";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
