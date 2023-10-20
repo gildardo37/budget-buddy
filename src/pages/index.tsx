@@ -1,12 +1,13 @@
-import { FormEvent, useState, ChangeEvent } from "react";
+import { FormEvent } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { sessionAtom } from "@/atoms/session";
 import { useLogin, useSetUserSession } from "@/services/useApi";
-import { useAlert } from "@/hooks/useAlert";
 import { handleErrors } from "@/utils/errors";
+import { useAlert } from "@/hooks/useAlert";
+import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
@@ -18,21 +19,21 @@ const LoginPage: NextPage = () => {
   const { mutateAsync: signIn, isLoading: isLoginLoading } = useLogin();
   const { mutateAsync: setUserSession, isLoading: isSessionLoading } =
     useSetUserSession();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const { formData, handleInputChange, isDisabled } = useForm({
+    email: { value: "" },
+    password: { value: "" },
   });
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const isLoading = isLoginLoading || isSessionLoading;
 
   async function logIn(event: FormEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
       const { email, password } = formData;
-      const { data, error } = await signIn({ email, password });
+      const { data, error } = await signIn({
+        email: email.value,
+        password: password.value,
+      });
 
       if (error) throw error;
 
@@ -50,7 +51,7 @@ const LoginPage: NextPage = () => {
   }
 
   return (
-    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
+    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)] w-full max-w-md mx-auto">
       <div className="flex justify-center">
         <Image
           src="/img/logo.svg"
@@ -65,16 +66,24 @@ const LoginPage: NextPage = () => {
           name="email"
           label="Email"
           onInput={handleInputChange}
-          required
+          value={formData.email.value}
+          disabled={isLoading}
+          required={formData.email.required}
         />
         <Field
           type="password"
           name="password"
           label="Password"
           onInput={handleInputChange}
-          required
+          value={formData.password.value}
+          disabled={isLoading}
+          required={formData.password.required}
         />
-        <Button type="submit" disabled={isLoginLoading || isSessionLoading}>
+        <Button
+          type="submit"
+          disabled={isLoading || isDisabled}
+          isLoading={isLoading}
+        >
           sign in
         </Button>
         <div className="flex justify-center items-center gap-4 px-2">

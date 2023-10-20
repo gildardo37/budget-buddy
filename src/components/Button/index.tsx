@@ -1,5 +1,6 @@
 import React from "react";
 import { clsxm } from "@/utils/clsxm";
+import { Loading } from "../Loading";
 
 interface Props {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface Props {
   disabled?: boolean;
   buttonType?: "primary" | "secondary";
   className?: string;
+  isLoading?: boolean;
 }
 
 export const Button: React.FC<Props> = ({
@@ -19,6 +21,7 @@ export const Button: React.FC<Props> = ({
   disabled,
   buttonType = "primary",
   className = "",
+  isLoading,
 }) => {
   return (
     <button
@@ -30,12 +33,18 @@ export const Button: React.FC<Props> = ({
           "text-black border border-blue-500": buttonType === "secondary",
         },
       ])}
-      onClick={onClick && !disabled ? onClick : undefined}
+      onClick={onClick && (!disabled || isLoading) ? onClick : undefined}
       type={type}
       disabled={disabled}
     >
-      {icon ? icon : null}
-      <span className="text-sm">{children}</span>
+      {isLoading ? (
+        <Loading small />
+      ) : (
+        <>
+          {icon ? icon : null}
+          <span className="text-sm">{children}</span>
+        </>
+      )}
     </button>
   );
 };

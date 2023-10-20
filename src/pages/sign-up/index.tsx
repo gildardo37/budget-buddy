@@ -1,75 +1,68 @@
-import { FormEvent, useState, ChangeEvent, useMemo } from "react";
+import { FormEvent, useState } from "react";
 import { NextPage } from "next";
 import { useAddProfile, useSignUp } from "@/services/useApi";
+import { handleErrors } from "@/utils/errors";
+import { useAlert } from "@/hooks/useAlert";
+import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 import { Header } from "@/components/Header";
 import { CheckIcon } from "@/components/svgs/CheckIcon";
-import { useAlert } from "@/hooks/useAlert";
-import { handleErrors } from "@/utils/errors";
 
 const SignUp: NextPage = () => {
   const { displayAlert } = useAlert();
   const [isSigned, setIsSigned] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    confirmPassword: "",
+  const { formData, handleInputChange, isDisabled } = useForm({
+    email: { value: "" },
+    password: { value: "" },
+    firstName: { value: "" },
+    lastName: { value: "" },
+    confirmPassword: { value: "" },
   });
   const { mutateAsync: signUp, isLoading: signUpLoading } = useSignUp();
   const { mutateAsync: addProfile, isLoading: profileLoading } =
     useAddProfile();
 
+  const isLoading = signUpLoading || profileLoading;
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const {
-        email,
-        password,
-        confirmPassword,
-        firstName: first_name,
-        lastName: last_name,
-      } = formData;
+      const { email, password, confirmPassword, firstName, lastName } =
+        formData;
 
-      if (password !== confirmPassword) {
+      if (password.value !== confirmPassword.value) {
         throw new Error("Passwords must match!");
       }
 
-      const { data, error } = await signUp({ email, password });
+      const { data, error } = await signUp({
+        email: email.value,
+        password: password.value,
+      });
 
-      if (error) throw error;
-
-      if (data.user) {
+      if (error || !data) {
+        throw error;
+      } else if (data?.user) {
         const { id } = data.user;
         const { error: profileError } = await addProfile({
           id,
-          email,
-          first_name,
-          last_name,
+          email: email.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
         });
         if (profileError) throw profileError;
         setIsSigned(true);
+      } else {
+        throw new Error("Something failed");
       }
-      throw new Error("Something failed");
     } catch (e) {
       handleErrors(e, displayAlert);
     }
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const isLoading = useMemo(() => {
-    return signUpLoading || profileLoading;
-  }, [signUpLoading, profileLoading]);
-
   return (
-    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)]">
+    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)] w-full max-w-md mx-auto">
       {isSigned ? (
         <>
           <div className="flex justify-center">
@@ -101,42 +94,51 @@ const SignUp: NextPage = () => {
               name="firstName"
               label="First Name"
               onInput={handleInputChange}
-              required
+              value={formData.firstName.value}
               disabled={isLoading}
+              required={formData.firstName.required}
             />
             <Field
               type="text"
               name="lastName"
               label="Last Name"
               onInput={handleInputChange}
-              required
+              value={formData.lastName.value}
               disabled={isLoading}
+              required={formData.lastName.required}
             />
             <Field
               type="email"
               name="email"
               label="Email"
               onInput={handleInputChange}
-              required
+              value={formData.email.value}
               disabled={isLoading}
+              required={formData.email.required}
             />
             <Field
               type="password"
               name="password"
               label="Password"
               onInput={handleInputChange}
-              required
+              value={formData.password.value}
               disabled={isLoading}
+              required={formData.password.required}
             />
             <Field
               type="password"
               name="confirmPassword"
               label="Confirm Password"
               onInput={handleInputChange}
-              required
+              value={formData.confirmPassword.value}
               disabled={isLoading}
+              required={formData.confirmPassword.required}
             />
-            <Button type="submit" disabled={isLoading}>
+            <Button
+              type="submit"
+              disabled={isLoading || isDisabled}
+              isLoading={isLoading}
+            >
               Submit
             </Button>
           </form>

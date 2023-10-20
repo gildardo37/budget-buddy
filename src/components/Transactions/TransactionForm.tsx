@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import { useAddTransaction, useGetTransactionType } from "@/services/useApi";
 import { capitalizeText } from "@/utils/strings";
-import { DropdownOptions } from "@/types";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
@@ -18,13 +17,20 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
   const { displayAlert } = useAlert();
   const { data: transactionTypes, isLoading: isTypeLoading } =
     useGetTransactionType();
-  const { mutateAsync: addTransaction, isLoading } =
+  const { mutateAsync: addTransaction, isLoading: isAddLoading } =
     useAddTransaction(budgetId);
   const { formData, resetForm, isDisabled, handleInputChange } = useForm({
     description: { value: "" },
     ammount: { value: "" },
     type: { value: "2" },
   });
+
+  const isLoading = isAddLoading || isTypeLoading;
+
+  const selectOptions = transactionTypes?.data?.map(({ id, type }) => ({
+    name: capitalizeText(type),
+    value: String(id),
+  }));
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,15 +57,6 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
     }
   };
 
-  const selectOptions = (): DropdownOptions[] => {
-    return (
-      transactionTypes?.data?.map(({ id, type }) => ({
-        name: capitalizeText(type),
-        value: String(id),
-      })) || []
-    );
-  };
-
   return (
     <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
       <Field
@@ -70,6 +67,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         value={formData.description.value}
         onInput={handleInputChange}
         required={formData.description.required}
+        disabled={isLoading}
       />
       <Field
         label="Ammount"
@@ -79,19 +77,22 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         onInput={handleInputChange}
         required={formData.ammount.required}
         inputMode="decimal"
+        disabled={isLoading}
       />
       <Dropdown
         label="Transaction Type"
         name="type"
-        options={selectOptions()}
+        options={selectOptions}
         required={formData.type.required}
         value={formData.type.value}
         onChange={handleInputChange}
+        disabled={isLoading}
       />
       <Button
         className="md:max-w-[150px] md:col-start-2 md:place-self-end"
         type="submit"
-        disabled={isDisabled || isLoading || isTypeLoading}
+        disabled={isDisabled || isLoading}
+        isLoading={isLoading}
       >
         Add
       </Button>

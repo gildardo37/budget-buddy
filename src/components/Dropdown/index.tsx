@@ -30,7 +30,7 @@ export const Dropdown: React.FC<Props> = ({
         <label className="uppercase text-gray-600 text-sm">{label}</label>
       ) : null}
       <select
-        className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed"
+        className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none"
         name={name}
         id={id}
         value={value}
