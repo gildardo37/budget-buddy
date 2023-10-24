@@ -75,7 +75,10 @@ export const updateProfile = async ({
 export const getProfile = async () => {
   const { data } = await supabase.auth.getSession();
   return handleRequest<Profile[]>(() =>
-    supabase.from("profile").select().eq("id", data.session?.user.id)
+    supabase
+      .from("profile")
+      .select()
+      .eq("id", data.session?.user.id)
   );
 };
 
@@ -93,7 +96,10 @@ export const setUserSession = async ({
 export const getBudgets = async () => {
   const { data } = await supabase.auth.getSession();
   return handleRequest<Budget[]>(() =>
-    supabase.from("budgets").select().eq("profile_id", data.session?.user.id)
+    supabase
+      .from("budgets")
+      .select()
+      .eq("profile_id", data.session?.user.id)
   );
 };
 

@@ -53,7 +53,7 @@ export const ProfileInfo: React.FC<Props> = ({ data }) => {
 
   return (
     <form
-      className="flex flex-col gap-4 w-full max-w-lg mx-auto"
+      className="mx-auto flex w-full max-w-lg flex-col gap-4"
       onSubmit={handleSubmit}
     >
       <Field label="Email" name="email" value={data.email} readonly copy />

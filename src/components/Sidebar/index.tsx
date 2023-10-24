@@ -68,20 +68,20 @@ export const Sidebar: React.FC = () => {
           <div
             onClick={closeSidebar}
             className={clsxm(
-              "fixed inset-0 z-10 h-full bg-black/60 animate__animated animate__fadeIn",
+              "animate__animated animate__fadeIn fixed inset-0 z-10 h-full bg-black/60",
               { animate__fadeOut: triggerClose }
             )}
           />
           <aside
             className={clsxm(
-              "fixed inset-0 left-1/4 z-10 h-full bg-blue-500 py-4 flex flex-col gap-4 animate__animated animate__slideInRight animate__faster lg:left-2/3",
+              "animate__animated animate__slideInRight animate__faster fixed inset-0 left-1/4 z-10 flex h-full flex-col gap-4 bg-blue-500 py-4 lg:left-2/3",
               { animate__slideOutRight: triggerClose }
             )}
           >
-            <button className="absolute top-4 left-4" onClick={closeSidebar}>
+            <button className="absolute left-4 top-4" onClick={closeSidebar}>
               <CloseIcon color="white" height="32px" width="32px" />
             </button>
-            <div className="w-full flex justify-center">
+            <div className="flex w-full justify-center">
               <Logo height="120px" />
             </div>
             <nav className="grid gap-2">
@@ -90,7 +90,7 @@ export const Sidebar: React.FC = () => {
                   <Link
                     key={index}
                     href={route}
-                    className="flex gap-4 w-full p-4 text-white font-semibold hover:bg-blue-600"
+                    className="flex w-full gap-4 p-4 font-semibold text-white hover:bg-blue-600"
                   >
                     {icon} <span>{label}</span>
                   </Link>
@@ -98,7 +98,7 @@ export const Sidebar: React.FC = () => {
                   <button
                     key={index}
                     onClick={onClick}
-                    className="flex gap-4 w-full p-4 text-white font-semibold hover:bg-blue-600"
+                    className="flex w-full gap-4 p-4 font-semibold text-white hover:bg-blue-600"
                   >
                     {icon} <span>{label}</span>
                   </button>

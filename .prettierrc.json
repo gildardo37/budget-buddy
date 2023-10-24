@@ -1,3 +1,7 @@
 {
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ],
+  "trailingComma": "es5"
 }

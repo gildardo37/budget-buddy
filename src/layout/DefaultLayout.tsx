@@ -59,9 +59,9 @@ export const DefaultLayout: React.FC<Props> = ({ children }) => {
       {loading && !session ? (
         <LoadingState />
       ) : (
-        <main className="w-full p-4 bg-[rgb(241,245,249)] min-h-screen md:px-12">
+        <main className="min-h-screen w-full bg-[rgb(241,245,249)] p-4 md:px-12">
           <AlertBar />
-          <div className="max-w-lg mx-auto md:max-w-7xl">{children}</div>
+          <div className="mx-auto max-w-lg md:max-w-7xl">{children}</div>
         </main>
       )}
     </>

@@ -20,7 +20,7 @@ const TransactionPage: NextPage = () => {
         <Loading />
       ) : data?.data?.[0] && !data?.error && !error ? (
         <>
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col items-center gap-4">
             <MyTransaction budgetId={budgetId} transaction={data.data[0]} />
             <TransactionDetails transaction={data.data[0]} />
           </div>

@@ -19,7 +19,7 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 items-center">
+      <div className="flex flex-col items-center gap-4">
         <MyBudget id={id} />
         <AddTransaction id={id} />
       </div>
@@ -38,7 +38,7 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
           error={transactionError}
         />
       ) : (
-        <p className="text-gray-500 py-4">
+        <p className="py-4 text-gray-500">
           No transactions added yet, start adding one.
         </p>
       )}

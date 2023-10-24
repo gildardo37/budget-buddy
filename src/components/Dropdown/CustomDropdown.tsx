@@ -55,7 +55,7 @@ export const CustomDropdown: React.FC<Props> = ({
 
   return (
     <div
-      className="relative select-none cursor-pointer"
+      className="relative cursor-pointer select-none"
       onClick={handleDisplay}
       ref={dropdownRef}
     >
@@ -63,14 +63,14 @@ export const CustomDropdown: React.FC<Props> = ({
       {display ? (
         <div
           className={clsxm(
-            "absolute flex flex-col min-w-[100px] z-20 bg-white rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed shadow-md",
+            "absolute z-20 flex min-w-[100px] flex-col rounded-md bg-white shadow-md duration-200 focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-30",
             positionClass[position] ?? positionClass["bottom-left"]
           )}
         >
           {options.map(({ name, action }, index) => (
             <button
               key={index}
-              className="w-full px-4 py-2 border-t first:border-none text-left"
+              className="w-full border-t px-4 py-2 text-left first:border-none"
               type="button"
               onClick={action}
             >

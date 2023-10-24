@@ -13,7 +13,7 @@ export const RequestError: React.FC<Props> = ({
   fallbackMessage,
 }) => {
   return (
-    <p className="text-gray-500 py-4">
+    <p className="py-4 text-gray-500">
       {requestError?.message ??
         (error as Error)?.message ??
         fallbackMessage ??

@@ -9,11 +9,11 @@ export const AddBudget: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 p-4 flex flex-col items-center md:static ">
+      <div className="fixed inset-x-0 bottom-0 flex flex-col items-center p-4 md:static ">
         <Button
           onClick={openModal}
           icon={<AddIcon color="white" />}
-          className="w-full shadow-md max-w-md md:max-w-[250px] md:w-full"
+          className="w-full max-w-md shadow-md md:w-full md:max-w-[250px]"
         >
           Add a budget
         </Button>

@@ -51,7 +51,7 @@ const LoginPage: NextPage = () => {
   }
 
   return (
-    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)] w-full max-w-md mx-auto">
+    <section className="mx-auto flex min-h-[calc(100dvh-32px)] w-full max-w-md flex-1 flex-col justify-center gap-4">
       <div className="flex justify-center">
         <Image
           src="/img/logo.svg"
@@ -86,10 +86,10 @@ const LoginPage: NextPage = () => {
         >
           sign in
         </Button>
-        <div className="flex justify-center items-center gap-4 px-2">
-          <span className="h-[1px] bg-gray-300 flex-grow w-full" />
-          <span className="flex-shrink-0 text-center text-gray-500">Or</span>
-          <span className="h-[1px] bg-gray-300 flex-grow w-full" />
+        <div className="flex items-center justify-center gap-4 px-2">
+          <span className="h-[1px] w-full grow bg-gray-300" />
+          <span className="shrink-0 text-center text-gray-500">Or</span>
+          <span className="h-[1px] w-full grow bg-gray-300" />
         </div>
         <ButtonLink href="/sign-up">Sign up</ButtonLink>
       </form>

@@ -67,14 +67,14 @@ export const Field: React.FC<Props> = ({
 
   return (
     <fieldset
-      className={clsxm("flex flex-col gap-2 relative w-full", className)}
+      className={clsxm("relative flex w-full flex-col gap-2", className)}
     >
       {label ? (
-        <label className="uppercase text-gray-600 text-sm">{label}</label>
+        <label className="text-sm uppercase text-gray-600">{label}</label>
       ) : null}
       <input
         className={clsxm(
-          "field border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500",
+          "field rounded-md border border-slate-200 bg-white p-2 outline-0 duration-200 focus:border-blue-500",
           { "pr-12": isPassword || copy }
         )}
         name={name}
@@ -93,7 +93,7 @@ export const Field: React.FC<Props> = ({
       {isPassword ? (
         <button
           type="button"
-          className="rounded-sm absolute bottom-2 right-3"
+          className="absolute bottom-2 right-3 rounded-sm"
           onClick={handleShowPassword}
         >
           {showPassword ? (
@@ -106,7 +106,7 @@ export const Field: React.FC<Props> = ({
       {copy ? (
         <button
           type="button"
-          className="rounded-sm absolute bottom-2 right-3 z-"
+          className="z- absolute bottom-2 right-3 rounded-sm"
           onClick={handleCopyText}
         >
           <CopyIcon />

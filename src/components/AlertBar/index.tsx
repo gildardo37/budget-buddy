@@ -32,7 +32,7 @@ export const AlertBar: React.FC = () => {
   return isAlertDisplayed ? (
     <button
       className={clsxm(
-        "fixed z-30 top-4 border-t left-4 right-4 flex items-center gap-2 rounded-xl px-4 py-3 shadow-sm animate__animated animate__bounceInDown",
+        "animate__animated animate__bounceInDown fixed left-4 right-4 top-4 z-30 flex items-center gap-2 rounded-xl border-t px-4 py-3 shadow-sm",
         backgroundColor,
         { animate__bounceOutUp: alertOptions.triggerClose }
       )}

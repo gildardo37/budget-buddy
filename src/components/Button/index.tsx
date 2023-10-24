@@ -26,11 +26,11 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       className={clsxm([
-        "w-full py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] uppercase disabled:opacity-70 disabled:cursor-not-allowed transition-all button",
+        "button flex h-[42px] w-full items-center justify-center gap-1 rounded-xl px-4 py-2 uppercase transition-all disabled:cursor-not-allowed disabled:opacity-70",
         className,
         {
           "bg-blue-500 text-white": buttonType === "primary",
-          "text-black border border-blue-500": buttonType === "secondary",
+          "border border-blue-500 text-black": buttonType === "secondary",
         },
       ])}
       onClick={onClick && (!disabled || isLoading) ? onClick : undefined}

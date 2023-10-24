@@ -17,8 +17,9 @@ export const Header: React.FC<Props> = ({
   alignText = "left",
 }) => {
   const router = useRouter();
+
   return (
-    <header className="flex w-full gap-2 items-center pb-4">
+    <header className="flex w-full items-center gap-2 pb-4">
       {showBack ? (
         <button onClick={() => router.back()} className="flex items-center p-2">
           <svg
@@ -33,7 +34,7 @@ export const Header: React.FC<Props> = ({
       ) : null}
       <h1
         className={clsxm(
-          "text-2xl leading-none font-semibold flex-grow",
+          "flex-grow text-2xl font-semibold leading-none",
           `text-${alignText}`
         )}
       >

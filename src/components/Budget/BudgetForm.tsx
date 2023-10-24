@@ -88,7 +88,7 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
         disabled={isLoading}
       />
       <Button
-        className="md:col-start-2 md:place-self-end md:max-w-[150px]"
+        className="md:col-start-2 md:max-w-[150px] md:place-self-end"
         type="submit"
         disabled={isLoading || isDisabled || !isFormModified}
         isLoading={isLoading}

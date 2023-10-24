@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const LoadingState: React.FC = () => {
   return (
-    <div className="flex flex-col justify-center items-center bg-blue-500 h-screen touch-none">
+    <div className="flex h-screen touch-none flex-col items-center justify-center bg-blue-500">
       <Image
         className="animate-bounce-quick"
         src="/img/logo-white.svg"

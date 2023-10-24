@@ -89,7 +89,7 @@ export const TransactionForm: React.FC<Props> = ({ budgetId, onSuccess }) => {
         disabled={isLoading}
       />
       <Button
-        className="md:max-w-[150px] md:col-start-2 md:place-self-end"
+        className="md:col-start-2 md:max-w-[150px] md:place-self-end"
         type="submit"
         disabled={isDisabled || isLoading}
         isLoading={isLoading}

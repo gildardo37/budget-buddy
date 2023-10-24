@@ -27,10 +27,10 @@ export const Dropdown: React.FC<Props> = ({
   return (
     <fieldset className="flex flex-col gap-2">
       {label ? (
-        <label className="uppercase text-gray-600 text-sm">{label}</label>
+        <label className="text-sm uppercase text-gray-600">{label}</label>
       ) : null}
       <select
-        className="border border-slate-200 bg-white p-2 outline-0 rounded-md duration-200 focus:border-blue-500 disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none"
+        className="rounded-md border border-slate-200 bg-white p-2 outline-0 duration-200 focus:border-blue-500 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30"
         name={name}
         id={id}
         value={value}

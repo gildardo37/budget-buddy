@@ -18,7 +18,7 @@ export const TransactionDetails: React.FC<Props> = ({
   },
 }) => {
   return (
-    <ul className="grid gap-4 w-full max-w-lg rounded-xl bg-slate-300/50 p-4">
+    <ul className="grid w-full max-w-lg gap-4 rounded-xl bg-slate-300/50 p-4">
       <ListItem title="Transaction ID" content={id} />
       <ListItem title="Amount" content={formattedAmount(ammount, type)} />
       <ListItem title="Description" content={description} />

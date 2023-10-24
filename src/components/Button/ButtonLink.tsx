@@ -10,7 +10,7 @@ export const ButtonLink: React.FC<Props> = ({ href, children }) => {
   return (
     <Link
       href={href}
-      className="py-2 px-4 rounded-xl flex justify-center gap-1 items-center h-[42px] border border-blue-500 uppercase text-sm"
+      className="flex h-[42px] items-center justify-center gap-1 rounded-xl border border-blue-500 px-4 py-2 text-sm uppercase"
     >
       {children}
     </Link>

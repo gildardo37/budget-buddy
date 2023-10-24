@@ -57,9 +57,9 @@ export const MyTransaction: React.FC<Props> = ({
   ];
 
   return (
-    <div className="flex flex-col gap-2 relative items-center p-4 rounded-xl bg-slate-300/50 w-full max-w-lg">
+    <div className="relative flex w-full max-w-lg flex-col items-center gap-2 rounded-xl bg-slate-300/50 p-4">
       <div className="flex w-full">
-        <h2 className="flex-grow text-lg font-semibold">{description}</h2>
+        <h2 className="grow text-lg font-semibold">{description}</h2>
         <CustomDropdown
           labelContent={<BulletIcon color="rgb(75 85 99)" />}
           options={options}
@@ -75,7 +75,7 @@ export const MyTransaction: React.FC<Props> = ({
           </p>
         </Dialog>
       </div>
-      <p className="text-3xl font-bold text-center">
+      <p className="text-center text-3xl font-bold">
         {formattedAmount(ammount, type)}
       </p>
       <div className="text-center">

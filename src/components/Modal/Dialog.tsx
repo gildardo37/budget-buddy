@@ -48,17 +48,17 @@ export const Dialog: React.FC<Props> = ({
     <>
       <div
         className={clsxm(
-          "flex items-center justify-center bg-black/50 fixed z-20 inset-0 w-full min-h-screen p-4 animate__animated animate__fadeIn",
+          "animate__animated animate__fadeIn fixed inset-0 z-20 flex min-h-screen w-full items-center justify-center bg-black/50 p-4",
           { animate__fadeOut: triggerClose }
         )}
       >
         <section
           className={clsxm(
-            "bg-white flex flex-col rounded-md p-4 justify-center gap-4 w-full max-w-md animate__animated animate__zoomIn animate__faster",
+            "animate__animated animate__zoomIn animate__faster flex w-full max-w-md flex-col justify-center gap-4 rounded-md bg-white p-4",
             { animate__zoomOut: triggerClose }
           )}
         >
-          <header className="flex justify-between items-center">
+          <header className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">{title}</h2>
             <button onClick={closeModal}>
               <CloseIcon height="32" width="32" />

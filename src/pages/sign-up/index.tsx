@@ -62,7 +62,7 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-4 justify-center flex-1 min-h-[calc(100dvh-32px)] w-full max-w-md mx-auto">
+    <section className="mx-auto flex min-h-[calc(100dvh-32px)] w-full max-w-md flex-1 flex-col justify-center gap-4">
       {isSigned ? (
         <>
           <div className="flex justify-center">
@@ -78,7 +78,7 @@ const SignUp: NextPage = () => {
             inbox (and your spam folder, just in case) and click on the
             confirmation link to verify your account.
           </p>
-          <p className="text-center mb-4">
+          <p className="mb-4 text-center">
             If you did not receive the email, please contact our support team
             and we will be happy to assist you. Thank you for choosing our
             service.

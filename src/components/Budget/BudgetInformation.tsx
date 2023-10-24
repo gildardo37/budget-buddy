@@ -84,7 +84,7 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
 
   return (
     <>
-      <div className="w-full flex items-center justify-between">
+      <div className="flex w-full items-center justify-between text-red-300">
         <span className="font-semibold">My budget</span>
         <CustomDropdown
           labelContent={<BulletIcon color="rgb(75 85 99)" />}

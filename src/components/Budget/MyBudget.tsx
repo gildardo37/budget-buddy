@@ -12,9 +12,9 @@ export const MyBudget: React.FC<Props> = ({ id }) => {
   const myBudget = budget?.data?.[0];
 
   return (
-    <div className="relative flex flex-col gap-2 items-center p-4 rounded-xl bg-slate-300/50 max-w-lg w-full">
+    <div className="relative flex w-full max-w-lg flex-col items-center gap-2 rounded-xl bg-slate-300/50 p-4">
       {isLoading ? (
-        <div className="grid place-items-center h-[152px]">
+        <div className="grid h-[152px] place-items-center">
           <Loading />
         </div>
       ) : myBudget ? (
