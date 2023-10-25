@@ -14,9 +14,9 @@ export const BudgetList: React.FC<Props> = ({ budgets }) => {
         <ListCard
           key={id}
           href={`/budget/${id}`}
-          ammount={formatPrice(ammount)}
-          date={new Date(created_at).toDateString()}
-          description={description}
+          content={formatPrice(ammount)}
+          details={new Date(created_at).toDateString()}
+          title={description}
         />
       ))}
     </ul>

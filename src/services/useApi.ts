@@ -17,6 +17,7 @@ import {
   signUp,
   updateBudget,
   updateProfile,
+  updateTransaction,
 } from "@/services/api";
 
 type ID = string | number;
@@ -115,6 +116,21 @@ export const useAddTransaction = (budgetId: string) => {
   return useMutation(addTransaction, {
     onSuccess: () => {
       queryClient.invalidateQueries([transactionsKey(budgetId)]);
+    },
+  });
+};
+
+export const useUpdateTransaction = (
+  budgetId: string,
+  transactionId: string
+) => {
+  const queryClient = useQueryClient();
+  return useMutation(updateTransaction, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([transactionsKey(budgetId)]);
+      queryClient.invalidateQueries([
+        transactionIdKey(budgetId, transactionId),
+      ]);
     },
   });
 };

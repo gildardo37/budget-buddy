@@ -22,10 +22,10 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
           <ListCard
             key={id}
             href={`/budget/${budgetId}/transaction/${id}`}
-            ammount={formatPrice(`${type === "expense" ? "-" : ""}${ammount}`)}
+            content={formatPrice(`${type === "expense" ? "-" : ""}${ammount}`)}
             textColor={type === "income" ? "text-green-600" : ""}
-            date={new Date(created_at).toDateString()}
-            description={description}
+            details={new Date(created_at).toDateString()}
+            title={description}
           />
         )
       )}

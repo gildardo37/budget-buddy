@@ -38,11 +38,6 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const data: AddBudgetProps = {
-        ammount: parseFloat(formData.ammount.value),
-        description: formData.description.value,
-      };
-
       if (!isFormModified) {
         return displayAlert({
           type: "warning",
@@ -50,9 +45,7 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
         });
       }
 
-      const { error } = myBudget
-        ? await updateBudget({ ...data, id: myBudget?.id })
-        : await addBudget(data);
+      const { error } = await handleRequest();
       if (error) throw error;
       if (onSuccess) onSuccess();
       displayAlert({
@@ -64,6 +57,16 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
     } catch (e) {
       handleErrors(e, displayAlert);
     }
+  };
+
+  const handleRequest = () => {
+    const data: AddBudgetProps = {
+      ammount: parseFloat(formData.ammount.value),
+      description: formData.description.value,
+    };
+    return myBudget
+      ? updateBudget({ ...data, id: myBudget?.id })
+      : addBudget(data);
   };
 
   return (

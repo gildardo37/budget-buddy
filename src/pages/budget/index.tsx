@@ -16,7 +16,7 @@ const BudgetPage: NextPage = () => {
       {isLoading ? (
         <Loading />
       ) : budgets?.data?.length ? (
-        <BudgetList budgets={[...budgets.data].reverse()} />
+        <BudgetList budgets={budgets.data} />
       ) : (
         <p className="text-gray-500">No budgets added yet, start adding one.</p>
       )}

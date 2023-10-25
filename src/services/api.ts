@@ -1,15 +1,16 @@
 import { supabase } from "./database";
 import {
   AddBudgetProps,
-  AddProfile,
-  AddTransaction,
+  AddProfileProps,
+  AddTransactionProps,
   Budget,
   Login,
   Profile,
   Transaction,
   TransactionType,
   UpdateBudgetProps,
-  UpdateProfile,
+  UpdateProfileProps,
+  UpdateTransactionProps,
 } from "@/types";
 import { PostgrestSingleResponse, Session } from "@supabase/supabase-js";
 
@@ -47,7 +48,7 @@ export const addProfile = async ({
   email,
   first_name,
   last_name,
-}: AddProfile) => {
+}: AddProfileProps) => {
   return await supabase.from("profile").insert({
     id,
     email,
@@ -59,7 +60,7 @@ export const addProfile = async ({
 export const updateProfile = async ({
   first_name,
   last_name,
-}: UpdateProfile) => {
+}: UpdateProfileProps) => {
   const { data } = await supabase.auth.getSession();
   return await supabase
     .from("profile")
@@ -100,6 +101,7 @@ export const getBudgets = async () => {
       .from("budgets")
       .select()
       .eq("profile_id", data.session?.user.id)
+      .order("created_at", { ascending: false })
   );
 };
 
@@ -151,35 +153,51 @@ export const getTransactions = async (budgetId: string) => {
       .select("*, budgets(*), transaction_type(*)")
       .eq("budget_fk", budgetId)
       .eq("budgets.profile_id", data.session?.user.id)
-      .order("id", { ascending: false });
+      .order("created_at", { ascending: false });
   });
 };
 
 export const getTransactionById = async (id: string, budgetId: string) => {
-  return handleRequest<Transaction[]>(async () => {
-    const { data } = await supabase.auth.getSession();
-    return await supabase
+  const { data } = await supabase.auth.getSession();
+  return handleRequest<Transaction[]>(() => {
+    return supabase
       .from("transactions")
       .select("*, budgets(*), transaction_type(*)")
       .eq("id", id)
       .eq("budget_fk", budgetId)
-      .eq("budgets.profile_id", data.session?.user.id)
-      .order("id", { ascending: false });
+      .eq("budgets.profile_id", data.session?.user.id);
   });
 };
 
 export const addTransaction = async ({
   description,
   ammount,
-  budgetId,
-  type,
-}: AddTransaction) => {
+  budget_fk,
+  transaction_type_fk,
+}: AddTransactionProps) => {
   return await supabase.from("transactions").insert({
     description,
     ammount,
-    budget_fk: budgetId,
-    transaction_type_fk: type,
+    budget_fk,
+    transaction_type_fk,
   });
+};
+
+export const updateTransaction = async ({
+  id,
+  budget_fk,
+  ammount,
+  description,
+  transaction_type_fk,
+}: UpdateTransactionProps) => {
+  return handleRequest<Transaction[]>(() =>
+    supabase
+      .from("transactions")
+      .update({ description, ammount, transaction_type_fk })
+      .eq("id", id)
+      .eq("budget_fk", budget_fk)
+      .select()
+  );
 };
 
 export const deleteTransaction = async (id: string, budgetId: string) => {

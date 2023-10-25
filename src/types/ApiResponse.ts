@@ -6,9 +6,9 @@ export interface Profile {
   last_name: string;
 }
 
-export type AddProfile = Omit<Profile, "created_at">;
+export type AddProfileProps = Omit<Profile, "created_at">;
 
-export type UpdateProfile = Pick<Profile, "first_name" | "last_name">;
+export type UpdateProfileProps = Pick<Profile, "first_name" | "last_name">;
 
 export interface Login {
   email: string;
@@ -25,14 +25,7 @@ export interface Budget {
 
 export type AddBudgetProps = Pick<Budget, "description" | "ammount">;
 
-export type UpdateBudgetProps = Pick<Budget, "id" | "description" | "ammount">;
-
-export interface AddTransaction {
-  budgetId: number;
-  description: string;
-  ammount: number;
-  type: number;
-}
+export type UpdateBudgetProps = Omit<Budget, "created_at" | "profile_id">;
 
 export type TransactionTypeOptions = "expense" | "income";
 
@@ -52,3 +45,13 @@ export interface Transaction {
   budgets: Budget;
   transaction_type: TransactionType;
 }
+
+export type AddTransactionProps = Omit<
+  Transaction,
+  "id" | "created_at" | "transaction_type" | "budgets"
+>;
+
+export type UpdateTransactionProps = Omit<
+  Transaction,
+  "created_at" | "transaction_type" | "budgets"
+>;

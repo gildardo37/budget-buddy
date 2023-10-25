@@ -9,25 +9,31 @@ import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
 import { Dialog } from "@/components/Modal/Dialog";
 import { useModal } from "@/hooks/useModal";
 import { handleErrors } from "@/utils/errors";
+import { Modal } from "../Modal";
+import { TransactionForm } from "./TransactionForm";
 
 interface Props {
   transaction: Transaction;
   budgetId: string;
 }
 
-export const MyTransaction: React.FC<Props> = ({
-  transaction: {
+export const MyTransaction: React.FC<Props> = ({ transaction, budgetId }) => {
+  const {
     id,
     ammount,
     description,
     transaction_type: { type },
     budgets,
-  },
-  budgetId,
-}) => {
+  } = transaction;
   const router = useRouter();
   const { displayAlert } = useAlert();
   const { isOpen, openModal, closeModal } = useModal();
+  const {
+    isOpen: isDialogOpen,
+    openModal: openDialog,
+    closeModal: closeDialog,
+  } = useModal();
+
   const { mutateAsync: deleteTransaction } = useDeleteTransaction(
     id.toString(),
     budgetId
@@ -43,17 +49,9 @@ export const MyTransaction: React.FC<Props> = ({
     }
   };
 
-  const notAvailable = () => {
-    displayAlert({
-      message: "This functionality is not implemented yet.",
-      type: "warning",
-      duration: 6000,
-    });
-  };
-
   const options: CustomDropdownOptions[] = [
-    { action: notAvailable, name: "Edit" },
-    { action: openModal, name: "Delete" },
+    { action: openModal, name: "Edit" },
+    { action: openDialog, name: "Delete" },
   ];
 
   return (
@@ -66,14 +64,25 @@ export const MyTransaction: React.FC<Props> = ({
           position="bottom-right"
         />
         <Dialog
-          dialogOpen={isOpen}
-          onClose={closeModal}
+          dialogOpen={isDialogOpen}
+          onClose={closeDialog}
           onConfirmation={handleDelete}
         >
           <p>
             Are you sure you want to permantly delete {description} transaction?
           </p>
         </Dialog>
+        <Modal
+          title="Update transaction"
+          modalOpen={isOpen}
+          onClose={closeModal}
+        >
+          <TransactionForm
+            budgetId={budgetId}
+            onSuccess={closeModal}
+            updateData={transaction}
+          />
+        </Modal>
       </div>
       <p className="text-center text-3xl font-bold">
         {formattedAmount(ammount, type)}

@@ -38,7 +38,7 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
           error={transactionError}
         />
       ) : (
-        <p className="py-4 text-gray-500">
+        <p className="py-4 text-gray-500 md:text-center">
           No transactions added yet, start adding one.
         </p>
       )}
