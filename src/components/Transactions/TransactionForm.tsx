@@ -4,14 +4,14 @@ import {
   useGetTransactionType,
   useUpdateTransaction,
 } from "@/services/useApi";
+import { Transaction } from "@/types";
+import { handleErrors } from "@/utils/errors";
 import { capitalizeText } from "@/utils/strings";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { Dropdown } from "@/components/Dropdown";
-import { handleErrors } from "@/utils/errors";
-import { Transaction } from "@/types";
 
 interface Props {
   budgetId: string;
@@ -27,8 +27,10 @@ export const TransactionForm: React.FC<Props> = ({
   const { displayAlert } = useAlert();
   const { data: transactionTypes, isLoading: isTypeLoading } =
     useGetTransactionType();
+
   const { mutateAsync: addTransaction, isLoading: isAddLoading } =
     useAddTransaction(budgetId);
+
   const { mutateAsync: updateTransaction, isLoading: isUpdateLoading } =
     useUpdateTransaction(budgetId, updateData?.id.toString() ?? "");
 
@@ -50,6 +52,17 @@ export const TransactionForm: React.FC<Props> = ({
     value: String(id),
   }));
 
+  const isFormModified = useMemo(() => {
+    if (!updateData) return true;
+
+    const { ammount, description, type } = formData;
+    return (
+      ammount.value !== updateData.ammount.toString() ||
+      description.value !== updateData.description ||
+      type.value !== updateData.transaction_type_fk.toString()
+    );
+  }, [formData, updateData]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -59,8 +72,9 @@ export const TransactionForm: React.FC<Props> = ({
           message: "Transaction information is the same! Modify it to update.",
         });
       }
-      const data = await handleRequest();
-      if (data.error) throw data.error;
+      const { error } = await handleRequest();
+      if (error) throw error;
+
       onSuccess();
       displayAlert({
         message: "Transaction added succesfully!",
@@ -86,17 +100,6 @@ export const TransactionForm: React.FC<Props> = ({
       ? updateTransaction({ ...data, id: updateData.id })
       : addTransaction(data);
   };
-
-  const isFormModified = useMemo(() => {
-    if (!updateData) return true;
-
-    const { ammount, description, type } = formData;
-    return (
-      ammount.value !== updateData.ammount.toString() ||
-      description.value !== updateData.description ||
-      type.value !== updateData.transaction_type_fk.toString()
-    );
-  }, [formData, updateData]);
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">

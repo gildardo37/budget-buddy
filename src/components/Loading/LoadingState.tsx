@@ -14,5 +14,3 @@ export const LoadingState: React.FC = () => {
     </div>
   );
 };
-
-export default LoadingState;

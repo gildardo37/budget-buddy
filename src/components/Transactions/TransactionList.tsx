@@ -1,7 +1,7 @@
-import { Transaction } from "@/types";
 import React from "react";
-import { ListCard } from "../List/ListCard";
-import { formatPrice } from "@/utils/numbers";
+import { Transaction } from "@/types";
+import { formattedAmount } from "@/utils/numbers";
+import { ListCard } from "@/components/List/ListCard";
 
 interface Props {
   data: Transaction[];
@@ -22,10 +22,10 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
           <ListCard
             key={id}
             href={`/budget/${budgetId}/transaction/${id}`}
-            content={formatPrice(`${type === "expense" ? "-" : ""}${ammount}`)}
-            textColor={type === "income" ? "text-green-600" : ""}
-            details={new Date(created_at).toDateString()}
             title={description}
+            content={formattedAmount(ammount, type)}
+            details={new Date(created_at).toDateString()}
+            textColor={type === "income" ? "text-green-600" : ""}
           />
         )
       )}
