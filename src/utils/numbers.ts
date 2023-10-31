@@ -27,7 +27,7 @@ export const formatPrice = (num: string | number) => {
 };
 
 export const formattedAmount = (
-  amount: Transaction["ammount"],
+  amount: Transaction["amount"],
   type: TransactionTypeOptions
 ) => {
   return formatPrice(`${type === "expense" ? "-" : ""}${amount}`);

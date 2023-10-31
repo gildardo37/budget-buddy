@@ -20,7 +20,7 @@ interface Props {
 export const MyTransaction: React.FC<Props> = ({ transaction, budgetId }) => {
   const {
     id,
-    ammount,
+    amount,
     description,
     transaction_type: { type },
     budgets,
@@ -85,11 +85,11 @@ export const MyTransaction: React.FC<Props> = ({ transaction, budgetId }) => {
         </Modal>
       </div>
       <p className="text-center text-3xl font-bold">
-        {formattedAmount(ammount, type)}
+        {formattedAmount(amount, type)}
       </p>
       <div className="text-center">
         <p className="text-sm text-gray-600">
-          {budgets.description} {formatPrice(budgets.ammount)}
+          {budgets.description} {formatPrice(budgets.amount)}
         </p>
       </div>
     </div>

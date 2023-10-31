@@ -44,10 +44,10 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
     let totalSpent = 0;
     let totalIncome = 0;
 
-    transactions?.forEach(({ ammount, transaction_type: { type } }) =>
-      type === "income" ? (totalIncome += ammount) : (totalSpent += ammount)
+    transactions?.forEach(({ amount, transaction_type: { type } }) =>
+      type === "income" ? (totalIncome += amount) : (totalSpent += amount)
     );
-    const { ammount: originalBudget } = myBudget;
+    const { amount: originalBudget } = myBudget;
     const totalBudget = originalBudget + totalIncome;
     const availableBudget = totalBudget - totalSpent;
 
@@ -107,7 +107,7 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
         <p>Are you sure you want to permantly delete {myBudget.description}?</p>
       </Dialog>
       <Modal title="Update budget" modalOpen={isOpen} onClose={closeModal}>
-        <BudgetForm myBudget={myBudget} onSuccess={closeModal} />
+        <BudgetForm updateData={myBudget} onSuccess={closeModal} />
       </Modal>
     </>
   );

@@ -14,7 +14,7 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
       {data.map(
         ({
           id,
-          ammount,
+          amount,
           description,
           created_at,
           transaction_type: { type },
@@ -23,7 +23,7 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
             key={id}
             href={`/budget/${budgetId}/transaction/${id}`}
             title={description}
-            content={formattedAmount(ammount, type)}
+            content={formattedAmount(amount, type)}
             details={new Date(created_at).toDateString()}
             textColor={type === "income" ? "text-green-600" : ""}
           />

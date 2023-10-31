@@ -36,7 +36,7 @@ export const TransactionForm: React.FC<Props> = ({
 
   const { formData, resetForm, isDisabled, handleInputChange } = useForm({
     description: { value: updateData?.description ?? "" },
-    ammount: { value: updateData?.ammount.toString() ?? "" },
+    amount: { value: updateData?.amount.toString() ?? "" },
     type: {
       value:
         updateData?.transaction_type.id.toString() ??
@@ -55,9 +55,9 @@ export const TransactionForm: React.FC<Props> = ({
   const isFormModified = useMemo(() => {
     if (!updateData) return true;
 
-    const { ammount, description, type } = formData;
+    const { amount, description, type } = formData;
     return (
-      ammount.value !== updateData.ammount.toString() ||
+      amount.value !== updateData.amount.toString() ||
       description.value !== updateData.description ||
       type.value !== updateData.transaction_type_fk.toString()
     );
@@ -88,9 +88,9 @@ export const TransactionForm: React.FC<Props> = ({
   };
 
   const handleRequest = () => {
-    const { ammount, description, type } = formData;
+    const { amount, description, type } = formData;
     const data = {
-      ammount: parseFloat(ammount.value),
+      amount: parseFloat(amount.value),
       description: description.value,
       transaction_type_fk: parseFloat(type.value),
       budget_fk: parseFloat(budgetId),
@@ -115,11 +115,11 @@ export const TransactionForm: React.FC<Props> = ({
       />
       <Field
         label="Amount"
-        name="ammount"
+        name="amount"
         type="text"
-        value={formData.ammount.value}
+        value={formData.amount.value}
         onInput={handleInputChange}
-        required={formData.ammount.required}
+        required={formData.amount.required}
         inputMode="decimal"
         disabled={isLoading}
       />

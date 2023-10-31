@@ -9,31 +9,31 @@ import { handleErrors } from "@/utils/errors";
 
 interface Props {
   onSuccess?: () => void;
-  myBudget?: Budget;
+  updateData?: Budget;
 }
 
-export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
+export const BudgetForm: React.FC<Props> = ({ onSuccess, updateData }) => {
   const { displayAlert } = useAlert();
   const { mutateAsync: addBudget, isLoading: isAddLoading } = useAddBudget();
 
   const { mutateAsync: updateBudget, isLoading: isUpdateLoading } =
-    useUpdateBudget(myBudget?.id.toString() ?? "0");
+    useUpdateBudget(updateData?.id.toString() ?? "0");
 
   const { formData, isDisabled, handleInputChange, resetForm } = useForm({
-    description: { value: myBudget?.description ?? "" },
-    ammount: { value: myBudget?.ammount.toString() ?? "" },
+    description: { value: updateData?.description ?? "" },
+    amount: { value: updateData?.amount.toString() ?? "" },
   });
 
   const isLoading = isAddLoading || isUpdateLoading;
 
   const isFormModified = useMemo(() => {
-    if (!myBudget) return true;
-    const { ammount, description } = formData;
+    if (!updateData) return true;
+    const { amount, description } = formData;
     return (
-      ammount.value !== myBudget.ammount.toString() ||
-      description.value !== myBudget.description
+      amount.value !== updateData.amount.toString() ||
+      description.value !== updateData.description
     );
-  }, [formData, myBudget]);
+  }, [formData, updateData]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,11 +61,11 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
 
   const handleRequest = () => {
     const data: AddBudgetProps = {
-      ammount: parseFloat(formData.ammount.value),
+      amount: parseFloat(formData.amount.value),
       description: formData.description.value,
     };
-    return myBudget
-      ? updateBudget({ ...data, id: myBudget?.id })
+    return updateData
+      ? updateBudget({ ...data, id: updateData?.id })
       : addBudget(data);
   };
 
@@ -81,12 +81,12 @@ export const BudgetForm: React.FC<Props> = ({ onSuccess, myBudget }) => {
         disabled={isLoading}
       />
       <Field
-        label="Ammount"
-        name="ammount"
+        label="Amount"
+        name="amount"
         type="text"
-        value={formData.ammount.value}
+        value={formData.amount.value}
         onInput={handleInputChange}
-        required={formData.ammount.required}
+        required={formData.amount.required}
         inputMode="decimal"
         disabled={isLoading}
       />

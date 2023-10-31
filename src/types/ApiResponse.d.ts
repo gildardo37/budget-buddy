@@ -19,11 +19,11 @@ export interface Budget {
   id: number;
   created_at: Date;
   description: string;
-  ammount: number;
+  amount: number;
   profile_id: string;
 }
 
-export type AddBudgetProps = Pick<Budget, "description" | "ammount">;
+export type AddBudgetProps = Pick<Budget, "description" | "amount">;
 
 export type UpdateBudgetProps = Omit<Budget, "created_at" | "profile_id">;
 
@@ -39,7 +39,7 @@ export interface Transaction {
   id: number;
   created_at: string;
   description: string;
-  ammount: number;
+  amount: number;
   budget_fk: number;
   transaction_type_fk: number;
   budgets: Budget;

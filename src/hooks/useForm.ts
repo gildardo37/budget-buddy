@@ -34,7 +34,7 @@ export const useForm = <T extends FormData>(data: T) => {
     return newFormData;
   };
   const [formData, setFormData] = useState(transformValues());
-  const excludedNumberNames = ["ammount"];
+  const excludedNumberNames = ["amount"];
 
   const setForm = (form: typeof data) => {
     setFormData(transformValues(form));

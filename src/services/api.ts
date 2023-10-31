@@ -116,22 +116,22 @@ export const getBudgetById = async (id: string) => {
   );
 };
 
-export const addBudget = async ({ description, ammount }: AddBudgetProps) => {
+export const addBudget = async ({ description, amount }: AddBudgetProps) => {
   const { data } = await supabase.auth.getSession();
   return await supabase
     .from("budgets")
-    .insert({ description, ammount, profile_id: data.session?.user.id });
+    .insert({ description, amount, profile_id: data.session?.user.id });
 };
 
 export const updateBudget = async ({
   id,
   description,
-  ammount,
+  amount,
 }: UpdateBudgetProps) => {
   const { data } = await supabase.auth.getSession();
   return await supabase
     .from("budgets")
-    .update({ description, ammount })
+    .update({ description, amount })
     .eq("id", id)
     .eq("profile_id", data.session?.user.id);
 };
@@ -171,13 +171,13 @@ export const getTransactionById = async (id: string, budgetId: string) => {
 
 export const addTransaction = async ({
   description,
-  ammount,
+  amount,
   budget_fk,
   transaction_type_fk,
 }: AddTransactionProps) => {
   return await supabase.from("transactions").insert({
     description,
-    ammount,
+    amount,
     budget_fk,
     transaction_type_fk,
   });
@@ -186,14 +186,14 @@ export const addTransaction = async ({
 export const updateTransaction = async ({
   id,
   budget_fk,
-  ammount,
+  amount,
   description,
   transaction_type_fk,
 }: UpdateTransactionProps) => {
   return handleRequest<Transaction[]>(() =>
     supabase
       .from("transactions")
-      .update({ description, ammount, transaction_type_fk })
+      .update({ description, amount, transaction_type_fk })
       .eq("id", id)
       .eq("budget_fk", budget_fk)
       .select()
