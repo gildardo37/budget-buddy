@@ -18,11 +18,13 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
           description,
           created_at,
           transaction_type: { type },
+          categories: { name: category },
         }) => (
           <ListCard
             key={id}
             href={`/budget/${budgetId}/transaction/${id}`}
             title={description}
+            subTitle={category}
             content={formattedAmount(amount, type)}
             details={new Date(created_at).toDateString()}
             textColor={type === "income" ? "text-green-600" : ""}

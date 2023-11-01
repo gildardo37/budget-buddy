@@ -7,6 +7,7 @@ import {
   deleteTransaction,
   getBudgetById,
   getBudgets,
+  getCategories,
   getProfile,
   getTransactionById,
   getTransactionType,
@@ -22,6 +23,7 @@ import {
 
 type ID = string | number;
 
+const categoriesKey = "categories";
 const profileKey = "profile";
 const budgetsKey = "budgets";
 const budgetIdKey = (id: ID) => `${budgetsKey}-${id}`;
@@ -146,4 +148,8 @@ export const useDeleteTransaction = (id: string, budgetId: string) => {
 
 export const useGetTransactionType = () => {
   return useQuery([transactionTypesKey], getTransactionType);
+};
+
+export const useGetCategories = () => {
+  return useQuery([categoriesKey], getCategories);
 };

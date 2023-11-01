@@ -23,9 +23,9 @@ export interface Budget {
   profile_id: string;
 }
 
-export type AddBudgetProps = Pick<Budget, "description" | "amount">;
-
 export type UpdateBudgetProps = Omit<Budget, "created_at" | "profile_id">;
+
+export type AddBudgetProps = Omit<UpdateBudgetProps, "id">;
 
 export type TransactionTypeOptions = "expense" | "income";
 
@@ -44,14 +44,19 @@ export interface Transaction {
   transaction_type_fk: number;
   budgets: Budget;
   transaction_type: TransactionType;
+  category_fk: number;
+  categories: Category;
 }
-
-export type AddTransactionProps = Omit<
-  Transaction,
-  "id" | "created_at" | "transaction_type" | "budgets"
->;
 
 export type UpdateTransactionProps = Omit<
   Transaction,
-  "created_at" | "transaction_type" | "budgets"
+  "created_at" | "transaction_type" | "budgets" | "categories"
 >;
+
+export type AddTransactionProps = Omit<UpdateTransactionProps, "id">;
+
+export interface Category {
+  id: number;
+  created_at: Date;
+  name: string;
+}

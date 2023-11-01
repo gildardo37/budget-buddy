@@ -5,6 +5,7 @@ import { ListItemWrapper } from "@/components/List/ListItemWrapper";
 interface Props {
   href?: string;
   title?: string;
+  subTitle?: string;
   content: string;
   details?: string;
   textColor?: string;
@@ -15,6 +16,7 @@ export const ListCard: React.FC<Props> = ({
   content,
   details,
   title,
+  subTitle,
   textColor = "",
 }) => {
   return (
@@ -24,6 +26,7 @@ export const ListCard: React.FC<Props> = ({
     >
       <div className="grid flex-1">
         {title ? <span className="truncate">{title}</span> : null}
+        {subTitle ? <span className="truncate text-xs">{subTitle}</span> : null}
         {details ? (
           <span className="text-xs text-gray-400">{details}</span>
         ) : null}

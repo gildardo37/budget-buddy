@@ -1,10 +1,11 @@
 import React, { FormEvent, useMemo } from "react";
 import {
   useAddTransaction,
+  useGetCategories,
   useGetTransactionType,
   useUpdateTransaction,
 } from "@/services/useApi";
-import { Transaction } from "@/types";
+import { AddTransactionProps, Transaction } from "@/types";
 import { handleErrors } from "@/utils/errors";
 import { capitalizeText } from "@/utils/strings";
 import { useAlert } from "@/hooks/useAlert";
@@ -12,7 +13,6 @@ import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
 import { Dropdown } from "@/components/Dropdown";
-
 interface Props {
   budgetId: string;
   onSuccess?: () => void;
@@ -28,6 +28,9 @@ export const TransactionForm: React.FC<Props> = ({
   const { data: transactionTypes, isLoading: isTypeLoading } =
     useGetTransactionType();
 
+  const { data: categories, isLoading: isCategoriesLoading } =
+    useGetCategories();
+
   const { mutateAsync: addTransaction, isLoading: isAddLoading } =
     useAddTransaction(budgetId);
 
@@ -39,15 +42,24 @@ export const TransactionForm: React.FC<Props> = ({
     amount: { value: updateData?.amount.toString() ?? "" },
     type: {
       value:
-        updateData?.transaction_type.id.toString() ??
+        updateData?.transaction_type_fk.toString() ??
         transactionTypes?.data?.[0].id.toString() ??
         "2",
     },
+    category: {
+      value: updateData?.category_fk.toString() ?? "",
+    },
   });
 
-  const isLoading = isAddLoading || isTypeLoading || isUpdateLoading;
+  const isLoading =
+    isAddLoading || isTypeLoading || isUpdateLoading || isCategoriesLoading;
 
-  const selectOptions = transactionTypes?.data?.map(({ id, type }) => ({
+  const categoryOptions = categories?.data?.map(({ id, name }) => ({
+    name: capitalizeText(name),
+    value: String(id),
+  }));
+
+  const typeOptions = transactionTypes?.data?.map(({ id, type }) => ({
     name: capitalizeText(type),
     value: String(id),
   }));
@@ -55,11 +67,12 @@ export const TransactionForm: React.FC<Props> = ({
   const isFormModified = useMemo(() => {
     if (!updateData) return true;
 
-    const { amount, description, type } = formData;
+    const { amount, description, type, category } = formData;
     return (
       amount.value !== updateData.amount.toString() ||
       description.value !== updateData.description ||
-      type.value !== updateData.transaction_type_fk.toString()
+      type.value !== updateData.transaction_type_fk.toString() ||
+      category.value !== updateData.category_fk.toString()
     );
   }, [formData, updateData]);
 
@@ -88,12 +101,13 @@ export const TransactionForm: React.FC<Props> = ({
   };
 
   const handleRequest = () => {
-    const { amount, description, type } = formData;
-    const data = {
+    const { amount, description, type, category } = formData;
+    const data: AddTransactionProps = {
       amount: parseFloat(amount.value),
       description: description.value,
       transaction_type_fk: parseFloat(type.value),
       budget_fk: parseFloat(budgetId),
+      category_fk: parseFloat(category.value),
     };
 
     return updateData
@@ -124,9 +138,19 @@ export const TransactionForm: React.FC<Props> = ({
         disabled={isLoading}
       />
       <Dropdown
+        label="Category"
+        name="category"
+        options={categoryOptions}
+        required={formData.category.required}
+        value={formData.category.value}
+        onChange={handleInputChange}
+        disabled={isLoading}
+        placeholder
+      />
+      <Dropdown
         label="Transaction Type"
         name="type"
-        options={selectOptions}
+        options={typeOptions}
         required={formData.type.required}
         value={formData.type.value}
         onChange={handleInputChange}

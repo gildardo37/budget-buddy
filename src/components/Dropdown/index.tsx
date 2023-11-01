@@ -11,6 +11,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   ref?: React.LegacyRef<HTMLSelectElement>;
   options?: DropdownOptions[];
+  placeholder?: boolean;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -23,6 +24,7 @@ export const Dropdown: React.FC<Props> = ({
   name,
   disabled = false,
   options = [],
+  placeholder = false,
 }) => {
   return (
     <fieldset className="flex flex-col gap-2">
@@ -39,6 +41,11 @@ export const Dropdown: React.FC<Props> = ({
         required={required}
         disabled={disabled}
       >
+        {placeholder ? (
+          <option disabled hidden value="">
+            Select an option
+          </option>
+        ) : null}
         {options.map(({ name, value }, index) => (
           <option key={index} value={value}>
             {name}

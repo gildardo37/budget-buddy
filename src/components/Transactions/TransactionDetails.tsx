@@ -15,6 +15,7 @@ export const TransactionDetails: React.FC<Props> = ({
     description,
     created_at,
     transaction_type: { type },
+    categories: { name: category },
   },
 }) => {
   return (
@@ -22,6 +23,7 @@ export const TransactionDetails: React.FC<Props> = ({
       <ListItem title="Transaction ID" content={id} />
       <ListItem title="Amount" content={formattedAmount(amount, type)} />
       <ListItem title="Description" content={description} />
+      <ListItem title="Category" content={capitalizeText(category)} />
       <ListItem title="Transaction type" content={capitalizeText(type)} />
       <ListItem title="Date" content={new Date(created_at).toLocaleString()} />
     </ul>

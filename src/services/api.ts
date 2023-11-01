@@ -4,6 +4,7 @@ import {
   AddProfileProps,
   AddTransactionProps,
   Budget,
+  Category,
   Login,
   Profile,
   Transaction,
@@ -150,7 +151,7 @@ export const getTransactions = async (budgetId: string) => {
   return handleRequest<Transaction[]>(() => {
     return supabase
       .from("transactions")
-      .select("*, budgets(*), transaction_type(*)")
+      .select("*, budgets(*), transaction_type(*), categories(*)")
       .eq("budget_fk", budgetId)
       .eq("budgets.profile_id", data.session?.user.id)
       .order("created_at", { ascending: false });
@@ -162,7 +163,7 @@ export const getTransactionById = async (id: string, budgetId: string) => {
   return handleRequest<Transaction[]>(() => {
     return supabase
       .from("transactions")
-      .select("*, budgets(*), transaction_type(*)")
+      .select("*, budgets(*), transaction_type(*), categories(*)")
       .eq("id", id)
       .eq("budget_fk", budgetId)
       .eq("budgets.profile_id", data.session?.user.id);
@@ -174,12 +175,14 @@ export const addTransaction = async ({
   amount,
   budget_fk,
   transaction_type_fk,
+  category_fk,
 }: AddTransactionProps) => {
   return await supabase.from("transactions").insert({
     description,
     amount,
     budget_fk,
     transaction_type_fk,
+    category_fk,
   });
 };
 
@@ -189,11 +192,12 @@ export const updateTransaction = async ({
   amount,
   description,
   transaction_type_fk,
+  category_fk,
 }: UpdateTransactionProps) => {
   return handleRequest<Transaction[]>(() =>
     supabase
       .from("transactions")
-      .update({ description, amount, transaction_type_fk })
+      .update({ description, amount, transaction_type_fk, category_fk })
       .eq("id", id)
       .eq("budget_fk", budget_fk)
       .select()
@@ -214,5 +218,11 @@ export const getTransactionType = async () => {
       .from("transaction_type")
       .select("id, type")
       .order("id", { ascending: false })
+  );
+};
+
+export const getCategories = async () => {
+  return handleRequest<Category[]>(() =>
+    supabase.from("categories").select("*").order("name", { ascending: true })
   );
 };
