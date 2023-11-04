@@ -5,6 +5,7 @@ import { Loading } from "@/components/Loading";
 import { TransactionsList } from "@/components/Transactions/TransactionList";
 import { RequestError } from "@/components/Errors/RequestError";
 import { AddTransaction } from "@/components/Transactions/AddTransaction";
+import { Filters } from "../Filters";
 
 interface Props {
   id: string;
@@ -15,13 +16,13 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
     data: transactions,
     isLoading: isTransactionLoading,
     error: transactionError,
-  } = useGetTransactions(id);
+  } = useGetTransactions({ budgetId: id });
 
   return (
     <>
       <div className="flex flex-col items-center gap-4">
-        <MyBudget id={id} />
-        <AddTransaction id={id} />
+        <MyBudget budgetId={id} />
+        <AddTransaction budgetId={id} />
       </div>
       {isTransactionLoading ? (
         <Loading />
@@ -29,7 +30,10 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
         !transactions.error &&
         !transactionError ? (
         <>
-          <h2 className="text-lg font-medium">Transactions</h2>
+          <div className="flex items-center justify-between gap-4 pb-2 pt-4">
+            <h2 className="text-lg font-medium">Transactions</h2>
+            <Filters budgetId={id} />
+          </div>
           <TransactionsList data={transactions.data} budgetId={id} />
         </>
       ) : transactions?.error || transactionError ? (

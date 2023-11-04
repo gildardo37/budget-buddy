@@ -23,7 +23,7 @@ interface Props {
 
 export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
   const { data: budget } = useGetBudgetById(budgetId);
-  const { data: myTransactions } = useGetTransactions(budgetId);
+  const { data: myTransactions } = useGetTransactions({ budgetId });
   const { mutateAsync: deleteBudget, error } = useDeleteBudget(budgetId);
   const router = useRouter();
   const { displayAlert } = useAlert();

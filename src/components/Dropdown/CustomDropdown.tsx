@@ -63,7 +63,7 @@ export const CustomDropdown: React.FC<Props> = ({
       {display ? (
         <div
           className={clsxm(
-            "absolute z-20 flex min-w-[100px] flex-col rounded-md bg-white shadow-md duration-200 focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-30",
+            "absolute z-30 flex min-w-[100px] flex-col rounded-md bg-white shadow-md duration-200 focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-30",
             positionClass[position] ?? positionClass["bottom-left"]
           )}
         >

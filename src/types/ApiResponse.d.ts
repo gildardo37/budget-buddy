@@ -48,6 +48,19 @@ export interface Transaction {
   categories: Category;
 }
 
+export type SortTransactionsFilter = keyof Pick<
+  Transaction,
+  "amount" | "description" | "created_at"
+>;
+
+export type OrderFilter = "ASC" | "DSC";
+
+export interface GetTransactionProps {
+  budgetId: string;
+  sort?: SortTransactionsFilter;
+  order?: OrderFilter;
+}
+
 export type UpdateTransactionProps = Omit<
   Transaction,
   "created_at" | "transaction_type" | "budgets" | "categories"

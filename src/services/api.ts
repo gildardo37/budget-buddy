@@ -5,6 +5,7 @@ import {
   AddTransactionProps,
   Budget,
   Category,
+  GetTransactionProps,
   Login,
   Profile,
   Transaction,
@@ -146,7 +147,11 @@ export const deleteBudget = async (budgetId: string) => {
     .eq("profile_id", data.session?.user.id);
 };
 
-export const getTransactions = async (budgetId: string) => {
+export const getTransactions = async ({
+  budgetId,
+  sort = "created_at",
+  order = "DSC",
+}: GetTransactionProps) => {
   const { data } = await supabase.auth.getSession();
   return handleRequest<Transaction[]>(() => {
     return supabase
@@ -154,7 +159,7 @@ export const getTransactions = async (budgetId: string) => {
       .select("*, budgets(*), transaction_type(*), categories(*)")
       .eq("budget_fk", budgetId)
       .eq("budgets.profile_id", data.session?.user.id)
-      .order("created_at", { ascending: false });
+      .order(sort, { ascending: order === "ASC" });
   });
 };
 

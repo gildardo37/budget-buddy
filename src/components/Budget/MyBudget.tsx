@@ -4,11 +4,11 @@ import { Loading } from "@/components/Loading";
 import { BudgetInformation } from "@/components/Budget/BudgetInformation";
 
 interface Props {
-  id: string;
+  budgetId: string;
 }
 
-export const MyBudget: React.FC<Props> = ({ id }) => {
-  const { data: budget, isLoading } = useGetBudgetById(id);
+export const MyBudget: React.FC<Props> = ({ budgetId }) => {
+  const { data: budget, isLoading } = useGetBudgetById(budgetId);
   const myBudget = budget?.data?.[0];
 
   return (
@@ -18,7 +18,7 @@ export const MyBudget: React.FC<Props> = ({ id }) => {
           <Loading />
         </div>
       ) : myBudget ? (
-        <BudgetInformation budgetId={id} />
+        <BudgetInformation budgetId={budgetId} />
       ) : (
         "Something has failed."
       )}

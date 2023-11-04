@@ -20,6 +20,12 @@ import {
   updateProfile,
   updateTransaction,
 } from "@/services/api";
+import {
+  GetTransactionProps,
+  OrderFilter,
+  SortTransactionsFilter,
+} from "@/types";
+import { useFilterParams } from "@/hooks/useFilterParams";
 
 type ID = string | number;
 
@@ -103,8 +109,13 @@ export const useDeleteBudget = (budgetId: string) => {
   });
 };
 
-export const useGetTransactions = (budgetId: string) => {
-  return useQuery([transactionsKey(budgetId)], () => getTransactions(budgetId));
+export const useGetTransactions = (data: GetTransactionProps) => {
+  const { params } = useFilterParams({});
+  return useQuery([transactionsKey(data.budgetId)], () => {
+    const sort = params.sortBy as SortTransactionsFilter;
+    const order = params.orderBy as OrderFilter;
+    return getTransactions({ ...data, sort, order });
+  });
 };
 
 export const useGetTransactionById = (id: string, budgetId: string) => {

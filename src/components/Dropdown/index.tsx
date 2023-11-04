@@ -1,5 +1,6 @@
 import React from "react";
 import { DropdownOptions } from "@/types";
+import { clsxm } from "@/utils/clsxm";
 
 interface Props {
   id?: string;
@@ -12,6 +13,8 @@ interface Props {
   ref?: React.LegacyRef<HTMLSelectElement>;
   options?: DropdownOptions[];
   placeholder?: boolean;
+  noStyles?: boolean;
+  classes?: string;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -25,6 +28,8 @@ export const Dropdown: React.FC<Props> = ({
   disabled = false,
   options = [],
   placeholder = false,
+  noStyles = false,
+  classes = "",
 }) => {
   return (
     <fieldset className="flex flex-col gap-2">
@@ -32,7 +37,13 @@ export const Dropdown: React.FC<Props> = ({
         <label className="text-sm uppercase text-gray-600">{label}</label>
       ) : null}
       <select
-        className="rounded-md border border-slate-200 bg-white p-2 outline-0 duration-200 focus:border-blue-500 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30"
+        className={clsxm(
+          "w-fit duration-200 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30",
+          noStyles
+            ? "bg-transparent outline-none"
+            : "rounded-md border border-slate-200 bg-white p-2 outline-0 focus:border-blue-500",
+          classes
+        )}
         name={name}
         id={id}
         value={value}

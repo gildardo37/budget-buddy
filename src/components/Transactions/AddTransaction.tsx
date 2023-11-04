@@ -6,10 +6,10 @@ import { TransactionForm } from "@/components/Transactions/TransactionForm";
 import { AddIcon } from "@/components/svgs/AddIcon";
 
 interface Props {
-  id: string;
+  budgetId: string;
 }
 
-export const AddTransaction: React.FC<Props> = ({ id }) => {
+export const AddTransaction: React.FC<Props> = ({ budgetId }) => {
   const { isOpen, openModal, closeModal } = useModal();
   return (
     <>
@@ -21,7 +21,7 @@ export const AddTransaction: React.FC<Props> = ({ id }) => {
         Add transaction
       </Button>
       <Modal title="Add a transaction" modalOpen={isOpen} onClose={closeModal}>
-        <TransactionForm budgetId={id} onSuccess={closeModal} />
+        <TransactionForm budgetId={budgetId} onSuccess={closeModal} />
       </Modal>
     </>
   );
