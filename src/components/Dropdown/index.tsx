@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { DropdownOptions } from "@/types";
 import { clsxm } from "@/utils/clsxm";
 
@@ -15,6 +15,7 @@ interface Props {
   placeholder?: boolean;
   noStyles?: boolean;
   classes?: string;
+  style: CSSProperties;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -30,6 +31,7 @@ export const Dropdown: React.FC<Props> = ({
   placeholder = false,
   noStyles = false,
   classes = "",
+  style,
 }) => {
   return (
     <fieldset className="flex flex-col gap-2">
@@ -51,6 +53,7 @@ export const Dropdown: React.FC<Props> = ({
         onChange={onChange}
         required={required}
         disabled={disabled}
+        style={style}
       >
         {placeholder ? (
           <option disabled hidden value="">

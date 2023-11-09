@@ -1,20 +1,23 @@
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
 
-type Options<T> = {
+//eslint-disable-next-line
+type ExtendedType = Record<string, any | string>;
+
+interface Options<T> {
   onChange?: () => void;
   defaultParams?: T;
-};
+}
 
-export const useFilterParams = <T extends Record<string, string>>({
+export const useFilterParams = <T extends ExtendedType>({
   onChange = () => undefined,
   defaultParams,
 }: Options<T>) => {
   const router = useRouter();
   const { query } = router;
-  const handleOnChange = () => setTimeout(() => onChange(), 10);
+  const params = query as T;
 
-  const params = query as Record<keyof T, string>;
+  const handleOnChange = () => setTimeout(() => onChange(), 10);
 
   useEffect(() => {
     if (!defaultParams) return;

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { GetTransactionProps } from "@/types";
 import {
   addBudget,
   addProfile,
@@ -20,44 +21,49 @@ import {
   updateProfile,
   updateTransaction,
 } from "@/services/api";
-import {
-  GetTransactionProps,
-  OrderFilter,
-  SortTransactionsFilter,
-} from "@/types";
-import { useFilterParams } from "@/hooks/useFilterParams";
 
 type ID = string | number;
 
 const categoriesKey = "categories";
 const profileKey = "profile";
 const budgetsKey = "budgets";
-const budgetIdKey = (id: ID) => `${budgetsKey}-${id}`;
 const transactionKey = `transactions`;
-const transactionsKey = (budgetId: ID) => `${transactionKey}-${budgetId}`;
-const transactionIdKey = (budgetId: ID, transactionId: ID) =>
-  `${transactionsKey(budgetId)}_id-${transactionId}`;
+
+const budgetIdKey = (id: ID) => [`${budgetsKey}-${id}`];
+
+const transactionsKey = ({ budgetId, order, sort }: GetTransactionProps) => {
+  const key: (string | Omit<GetTransactionProps, "budgetId">)[] = [
+    `${transactionKey}-${budgetId}`,
+  ];
+  if (sort && order) key.push({ sort, order });
+  return key;
+};
+
+const transactionIdKey = (budgetId: ID, transactionId: ID) => [
+  `${transactionKey}-${budgetId}_id-${transactionId}`,
+];
 const transactionTypesKey = "transactionTypes";
 
 export const useLogin = () => {
-  return useMutation(signIn);
+  return useMutation({ mutationFn: signIn });
 };
 
 export const useLogout = () => {
-  return useMutation(signOut);
+  return useMutation({ mutationFn: signOut });
 };
 
 export const useSignUp = () => {
-  return useMutation(signUp);
+  return useMutation({ mutationFn: signUp });
 };
 
 export const useAddProfile = () => {
-  return useMutation(addProfile);
+  return useMutation({ mutationFn: addProfile });
 };
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
-  return useMutation(updateProfile, {
+  return useMutation({
+    mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries([profileKey]);
     },
@@ -65,24 +71,28 @@ export const useUpdateProfile = () => {
 };
 
 export const useGetProfile = () => {
-  return useQuery([profileKey], getProfile);
+  return useQuery({ queryKey: [profileKey], queryFn: getProfile });
 };
 
 export const useSetUserSession = () => {
-  return useMutation(setUserSession);
+  return useMutation({ mutationFn: setUserSession });
 };
 
 export const useGetBudgets = () => {
-  return useQuery([budgetsKey], getBudgets);
+  return useQuery({ queryKey: [budgetsKey], queryFn: getBudgets });
 };
 
 export const useGetBudgetById = (id: string) => {
-  return useQuery([budgetIdKey(id)], () => getBudgetById(id));
+  return useQuery({
+    queryKey: budgetIdKey(id),
+    queryFn: () => getBudgetById(id),
+  });
 };
 
 export const useAddBudget = () => {
   const queryClient = useQueryClient();
-  return useMutation(addBudget, {
+  return useMutation({
+    mutationFn: addBudget,
     onSuccess: () => {
       queryClient.invalidateQueries([budgetsKey]);
     },
@@ -92,9 +102,10 @@ export const useAddBudget = () => {
 export const useUpdateBudget = (id: string) => {
   if (!id) throw new Error("Missing ID propertry.");
   const queryClient = useQueryClient();
-  return useMutation(updateBudget, {
+  return useMutation({
+    mutationFn: updateBudget,
     onSuccess: () => {
-      queryClient.invalidateQueries([budgetIdKey(id)]);
+      queryClient.invalidateQueries(budgetIdKey(id));
       queryClient.invalidateQueries([budgetsKey]);
     },
   });
@@ -102,33 +113,39 @@ export const useUpdateBudget = (id: string) => {
 
 export const useDeleteBudget = (budgetId: string) => {
   const queryClient = useQueryClient();
-  return useMutation(() => deleteBudget(budgetId), {
+  return useMutation({
+    mutationFn: () => deleteBudget(budgetId),
     onSuccess: () => {
       queryClient.invalidateQueries([budgetsKey]);
     },
   });
 };
 
-export const useGetTransactions = (data: GetTransactionProps) => {
-  const { params } = useFilterParams({});
-  return useQuery([transactionsKey(data.budgetId)], () => {
-    const sort = params.sortBy as SortTransactionsFilter;
-    const order = params.orderBy as OrderFilter;
-    return getTransactions({ ...data, sort, order });
+export const useGetTransactions = ({
+  budgetId,
+  order = "DSC",
+  sort = "created_at",
+}: GetTransactionProps) => {
+  const data = { budgetId, order, sort };
+  return useQuery({
+    queryKey: transactionsKey(data),
+    queryFn: () => getTransactions(data),
   });
 };
 
 export const useGetTransactionById = (id: string, budgetId: string) => {
-  return useQuery([transactionIdKey(budgetId, id)], () =>
-    getTransactionById(id, budgetId)
-  );
+  return useQuery({
+    queryKey: transactionIdKey(budgetId, id),
+    queryFn: () => getTransactionById(id, budgetId),
+  });
 };
 
 export const useAddTransaction = (budgetId: string) => {
   const queryClient = useQueryClient();
-  return useMutation(addTransaction, {
+  return useMutation({
+    mutationFn: addTransaction,
     onSuccess: () => {
-      queryClient.invalidateQueries([transactionsKey(budgetId)]);
+      queryClient.invalidateQueries(transactionsKey({ budgetId }));
     },
   });
 };
@@ -138,29 +155,35 @@ export const useUpdateTransaction = (
   transactionId: string
 ) => {
   const queryClient = useQueryClient();
-  return useMutation(updateTransaction, {
+  return useMutation({
+    mutationFn: updateTransaction,
     onSuccess: () => {
-      queryClient.invalidateQueries([transactionsKey(budgetId)]);
-      queryClient.invalidateQueries([
-        transactionIdKey(budgetId, transactionId),
-      ]);
+      queryClient.invalidateQueries(transactionsKey({ budgetId }));
+      queryClient.invalidateQueries(transactionIdKey(budgetId, transactionId));
     },
   });
 };
 
 export const useDeleteTransaction = (id: string, budgetId: string) => {
   const queryClient = useQueryClient();
-  return useMutation(() => deleteTransaction(id, budgetId), {
+  return useMutation({
+    mutationFn: () => deleteTransaction(id, budgetId),
     onSuccess: () => {
-      queryClient.invalidateQueries([transactionsKey(budgetId)]);
+      queryClient.invalidateQueries(transactionsKey({ budgetId }));
     },
   });
 };
 
 export const useGetTransactionType = () => {
-  return useQuery([transactionTypesKey], getTransactionType);
+  return useQuery({
+    queryKey: [transactionTypesKey],
+    queryFn: getTransactionType,
+  });
 };
 
 export const useGetCategories = () => {
-  return useQuery([categoriesKey], getCategories);
+  return useQuery({
+    queryKey: [categoriesKey],
+    queryFn: getCategories,
+  });
 };

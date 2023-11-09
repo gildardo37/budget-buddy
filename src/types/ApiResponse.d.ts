@@ -73,3 +73,8 @@ export interface Category {
   created_at: Date;
   name: string;
 }
+
+export interface GetTransactionFilters {
+  sort: SortTransactionsFilter;
+  order: OrderFilter;
+}

@@ -27,12 +27,19 @@ export type AlertColors = Record<
   }
 >;
 
-export interface DropdownOptions {
-  value: string;
+export interface DropdownOptions<T = string> {
   name: string;
+  value: T;
 }
 
 export interface CustomDropdownOptions {
   action: () => void;
   name: string;
+}
+
+export interface FilterOptions {
+  label: string;
+  value: string;
+  options: DropdownOptions[];
+  onChange?: () => void;
 }
