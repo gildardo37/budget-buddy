@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetBudgetById } from "@/services/useApi";
+import { useGetBudgetById } from "@/hooks/useApi";
 import { Loading } from "@/components/Loading";
 import { BudgetInformation } from "@/components/Budget/BudgetInformation";
 

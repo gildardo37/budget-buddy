@@ -1,6 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
-import { useGetBudgets } from "@/services/useApi";
+import { useGetBudgets } from "@/hooks/useApi";
 import { Loading } from "@/components/Loading";
 import { Header } from "@/components/Header";
 import { BudgetList } from "@/components/Budget/BudgetList";

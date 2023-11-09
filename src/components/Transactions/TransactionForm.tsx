@@ -4,7 +4,7 @@ import {
   useGetCategories,
   useGetTransactionType,
   useUpdateTransaction,
-} from "@/services/useApi";
+} from "@/hooks/useApi";
 import { AddTransactionProps, Transaction } from "@/types";
 import { handleErrors } from "@/utils/errors";
 import { capitalizeText } from "@/utils/strings";

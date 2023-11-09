@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { NextPage } from "next";
-import { useAddProfile, useSignUp } from "@/services/useApi";
+import { useAddProfile, useSignUp } from "@/hooks/useApi";
 import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";

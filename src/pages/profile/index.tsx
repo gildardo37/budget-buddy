@@ -1,6 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
-import { useGetProfile } from "@/services/useApi";
+import { useGetProfile } from "@/hooks/useApi";
 import { Header } from "@/components/Header";
 import { ProfileInfo } from "@/components/Profile/ProfileInfo";
 import { Loading } from "@/components/Loading";

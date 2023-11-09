@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GetTransactionProps } from "@/types";
+import {
+  DropdownOptions,
+  FilterOptions,
+  GetTransactionFilters,
+  GetTransactionProps,
+} from "@/types";
 import {
   addBudget,
   addProfile,
@@ -21,6 +26,7 @@ import {
   updateProfile,
   updateTransaction,
 } from "@/services/api";
+import { useFilterParams } from "@/hooks/useFilterParams";
 
 type ID = string | number;
 
@@ -28,6 +34,7 @@ const categoriesKey = "categories";
 const profileKey = "profile";
 const budgetsKey = "budgets";
 const transactionKey = `transactions`;
+const transactionTypesKey = "transactionTypes";
 
 const budgetIdKey = (id: ID) => [`${budgetsKey}-${id}`];
 
@@ -42,23 +49,14 @@ const transactionsKey = ({ budgetId, order, sort }: GetTransactionProps) => {
 const transactionIdKey = (budgetId: ID, transactionId: ID) => [
   `${transactionKey}-${budgetId}_id-${transactionId}`,
 ];
-const transactionTypesKey = "transactionTypes";
 
-export const useLogin = () => {
-  return useMutation({ mutationFn: signIn });
-};
+export const useLogin = () => useMutation({ mutationFn: signIn });
 
-export const useLogout = () => {
-  return useMutation({ mutationFn: signOut });
-};
+export const useLogout = () => useMutation({ mutationFn: signOut });
 
-export const useSignUp = () => {
-  return useMutation({ mutationFn: signUp });
-};
+export const useSignUp = () => useMutation({ mutationFn: signUp });
 
-export const useAddProfile = () => {
-  return useMutation({ mutationFn: addProfile });
-};
+export const useAddProfile = () => useMutation({ mutationFn: addProfile });
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
@@ -186,4 +184,46 @@ export const useGetCategories = () => {
     queryKey: [categoriesKey],
     queryFn: getCategories,
   });
+};
+
+//API Requests Hooks using filters
+
+export const useGetTransactionFilters = (budgetId: string) => {
+  const sortBy: DropdownOptions<GetTransactionFilters["sort"]>[] = [
+    { name: "Date", value: "created_at" },
+    { name: "Description", value: "description" },
+    { name: "Amount", value: "amount" },
+  ];
+
+  const orderBy: DropdownOptions<GetTransactionFilters["order"]>[] = [
+    { name: "DSC", value: "DSC" },
+    { name: "ASC", value: "ASC" },
+  ];
+
+  const { handleSetParam, params } = useFilterParams<GetTransactionFilters>({
+    onChange: () => refetch(),
+    defaultParams: { sort: sortBy[0].value, order: orderBy[0].value },
+  });
+
+  const { data, isLoading, error, refetch } = useGetTransactions({
+    budgetId,
+    order: params.order,
+    sort: params.sort,
+  });
+
+  const filterOptions: FilterOptions[] = [
+    { label: "Sort", options: sortBy, value: params.sort },
+    { label: "Order", options: orderBy, value: params.order },
+  ];
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch,
+    filterOptions,
+    handleSetParam,
+    sortBy,
+    orderBy,
+  };
 };

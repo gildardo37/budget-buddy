@@ -1,11 +1,11 @@
 import React from "react";
+import { useGetTransactionFilters } from "@/hooks/useApi";
 import { MyBudget } from "@/components/Budget/MyBudget";
 import { Loading } from "@/components/Loading";
 import { TransactionsList } from "@/components/Transactions/TransactionList";
 import { RequestError } from "@/components/Errors/RequestError";
 import { AddTransaction } from "@/components/Transactions/AddTransaction";
 import { Filters } from "@/components/Filters";
-import { useGetTransactionFilters } from "@/hooks/useFilters";
 
 interface Props {
   id: string;

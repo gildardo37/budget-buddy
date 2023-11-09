@@ -5,7 +5,7 @@ import {
   useDeleteBudget,
   useGetBudgetById,
   useGetTransactions,
-} from "@/services/useApi";
+} from "@/hooks/useApi";
 import { formatPrice } from "@/utils/numbers";
 import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";

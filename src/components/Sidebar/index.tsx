@@ -8,7 +8,7 @@ import { Logo } from "@/components/svgs/Logo";
 import { HomeIcon } from "@/components/svgs/HomeIcon";
 import { CloseIcon } from "@/components/svgs/CloseIcon";
 import { useRouter } from "next/router";
-import { useLogout } from "@/services/useApi";
+import { useLogout } from "@/hooks/useApi";
 
 interface Routes {
   label: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { CustomDropdownOptions, Transaction } from "@/types";
-import { useDeleteTransaction } from "@/services/useApi";
+import { useDeleteTransaction } from "@/hooks/useApi";
 import { formatPrice, formattedAmount } from "@/utils/numbers";
 import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";

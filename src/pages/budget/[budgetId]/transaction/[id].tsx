@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useGetTransactionById } from "@/services/useApi";
+import { useGetTransactionById } from "@/hooks/useApi";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
 import { TransactionDetails } from "@/components/Transactions/TransactionDetails";
