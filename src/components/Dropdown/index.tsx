@@ -15,7 +15,7 @@ interface Props {
   placeholder?: boolean;
   noStyles?: boolean;
   classes?: string;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 export const Dropdown: React.FC<Props> = ({
