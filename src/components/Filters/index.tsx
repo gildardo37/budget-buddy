@@ -18,7 +18,7 @@ export const Filters: React.FC<Props> = ({ filters, onChange }) => {
             options={options}
             placeholder
             noStyles
-            classes="py-2 cursor-pointer"
+            className="cursor-pointer py-2"
             style={{ width: `${(value?.length ?? 5) + 5}ch` }}
             onChange={handleChange ?? onChange}
             value={value}

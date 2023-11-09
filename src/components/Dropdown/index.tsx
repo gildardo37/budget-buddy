@@ -14,7 +14,7 @@ interface Props {
   options?: DropdownOptions[];
   placeholder?: boolean;
   noStyles?: boolean;
-  classes?: string;
+  className?: string;
   style?: CSSProperties;
 }
 
@@ -30,7 +30,7 @@ export const Dropdown: React.FC<Props> = ({
   options = [],
   placeholder = false,
   noStyles = false,
-  classes = "",
+  className = "",
   style,
 }) => {
   return (
@@ -40,11 +40,11 @@ export const Dropdown: React.FC<Props> = ({
       ) : null}
       <select
         className={clsxm(
-          "w-fit duration-200 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30",
+          "duration-200 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30",
           noStyles
             ? "bg-transparent outline-none"
             : "rounded-md border border-slate-200 bg-white p-2 outline-0 focus:border-blue-500",
-          classes
+          className
         )}
         name={name}
         id={id}
