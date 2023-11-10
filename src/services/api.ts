@@ -4,11 +4,13 @@ import {
   AddProfileProps,
   AddTransactionProps,
   Budget,
+  BudgetID,
   Category,
   GetTransactionProps,
   Login,
   Profile,
   Transaction,
+  TransactionID,
   TransactionType,
   UpdateBudgetProps,
   UpdateProfileProps,
@@ -107,7 +109,7 @@ export const getBudgets = async () => {
   );
 };
 
-export const getBudgetById = async (id: string) => {
+export const getBudgetById = async (id: BudgetID) => {
   const { data } = await supabase.auth.getSession();
   return handleRequest<Budget[]>(() =>
     supabase
@@ -138,7 +140,7 @@ export const updateBudget = async ({
     .eq("profile_id", data.session?.user.id);
 };
 
-export const deleteBudget = async (budgetId: string) => {
+export const deleteBudget = async (budgetId: BudgetID) => {
   const { data } = await supabase.auth.getSession();
   return await supabase
     .from("budgets")
@@ -163,7 +165,10 @@ export const getTransactions = async ({
   });
 };
 
-export const getTransactionById = async (id: string, budgetId: string) => {
+export const getTransactionById = async (
+  id: TransactionID,
+  budgetId: BudgetID
+) => {
   const { data } = await supabase.auth.getSession();
   return handleRequest<Transaction[]>(() => {
     return supabase
@@ -209,7 +214,10 @@ export const updateTransaction = async ({
   );
 };
 
-export const deleteTransaction = async (id: string, budgetId: string) => {
+export const deleteTransaction = async (
+  id: TransactionID,
+  budgetId: BudgetID
+) => {
   return await supabase
     .from("transactions")
     .delete()

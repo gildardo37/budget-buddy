@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  BudgetID,
   DropdownOptions,
   FilterOptions,
   GetTransactionFilters,
   GetTransactionProps,
+  TransactionID,
 } from "@/types";
 import {
   addBudget,
@@ -28,17 +30,20 @@ import {
 } from "@/services/api";
 import { useFilterParams } from "@/hooks/useFilterParams";
 
-type ID = string | number;
-
 const categoriesKey = "categories";
 const profileKey = "profile";
 const budgetsKey = "budgets";
 const transactionKey = `transactions`;
 const transactionTypesKey = "transactionTypes";
 
-const budgetIdKey = (id: ID) => [`${budgetsKey}-${id}`];
+const budgetIdKey = (id: BudgetID) => [`${budgetsKey}-${id}`];
 
 const transactionsKey = ({ budgetId, order, sort }: GetTransactionProps) => {
+  // const key: (string | Omit<GetTransactionProps, "budgetId">)[] = [
+  //   `${transactionKey}-${budgetId}`,
+  // ];
+  // if (sort && order) key.push({ sort, order });
+  // return key;
   const key: (string | Omit<GetTransactionProps, "budgetId">)[] = [
     `${transactionKey}-${budgetId}`,
   ];
@@ -46,7 +51,7 @@ const transactionsKey = ({ budgetId, order, sort }: GetTransactionProps) => {
   return key;
 };
 
-const transactionIdKey = (budgetId: ID, transactionId: ID) => [
+const transactionIdKey = (budgetId: BudgetID, transactionId: TransactionID) => [
   `${transactionKey}-${budgetId}_id-${transactionId}`,
 ];
 
@@ -80,7 +85,7 @@ export const useGetBudgets = () => {
   return useQuery({ queryKey: [budgetsKey], queryFn: getBudgets });
 };
 
-export const useGetBudgetById = (id: string) => {
+export const useGetBudgetById = (id: BudgetID) => {
   return useQuery({
     queryKey: budgetIdKey(id),
     queryFn: () => getBudgetById(id),
@@ -97,7 +102,7 @@ export const useAddBudget = () => {
   });
 };
 
-export const useUpdateBudget = (id: string) => {
+export const useUpdateBudget = (id: BudgetID) => {
   if (!id) throw new Error("Missing ID propertry.");
   const queryClient = useQueryClient();
   return useMutation({
@@ -109,7 +114,7 @@ export const useUpdateBudget = (id: string) => {
   });
 };
 
-export const useDeleteBudget = (budgetId: string) => {
+export const useDeleteBudget = (budgetId: BudgetID) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => deleteBudget(budgetId),
@@ -131,14 +136,17 @@ export const useGetTransactions = ({
   });
 };
 
-export const useGetTransactionById = (id: string, budgetId: string) => {
+export const useGetTransactionById = (
+  id: TransactionID,
+  budgetId: BudgetID
+) => {
   return useQuery({
     queryKey: transactionIdKey(budgetId, id),
     queryFn: () => getTransactionById(id, budgetId),
   });
 };
 
-export const useAddTransaction = (budgetId: string) => {
+export const useAddTransaction = (budgetId: BudgetID) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: addTransaction,
@@ -149,8 +157,8 @@ export const useAddTransaction = (budgetId: string) => {
 };
 
 export const useUpdateTransaction = (
-  budgetId: string,
-  transactionId: string
+  budgetId: BudgetID,
+  transactionId: TransactionID
 ) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -162,7 +170,7 @@ export const useUpdateTransaction = (
   });
 };
 
-export const useDeleteTransaction = (id: string, budgetId: string) => {
+export const useDeleteTransaction = (id: TransactionID, budgetId: BudgetID) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => deleteTransaction(id, budgetId),
@@ -188,7 +196,7 @@ export const useGetCategories = () => {
 
 //API Requests Hooks using filters
 
-export const useGetTransactionFilters = (budgetId: string) => {
+export const useGetTransactionFilters = (budgetId: BudgetID) => {
   const sortBy: DropdownOptions<GetTransactionFilters["sort"]>[] = [
     { name: "Date", value: "created_at" },
     { name: "Description", value: "description" },

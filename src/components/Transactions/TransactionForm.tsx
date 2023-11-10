@@ -106,9 +106,11 @@ export const TransactionForm: React.FC<Props> = ({
       amount: parseFloat(amount.value),
       description: description.value,
       transaction_type_fk: parseFloat(type.value),
-      budget_fk: parseFloat(budgetId),
+      budget_fk: budgetId,
       category_fk: parseFloat(category.value),
     };
+
+    console.log(data);
 
     return updateData
       ? updateTransaction({ ...data, id: updateData.id })

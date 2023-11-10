@@ -16,12 +16,13 @@ export interface Login {
 }
 
 export interface Budget {
-  id: number;
+  id: string;
   created_at: Date;
   description: string;
   amount: number;
   profile_id: string;
 }
+export type BudgetID = Budget["id"];
 
 export type UpdateBudgetProps = Omit<Budget, "created_at" | "profile_id">;
 
@@ -36,17 +37,19 @@ export interface TransactionType {
 }
 
 export interface Transaction {
-  id: number;
+  id: string;
   created_at: string;
   description: string;
   amount: number;
-  budget_fk: number;
+  budget_fk: string;
   transaction_type_fk: number;
   budgets: Budget;
   transaction_type: TransactionType;
   category_fk: number;
   categories: Category;
 }
+
+export type TransactionID = Transaction["id"];
 
 export type SortTransactionsFilter = keyof Pick<
   Transaction,

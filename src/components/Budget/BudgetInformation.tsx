@@ -24,7 +24,7 @@ interface Props {
 export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
   const { data: budget } = useGetBudgetById(budgetId);
   const { data: myTransactions } = useGetTransactions({ budgetId });
-  const { mutateAsync: deleteBudget, error } = useDeleteBudget(budgetId);
+  const { mutateAsync: deleteBudget } = useDeleteBudget(budgetId);
   const router = useRouter();
   const { displayAlert } = useAlert();
   const { isOpen, openModal, closeModal } = useModal();
@@ -62,16 +62,9 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
 
   const handleDelete = async () => {
     try {
-      await deleteBudget();
-
-      if (error) throw error;
-
-      displayAlert({
-        message: "Budget deleted successfully!",
-        type: "success",
-        duration: 3000,
-        onClose: () => router.replace("/budget"),
-      });
+      const response = await deleteBudget();
+      if (response.error) throw response.error;
+      router.replace("/budget");
     } catch (error) {
       handleErrors(error, displayAlert);
     }

@@ -26,7 +26,11 @@ export const useFilterParams = <T extends ExtendedType>({
 
     if (!areParamsValid) {
       const newFilters: Record<string, string> = {};
-      paramKeys.forEach((param) => (newFilters[param] = defaultParams[param]));
+      paramKeys.forEach((param) => {
+        if (!(param in query)) {
+          newFilters[param] = defaultParams[param];
+        }
+      });
       router.replace({ query: { ...query, ...newFilters } });
     }
     //eslint-disable-next-line
