@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { FilterOptions } from "@/types";
-import { Dropdown } from "@/components/Dropdown";
+import { Dropdown } from "@/components/Field/Dropdown";
 
 interface Props {
   filters: FilterOptions[];

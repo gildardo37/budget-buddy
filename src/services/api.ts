@@ -196,6 +196,10 @@ export const addTransaction = async ({
   });
 };
 
+export const addBulkTransaction = async (data: AddTransactionProps[]) => {
+  return await supabase.from("transactions").insert(data);
+};
+
 export const updateTransaction = async ({
   id,
   budget_fk,

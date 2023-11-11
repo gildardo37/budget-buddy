@@ -71,6 +71,15 @@ export type UpdateTransactionProps = Omit<
 
 export type AddTransactionProps = Omit<UpdateTransactionProps, "id">;
 
+export type ConvertToTransaction = Omit<AddTransactionProps, "budget_fk">;
+
+export interface ConvertToTransactionReadOnly {
+  description: Transaction["description"];
+  amount: Transaction["amount"];
+  transactionType: TransactionType["type"];
+  category: Category["name"];
+}
+
 export interface Category {
   id: number;
   created_at: Date;

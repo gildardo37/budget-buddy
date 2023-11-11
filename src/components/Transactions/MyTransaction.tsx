@@ -7,7 +7,7 @@ import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";
 import { useModal } from "@/hooks/useModal";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
-import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
+import { CustomDropdown } from "@/components/Field/CustomDropdown";
 import { Dialog } from "@/components/Modal/Dialog";
 import { Modal } from "@/components/Modal";
 import { TransactionForm } from "@/components/Transactions/TransactionForm";

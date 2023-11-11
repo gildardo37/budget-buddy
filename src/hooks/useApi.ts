@@ -9,6 +9,7 @@ import {
 } from "@/types";
 import {
   addBudget,
+  addBulkTransaction,
   addProfile,
   addTransaction,
   deleteBudget,
@@ -39,11 +40,6 @@ const transactionTypesKey = "transactionTypes";
 const budgetIdKey = (id: BudgetID) => [`${budgetsKey}-${id}`];
 
 const transactionsKey = ({ budgetId, order, sort }: GetTransactionProps) => {
-  // const key: (string | Omit<GetTransactionProps, "budgetId">)[] = [
-  //   `${transactionKey}-${budgetId}`,
-  // ];
-  // if (sort && order) key.push({ sort, order });
-  // return key;
   const key: (string | Omit<GetTransactionProps, "budgetId">)[] = [
     `${transactionKey}-${budgetId}`,
   ];
@@ -150,6 +146,16 @@ export const useAddTransaction = (budgetId: BudgetID) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: addTransaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries(transactionsKey({ budgetId }));
+    },
+  });
+};
+
+export const useAddBulkTransaction = (budgetId: BudgetID) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addBulkTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries(transactionsKey({ budgetId }));
     },

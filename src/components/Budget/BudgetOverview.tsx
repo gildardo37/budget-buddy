@@ -6,6 +6,7 @@ import { TransactionsList } from "@/components/Transactions/TransactionList";
 import { RequestError } from "@/components/Errors/RequestError";
 import { AddTransaction } from "@/components/Transactions/AddTransaction";
 import { Filters } from "@/components/Filters";
+import { UploadTransaction } from "../Transactions/UploadTransaction";
 
 interface Props {
   id: string;
@@ -25,6 +26,7 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
       <div className="flex flex-col items-center gap-4">
         <MyBudget budgetId={id} />
         <AddTransaction budgetId={id} />
+        <UploadTransaction budgetId={id} />
       </div>
       {isLoading ? (
         <Loading />

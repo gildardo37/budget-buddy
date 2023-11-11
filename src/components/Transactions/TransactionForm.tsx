@@ -12,7 +12,7 @@ import { useAlert } from "@/hooks/useAlert";
 import { useForm } from "@/hooks/useForm";
 import { Field } from "@/components/Field";
 import { Button } from "@/components/Button";
-import { Dropdown } from "@/components/Dropdown";
+import { Dropdown } from "@/components/Field/Dropdown";
 interface Props {
   budgetId: string;
   onSuccess?: () => void;
@@ -159,7 +159,7 @@ export const TransactionForm: React.FC<Props> = ({
         disabled={isLoading}
       />
       <Button
-        className="md:col-start-2 md:max-w-[150px] md:place-self-end"
+        className="md:col-start-2 md:row-start-4 md:max-w-[150px] md:place-self-end"
         type="submit"
         disabled={isDisabled || isLoading || !isFormModified}
         isLoading={isLoading}

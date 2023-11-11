@@ -11,7 +11,7 @@ import { handleErrors } from "@/utils/errors";
 import { useAlert } from "@/hooks/useAlert";
 import { useModal } from "@/hooks/useModal";
 import { BudgetProgress } from "@/components/Budget/BudgetProgress";
-import { CustomDropdown } from "@/components/Dropdown/CustomDropdown";
+import { CustomDropdown } from "@/components/Field/CustomDropdown";
 import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { Dialog } from "@/components/Modal/Dialog";
 import { Modal } from "@/components/Modal";
