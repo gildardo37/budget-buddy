@@ -5,6 +5,8 @@ export const messages = {
   wrongHttpMethod: "This HTTP method is not available.",
   wrongJson: "Wrong type of JSON.",
   fetchError: "Error while fetching data",
+  wrongBody: (values: string) =>
+    `These properties are missing in body: ${values}.`,
   invalidFile: (fileType: string, files: string) =>
     `${fileType} is not a valid file, must be ${files}.`,
 };

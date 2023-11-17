@@ -8,12 +8,14 @@ interface Props {
   options: CustomDropdownOptions[];
   labelContent: React.ReactNode;
   position?: Positions;
+  className?: string;
 }
 
 export const CustomDropdown: React.FC<Props> = ({
   labelContent,
   options,
   position = "bottom-left",
+  className = "",
 }) => {
   const [display, setDisplay] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +57,7 @@ export const CustomDropdown: React.FC<Props> = ({
 
   return (
     <div
-      className="relative cursor-pointer select-none"
+      className={clsxm("relative cursor-pointer select-none", className)}
       onClick={handleDisplay}
       ref={dropdownRef}
     >

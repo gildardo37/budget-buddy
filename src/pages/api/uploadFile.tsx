@@ -89,7 +89,7 @@ const convertDataToReadable = (
       description,
       category: categories.find(({ id }) => category_fk === id)?.name ?? "None",
       transactionType:
-        types.find(({ id }) => transaction_type_fk === id)?.type ?? "expense",
+        types.find(({ id }) => transaction_type_fk === id)?.type ?? "Expense",
     })
   );
 };
@@ -104,6 +104,11 @@ export default async function UploadFile(
     }
 
     const body = req.body as Body;
+
+    if (!body.file) {
+      throw new Error(messages.wrongBody("'file'"));
+    }
+
     const [metadata, base64Content] = body.file.split(";base64,");
     const fileData = Buffer.from(base64Content, "base64").toString("utf-8");
     const fileType = metadata.split("/")[1] as Files;
@@ -125,8 +130,8 @@ export default async function UploadFile(
       data: { newData, readOnlyData },
       message: messages.success,
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: (error as Error).message });
+  } catch (e) {
+    const error = e as Error;
+    res.status(500).json({ message: error.message });
   }
 }

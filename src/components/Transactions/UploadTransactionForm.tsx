@@ -79,41 +79,38 @@ export const UploadTransactionForm: React.FC<Props> = ({
   };
 
   const dropdownOptions = [
-    { name: "JSON file", action: downloadJson },
-    { name: "CSV file", action: downloadCsv },
+    { name: "JSON", action: downloadJson },
+    { name: "CSV", action: downloadCsv },
   ];
 
   return (
     <div className="flex flex-col gap-4">
       <form className="grid gap-4 md:grid-cols-2">
-        <p className="col-span-2 text-sm">
-          Make sure the file is a JSON or CSV.
-          <CustomDropdown
-            labelContent={<p className="text-blue-500">Download templates</p>}
-            options={dropdownOptions}
-            position="bottom-left"
-          />
-        </p>
+        <p>Make sure the file is a JSON or CSV.</p>
+        <CustomDropdown
+          labelContent={<p className="text-blue-500">Download template</p>}
+          options={dropdownOptions}
+          position="bottom-left"
+          className="place-self-end"
+        />
         <InputFile
           accept=".json, .csv"
           onChange={handleOnChange}
           isLoading={isLoading}
         />
       </form>
-      {data ? (
-        <>
-          <p>This is how your data looks like, is it all correct?</p>
-          <CodeViewer code={JSON.stringify(data.readOnlyData, null, 2)} />
-          <Button
-            className="max-w-[150px] place-self-end"
-            onClick={handleSubmit}
-            disabled={isLoading}
-            isLoading={isLoading}
-          >
-            Submit data
-          </Button>
-        </>
-      ) : null}
+      <CodeViewer
+        title="Preview"
+        code={JSON.stringify(data?.readOnlyData ?? {}, null, 2)}
+      />
+      <Button
+        className="max-w-[150px] place-self-end"
+        onClick={handleSubmit}
+        disabled={!data?.newData || isLoading}
+        isLoading={isLoading}
+      >
+        Submit data
+      </Button>
     </div>
   );
 };
