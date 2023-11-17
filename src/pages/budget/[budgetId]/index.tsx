@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { useGetBudgetById } from "@/hooks/useApi";
 import { Header } from "@/components/Header";
 import { Loading } from "@/components/Loading";
@@ -21,6 +22,9 @@ const Overview: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
+      <Head>
+        <title>Overview | Budget Buddy</title>
+      </Head>
       <Header
         title={budget?.data?.[0].description ?? "Overview"}
         showBack

@@ -9,6 +9,7 @@ import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/Button/ButtonLink";
 import { Header } from "@/components/Header";
 import { CheckIcon } from "@/components/svgs/CheckIcon";
+import Head from "next/head";
 
 const SignUp: NextPage = () => {
   const { displayAlert } = useAlert();
@@ -63,6 +64,9 @@ const SignUp: NextPage = () => {
 
   return (
     <section className="mx-auto flex min-h-[calc(100dvh-32px)] w-full max-w-md flex-1 flex-col justify-center gap-4">
+      <Head>
+        <title>Sign Up | Budget Buddy</title>
+      </Head>
       {isSigned ? (
         <>
           <div className="flex justify-center">

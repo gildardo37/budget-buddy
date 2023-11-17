@@ -1,5 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useGetProfile } from "@/hooks/useApi";
 import { Header } from "@/components/Header";
 import { ProfileInfo } from "@/components/Profile/ProfileInfo";
@@ -11,6 +12,9 @@ const Profile: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
+      <Head>
+        <title>Profile | Budget Buddy</title>
+      </Head>
       <Header title="My Profile" showBack showSidebar />
       {isLoading ? (
         <Loading />

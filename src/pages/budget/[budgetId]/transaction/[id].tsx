@@ -6,6 +6,7 @@ import { Loading } from "@/components/Loading";
 import { TransactionDetails } from "@/components/Transactions/TransactionDetails";
 import { MyTransaction } from "@/components/Transactions/MyTransaction";
 import { RequestError } from "@/components/Errors/RequestError";
+import Head from "next/head";
 
 const TransactionPage: NextPage = () => {
   const router = useRouter();
@@ -15,6 +16,9 @@ const TransactionPage: NextPage = () => {
 
   return (
     <section className="flex flex-col gap-4">
+      <Head>
+        <title>Transaction Details | Budget Buddy</title>
+      </Head>
       <Header title="Transaction details" showBack showSidebar />
       {isLoading ? (
         <Loading />
