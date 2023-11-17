@@ -1,5 +1,6 @@
 import React from "react";
 import { formatPrice } from "@/utils/numbers";
+import { clsxm } from "@/utils/clsxm";
 
 interface Props {
   spent: number;
@@ -14,7 +15,10 @@ export const BudgetProgress: React.FC<Props> = ({ total, spent }) => {
     <div className="flex w-full flex-col gap-2 p-2">
       <div className="w-full rounded-full bg-blue-200">
         <div
-          className="progress-bar h-2 rounded-full bg-blue-600"
+          className={clsxm(
+            "progress-bar h-2 rounded-full",
+            value < 100 ? "bg-blue-600" : "bg-red-600"
+          )}
           style={{ width: `${percentage}%` }}
         />
       </div>

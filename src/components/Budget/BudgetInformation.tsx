@@ -16,6 +16,7 @@ import { BulletIcon } from "@/components/svgs/BulletIcon";
 import { Dialog } from "@/components/Modal/Dialog";
 import { Modal } from "@/components/Modal";
 import { BudgetForm } from "@/components/Budget/BudgetForm";
+import { clsxm } from "@/utils/clsxm";
 
 interface Props {
   budgetId: string;
@@ -45,7 +46,7 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
     let totalIncome = 0;
 
     transactions?.forEach(({ amount, transaction_type: { type } }) =>
-      type === "income" ? (totalIncome += amount) : (totalSpent += amount)
+      type === "Income" ? (totalIncome += amount) : (totalSpent += amount)
     );
     const { amount: originalBudget } = myBudget;
     const totalBudget = originalBudget + totalIncome;
@@ -75,6 +76,8 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
     { action: openDialog, name: "Delete" },
   ];
 
+  const hasBudgetAvailable = availableBudget > 0;
+
   return (
     <>
       <div className="flex w-full items-center justify-between">
@@ -89,7 +92,14 @@ export const BudgetInformation: React.FC<Props> = ({ budgetId }) => {
         <span className="text-3xl font-bold">
           {formatPrice(availableBudget)}
         </span>
-        <span className="text-sm text-gray-600">Available budget</span>
+        <span
+          className={clsxm(
+            "text-sm",
+            hasBudgetAvailable ? "text-gray-600" : "text-red-600"
+          )}
+        >
+          {hasBudgetAvailable ? "Available budget" : "Budget limit reached"}
+        </span>
       </div>
       <BudgetProgress total={totalBudget} spent={totalSpent} />
       <Dialog
