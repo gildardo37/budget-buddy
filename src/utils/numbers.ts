@@ -30,5 +30,5 @@ export const formattedAmount = (
   amount: Transaction["amount"],
   type: TransactionTypeOptions
 ) => {
-  return formatPrice(`${type === "expense" ? "-" : ""}${amount}`);
+  return formatPrice(`${type === "Expense" ? "-" : ""}${amount}`);
 };

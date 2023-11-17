@@ -28,7 +28,7 @@ export type UpdateBudgetProps = Omit<Budget, "created_at" | "profile_id">;
 
 export type AddBudgetProps = Omit<UpdateBudgetProps, "id">;
 
-export type TransactionTypeOptions = "expense" | "income";
+export type TransactionTypeOptions = "Expense" | "Income";
 
 export interface TransactionType {
   id: number;

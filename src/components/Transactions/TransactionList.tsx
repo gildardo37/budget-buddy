@@ -27,7 +27,7 @@ export const TransactionsList: React.FC<Props> = ({ data, budgetId }) => {
             subTitle={category}
             content={formattedAmount(amount, type)}
             details={new Date(created_at).toDateString()}
-            textColor={type === "income" ? "text-green-600" : ""}
+            textColor={type === "Income" ? "text-green-600" : ""}
           />
         )
       )}
