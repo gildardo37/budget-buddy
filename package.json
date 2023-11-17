@@ -17,6 +17,7 @@
     "@types/react-dom": "18.2.1",
     "animate.css": "^4.1.1",
     "axios": "^1.6.1",
+    "csvtojson": "^2.0.10",
     "jotai": "^2.0.4",
     "next": "13.3.1",
     "react": "18.2.0",

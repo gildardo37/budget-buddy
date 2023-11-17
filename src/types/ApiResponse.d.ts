@@ -90,3 +90,19 @@ export interface GetTransactionFilters {
   sort: SortTransactionsFilter;
   order: OrderFilter;
 }
+
+export interface UploadTransaction {
+  newData: ConvertToTransaction[];
+  readOnlyData: ConvertToTransactionReadOnly[];
+}
+
+export interface ApiResponse<T = undefined> {
+  data?: T;
+  message?: string;
+}
+
+export type UploadTransactionResponse = ApiResponse<UploadTransaction>;
+
+export interface UploadTransactionProps {
+  file: string | ArrayBuffer;
+}

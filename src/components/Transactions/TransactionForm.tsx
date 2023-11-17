@@ -110,8 +110,6 @@ export const TransactionForm: React.FC<Props> = ({
       category_fk: parseFloat(category.value),
     };
 
-    console.log(data);
-
     return updateData
       ? updateTransaction({ ...data, id: updateData.id })
       : addTransaction(data);

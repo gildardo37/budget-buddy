@@ -2,11 +2,11 @@ import React from "react";
 import { useGetTransactionFilters } from "@/hooks/useApi";
 import { MyBudget } from "@/components/Budget/MyBudget";
 import { Loading } from "@/components/Loading";
-import { TransactionsList } from "@/components/Transactions/TransactionList";
 import { RequestError } from "@/components/Errors/RequestError";
-import { AddTransaction } from "@/components/Transactions/AddTransaction";
 import { Filters } from "@/components/Filters";
-import { UploadTransaction } from "../Transactions/UploadTransaction";
+import { TransactionsList } from "@/components/Transactions/TransactionList";
+import { AddTransaction } from "@/components/Transactions/AddTransaction";
+import { LoadTransaction } from "@/components/Transactions/LoadTransaction";
 
 interface Props {
   id: string;
@@ -26,7 +26,7 @@ export const BudgetOverview: React.FC<Props> = ({ id }) => {
       <div className="flex flex-col items-center gap-4">
         <MyBudget budgetId={id} />
         <AddTransaction budgetId={id} />
-        <UploadTransaction budgetId={id} />
+        <LoadTransaction budgetId={id} />
       </div>
       {isLoading ? (
         <Loading />

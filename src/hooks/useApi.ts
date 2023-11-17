@@ -28,6 +28,7 @@ import {
   updateBudget,
   updateProfile,
   updateTransaction,
+  uploadTransactionFile,
 } from "@/services/api";
 import { useFilterParams } from "@/hooks/useFilterParams";
 
@@ -198,6 +199,10 @@ export const useGetCategories = () => {
     queryKey: [categoriesKey],
     queryFn: getCategories,
   });
+};
+
+export const useUploadTransactionFile = () => {
+  return useMutation({ mutationFn: uploadTransactionFile });
 };
 
 //API Requests Hooks using filters

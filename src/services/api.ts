@@ -15,8 +15,11 @@ import {
   UpdateBudgetProps,
   UpdateProfileProps,
   UpdateTransactionProps,
+  UploadTransactionProps,
+  UploadTransactionResponse,
 } from "@/types";
 import { PostgrestSingleResponse, Session } from "@supabase/supabase-js";
+import axios from "axios";
 
 type SupabaseRequest<T> = Promise<PostgrestSingleResponse<T>>;
 
@@ -242,4 +245,9 @@ export const getCategories = async () => {
   return handleRequest<Category[]>(() =>
     supabase.from("categories").select("*").order("name", { ascending: true })
   );
+};
+
+export const uploadTransactionFile = async (body: UploadTransactionProps) => {
+  const apiUrl = "/api/uploadFile";
+  return await axios.post<UploadTransactionResponse>(apiUrl, body);
 };
